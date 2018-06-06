@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="MorphologicalDisambiguation">
-    <CLASSES>
-      <root url="jar://$PROJECT_DIR$/src/libs/MorphologicalDisambiguation.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>
