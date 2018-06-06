@@ -53,3 +53,9 @@ nb-configuration.xml
 release.properties
 pom.xml.releaseBackup
 pom.xml.tag
+out/artifacts/AnnotatedSentence_jar/AnnotatedSentence.jar
+out/production/AnnotatedSentence/libs/MorphologicalAnalysis.jar
+out/production/AnnotatedSentence/libs/MorphologicalDisambiguation.jar
+out/production/AnnotatedSentence/libs/NamedEntityRecognition.jar
+out/production/AnnotatedSentence/libs/PropBank.jar
+out/production/AnnotatedSentence/libs/WordNet.jar
