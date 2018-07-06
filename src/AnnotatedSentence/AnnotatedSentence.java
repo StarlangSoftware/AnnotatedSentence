@@ -84,7 +84,7 @@ public class AnnotatedSentence extends Sentence{
     }
 
     public String getPredicate(int index){
-        int count1  = 0,count2 = 0;
+        int count1  = 0, count2 = 0;
         String data = "";
         ArrayList<AnnotatedWord> word = new ArrayList<>();
         ArrayList<MorphologicalParse> parse = new ArrayList<>();
@@ -94,13 +94,13 @@ public class AnnotatedSentence extends Sentence{
                 parse.add(word.get(i).getParse());
             }
             for (int i = index; i >= 0; i--) {
-                if (parse.get(i).getRootPos().equals("VERB") && parse.get(i).getPos().equals("VERB")){
+                if (parse.get(i) != null && parse.get(i).getRootPos() != null && parse.get(i).getPos() != null && parse.get(i).getRootPos().equals("VERB") && parse.get(i).getPos().equals("VERB")){
                     count1 = index - i;
                     break;
                 }
             }
             for (int i = index; i < wordCount() - index; i++) {
-                if (parse.get(i).getRootPos().equals("VERB") && parse.get(i).getPos().equals("VERB")){
+                if (parse.get(i) != null && parse.get(i).getRootPos() != null && parse.get(i).getPos() != null && parse.get(i).getRootPos().equals("VERB") && parse.get(i).getPos().equals("VERB")){
                     count2 = i - index;
                     break;
                 }
