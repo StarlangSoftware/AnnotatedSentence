@@ -201,18 +201,6 @@ public class AnnotatedWord extends Word implements Serializable{
         switch (format){
             case SURFACE:
                 return name;
-            case ROOT:
-                if (parse != null){
-                    return parse.getWord().getName();
-                } else {
-                    throw new LayerNotExistsException("Morphological Analysis");
-                }
-            case SUFFIX:
-                if (parse != null){
-                    return parse.getTransitionList();
-                } else {
-                    throw new LayerNotExistsException("Morphological Analysis");
-                }
             default:
                 return name;
         }
