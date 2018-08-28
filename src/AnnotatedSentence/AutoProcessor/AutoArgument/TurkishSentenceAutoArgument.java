@@ -4,7 +4,7 @@ import AnnotatedSentence.*;
 
 public class TurkishSentenceAutoArgument extends SentenceAutoArgument{
 
-    public void autoArgument(AnnotatedSentence sentence) {
+    public boolean autoArgument(AnnotatedSentence sentence) {
         boolean modified = false;
         String predicateId = null;
         for (int i = 0; i < sentence.wordCount(); i++){
@@ -30,8 +30,6 @@ public class TurkishSentenceAutoArgument extends SentenceAutoArgument{
                 }
             }
         }
-        if (modified){
-            sentence.save();
-        }
+        return modified;
     }
 }

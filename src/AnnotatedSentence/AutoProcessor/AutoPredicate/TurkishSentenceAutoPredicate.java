@@ -12,14 +12,15 @@ public class TurkishSentenceAutoPredicate extends SentenceAutoPredicate{
         this.xmlParser = xmlParser;
     }
 
-    public void autoPredicate(AnnotatedSentence sentence){
+    public boolean autoPredicate(AnnotatedSentence sentence){
         ArrayList<AnnotatedWord> candidateList = sentence.predicateCandidates(xmlParser);
         for (AnnotatedWord word : candidateList){
             word.setArgument("PREDICATE$" + word.getSemantic());
         }
         if (candidateList.size() > 0){
-            sentence.save();
+            return true;
         }
+        return false;
     }
 
 }
