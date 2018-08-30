@@ -49,7 +49,7 @@ public class TurkishSentenceAutoDisambiguator extends SentenceAutoDisambiguator{
      * @param word Word to be disambiguated.
      */
     private void setParseAutomatically(FsmParseList fsmParseList, AnnotatedWord word){
-        if (!fsmParseList.rootWords().contains("$")){
+        if (fsmParseList.size() > 0 && !fsmParseList.rootWords().contains("$")){
             FsmParse disambiguatedParse = fsmParseList.caseDisambiguator();
             if (disambiguatedParse != null){
                 word.setParse(disambiguatedParse.transitionList());

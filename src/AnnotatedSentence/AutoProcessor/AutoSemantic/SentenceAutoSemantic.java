@@ -7,7 +7,6 @@ public abstract class SentenceAutoSemantic {
 
     public void autoSemantic(AnnotatedSentence sentence){
         autoLabelSingleSemantics(sentence);
-        sentence.save();
     }
 
 }

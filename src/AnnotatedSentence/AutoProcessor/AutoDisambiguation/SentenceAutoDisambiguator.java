@@ -67,7 +67,6 @@ public abstract class SentenceAutoDisambiguator extends AutoDisambiguator{
         autoFillSingleAnalysis(sentence);
         autoDisambiguateSingleRootWords(sentence);
         autoDisambiguateMultipleRootWords(sentence);
-        sentence.save();
     }
 
 }

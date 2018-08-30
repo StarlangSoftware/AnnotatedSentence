@@ -75,7 +75,6 @@ public abstract class SentenceAutoNER extends AutoNER{
                 word.setNamedEntityType("NONE");
             }
         }
-        sentence.save();
     }
 
 }

@@ -154,7 +154,11 @@ public class AnnotatedWord extends Word implements Serializable{
     }
 
     public void setParse(String parseString){
-        parse = new MorphologicalParse(parseString);
+        if (parseString != null){
+            parse = new MorphologicalParse(parseString);
+        } else {
+            parse = null;
+        }
     }
 
     public MetamorphicParse getMetamorphicParse() {
