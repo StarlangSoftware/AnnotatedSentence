@@ -182,7 +182,11 @@ public class AnnotatedWord extends Word implements Serializable{
     }
 
     public void setNamedEntityType(String namedEntity){
-        namedEntityType = NamedEntityType.getNamedEntityType(namedEntity);
+        if (namedEntity != null){
+            namedEntityType = NamedEntityType.getNamedEntityType(namedEntity);
+        } else {
+            namedEntityType = null;
+        }
     }
 
     public Argument getArgument() {
@@ -190,7 +194,11 @@ public class AnnotatedWord extends Word implements Serializable{
     }
 
     public void setArgument(String argument){
-        this.argument = new Argument(argument);
+        if (argument != null){
+            this.argument = new Argument(argument);
+        } else {
+            this.argument = null;
+        }
     }
 
     public String getShallowParse(){
@@ -229,10 +237,10 @@ public class AnnotatedWord extends Word implements Serializable{
     public void checkGazetteer(Gazetteer gazetteer){
         String wordLowercase = name.toLowerCase(new Locale("tr"));
         if (gazetteer.contains(wordLowercase) && parse.containsTag(MorphologicalTag.PROPERNOUN)){
-            setNamedEntityType(name);
+            setNamedEntityType(gazetteer.getName());
         }
         if (wordLowercase.contains("'") && gazetteer.contains(wordLowercase.substring(0, wordLowercase.indexOf("'"))) && parse.containsTag(MorphologicalTag.PROPERNOUN)){
-            setNamedEntityType(name);
+            setNamedEntityType(gazetteer.getName());
         }
     }
 

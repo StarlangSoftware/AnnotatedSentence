@@ -67,7 +67,7 @@ public class AnnotatedSentence extends Sentence{
         ArrayList<AnnotatedWord> candidateList = new ArrayList<>();
         for (Word word : words){
             AnnotatedWord annotatedWord = (AnnotatedWord) word;
-            if (annotatedWord.getParse().isVerb() && annotatedWord.getSemantic() != null && framesetList.frameExists(annotatedWord.getSemantic())){
+            if (annotatedWord.getParse() != null && annotatedWord.getParse().isVerb() && annotatedWord.getSemantic() != null && framesetList.frameExists(annotatedWord.getSemantic())){
                 candidateList.add(annotatedWord);
             }
         }

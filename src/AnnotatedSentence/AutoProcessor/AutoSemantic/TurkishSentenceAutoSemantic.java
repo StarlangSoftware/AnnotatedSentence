@@ -18,12 +18,31 @@ public class TurkishSentenceAutoSemantic extends SentenceAutoSemantic{
     }
 
     protected void autoLabelSingleSemantics(AnnotatedSentence sentence) {
+        AnnotatedWord previous = null, current, next = null;
         for (int i = 0; i < sentence.wordCount(); i++){
-            AnnotatedWord word = (AnnotatedWord) sentence.getWord(i);
-            if (word.getSemantic() == null){
-                ArrayList<SynSet> meanings = turkishWordNet.constructSynSets(word.getParse().getWord().getName(), word.getParse(), word.getMetamorphicParse(), fsm);
-                if (meanings.size() == 1){
-                    word.setSemantic(meanings.get(0).getId());
+            current = (AnnotatedWord) sentence.getWord(i);
+            if (i > 0){
+                previous = (AnnotatedWord) sentence.getWord(i - 1);
+            }
+            if (i != sentence.wordCount() - 1){
+                next = (AnnotatedWord) sentence.getWord(i + 1);
+            }
+            if (current.getSemantic() == null && current.getParse() != null){
+                if (previous != null && previous.getParse() != null){
+                    ArrayList<SynSet> idioms = turkishWordNet.constructIdiomSynSets(previous.getParse(), current.getParse(), previous.getMetamorphicParse(), current.getMetamorphicParse(), fsm);
+                    if (idioms.size() == 1){
+                        current.setSemantic(idioms.get(0).getId());
+                    }
+                }
+                if (current.getSemantic() == null && next != null && next.getParse() != null){
+                    ArrayList<SynSet> idioms = turkishWordNet.constructIdiomSynSets(current.getParse(), next.getParse(), current.getMetamorphicParse(), next.getMetamorphicParse(), fsm);
+                    if (idioms.size() == 1){
+                        current.setSemantic(idioms.get(0).getId());
+                    }
+                }
+                ArrayList<SynSet> meanings = turkishWordNet.constructSynSets(current.getParse().getWord().getName(), current.getParse(), current.getMetamorphicParse(), fsm);
+                if (current.getSemantic() == null && meanings.size() == 1){
+                    current.setSemantic(meanings.get(0).getId());
                 }
             }
         }

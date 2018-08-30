@@ -18,11 +18,11 @@ public class TurkishSentenceAutoArgument extends SentenceAutoArgument{
             for (int i = 0; i < sentence.wordCount(); i++){
                 AnnotatedWord word = (AnnotatedWord) sentence.getWord(i);
                 if (word.getArgument() == null){
-                    if (word.getShallowParse().equalsIgnoreCase("ÖZNE")){
+                    if (word.getShallowParse() != null && word.getShallowParse().equalsIgnoreCase("ÖZNE")){
                         word.setArgument("ARG0$" + predicateId);
                         modified = true;
                     } else {
-                        if (word.getShallowParse().equalsIgnoreCase("NESNE")){
+                        if (word.getShallowParse() != null && word.getShallowParse().equalsIgnoreCase("NESNE")){
                             word.setArgument("ARG1$" + predicateId);
                             modified = true;
                         }
