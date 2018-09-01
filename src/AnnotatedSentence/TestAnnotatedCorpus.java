@@ -14,6 +14,8 @@ import PropBank.FramesetList;
 import WordNet.*;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.HashSet;
 
 public class TestAnnotatedCorpus {
 
@@ -139,6 +141,23 @@ public class TestAnnotatedCorpus {
         System.out.println("Correct: " + correct + " Annotated: " + totalAnnotated + " Total: " + total);
     }
 
+    public static void multiplePredicates(AnnotatedCorpus annotatedCorpus){
+        HashSet<String> arguments;
+        for (int i = 0; i < annotatedCorpus.sentenceCount(); i++){
+            AnnotatedSentence sentence = (AnnotatedSentence) annotatedCorpus.getSentence(i);
+            arguments = new HashSet<>();
+            for (int j = 0; j < sentence.wordCount(); j++){
+                AnnotatedWord word = (AnnotatedWord) sentence.getWord(j);
+                if (word.getArgument() != null && word.getArgument().getArgumentType().equals("PREDICATE")){
+                    arguments.add(word.getArgument().getId());
+                }
+            }
+            if (arguments.size() > 1){
+                System.out.println(sentence.getFileName() + "\t" + arguments.size());
+            }
+        }
+    }
+
     public static void testPredicateSelection(AnnotatedCorpus annotatedCorpus){
         int wrongAnnotated = 0, totalAnnotated = 0, correct = 0, unannotated = 0;
         Argument[] arguments;
@@ -221,6 +240,7 @@ public class TestAnnotatedCorpus {
 
     public static void main(String[] args){
         AnnotatedCorpus annotatedCorpus = new AnnotatedCorpus(new File("../../Penn-Treebank/Turkish-Phrase/"));
+        multiplePredicates(annotatedCorpus);
         //testArgument(annotatedCorpus);
         //testPredicateSelection(annotatedCorpus);
         //testSemantic(annotatedCorpus);
