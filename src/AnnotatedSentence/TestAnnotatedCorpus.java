@@ -140,7 +140,7 @@ public class TestAnnotatedCorpus {
     }
 
     public static void testPredicateSelection(AnnotatedCorpus annotatedCorpus){
-        int total = 0, totalAnnotated = 0, correct = 0;
+        int wrongAnnotated = 0, totalAnnotated = 0, correct = 0, unannotated = 0;
         Argument[] arguments;
         TurkishSentenceAutoPredicate turkishSentenceAutoPredicate = new TurkishSentenceAutoPredicate(new FramesetList("frameset.xml"));
         for (int i = 0; i < annotatedCorpus.sentenceCount(); i++){
@@ -159,19 +159,25 @@ public class TestAnnotatedCorpus {
             for (int j = 0; j < sentence.wordCount(); j++){
                 AnnotatedWord word = (AnnotatedWord) sentence.getWord(j);
                 if (arguments[j] != null){
-                    total++;
                     if (word.getArgument() != null){
                         totalAnnotated++;
                         if (arguments[j].toString().equalsIgnoreCase(word.getArgument().toString())){
                             correct++;
                         } else {
+                            wrongAnnotated++;
                             System.out.println(sentence.getFileName() + "\t" + word.getName() + "\t" + word.getArgument() + "\t" + arguments[j]);
                         }
+                    }
+                } else {
+                    if (word.getArgument() != null && word.getArgument().getArgumentType().equals("PREDICATE")){
+                        totalAnnotated++;
+                        unannotated++;
+                        System.out.println(sentence.getFileName() + "\t" + word.getName() + "\t" + word.getArgument() + "\t" + arguments[j]);
                     }
                 }
             }
         }
-        System.out.println("Correct: " + correct + " Annotated: " + totalAnnotated + " Total: " + total);
+        System.out.println("Correct: " + correct + " Annotated: " + totalAnnotated + " Wrong: " + wrongAnnotated + " Unannotated: " + unannotated);
     }
 
     public static void testArgument(AnnotatedCorpus annotatedCorpus){
