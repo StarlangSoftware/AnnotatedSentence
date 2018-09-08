@@ -240,9 +240,9 @@ public class TestAnnotatedCorpus {
 
     public static void main(String[] args){
         AnnotatedCorpus annotatedCorpus = new AnnotatedCorpus(new File("../../Penn-Treebank/Turkish-Phrase/"));
-        multiplePredicates(annotatedCorpus);
+        //multiplePredicates(annotatedCorpus);
         //testArgument(annotatedCorpus);
-        //testPredicateSelection(annotatedCorpus);
+        testPredicateSelection(annotatedCorpus);
         //testSemantic(annotatedCorpus);
         //testNER(annotatedCorpus);
         //testDisambiguation(annotatedCorpus);
