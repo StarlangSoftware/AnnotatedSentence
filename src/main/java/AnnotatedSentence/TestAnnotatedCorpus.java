@@ -161,7 +161,7 @@ public class TestAnnotatedCorpus {
     public static void testPredicateSelection(AnnotatedCorpus annotatedCorpus){
         int wrongAnnotated = 0, totalAnnotated = 0, correct = 0, unannotated = 0;
         Argument[] arguments;
-        TurkishSentenceAutoPredicate turkishSentenceAutoPredicate = new TurkishSentenceAutoPredicate(new FramesetList("frameset.xml"));
+        TurkishSentenceAutoPredicate turkishSentenceAutoPredicate = new TurkishSentenceAutoPredicate(new FramesetList());
         for (int i = 0; i < annotatedCorpus.sentenceCount(); i++){
             AnnotatedSentence sentence = (AnnotatedSentence) annotatedCorpus.getSentence(i);
             arguments = new Argument[sentence.wordCount()];

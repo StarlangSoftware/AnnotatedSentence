@@ -207,8 +207,8 @@ public class AnnotatedCorpus extends Corpus{
 
     public void checkPredicate(){
         WordNet turkish = new WordNet();
-        FramesetList framesetList = new FramesetList("frameset.xml");
-        TxtDictionary dictionary = new TxtDictionary("Data/Dictionary/turkish_dictionary.txt", new TurkishWordComparator());
+        FramesetList framesetList = new FramesetList();
+        TxtDictionary dictionary = new TxtDictionary();
         for (int i = 0; i < sentenceCount(); i++){
             AnnotatedSentence sentence = (AnnotatedSentence) getSentence(i);
             for (int j = 0; j < sentence.wordCount(); j++){
