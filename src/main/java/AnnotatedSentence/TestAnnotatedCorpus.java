@@ -14,7 +14,6 @@ import PropBank.FramesetList;
 import WordNet.*;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.HashSet;
 
 public class TestAnnotatedCorpus {
@@ -242,9 +241,9 @@ public class TestAnnotatedCorpus {
         AnnotatedCorpus annotatedCorpus = new AnnotatedCorpus(new File("../../Penn-Treebank/Turkish-Phrase/"));
         //multiplePredicates(annotatedCorpus);
         //testArgument(annotatedCorpus);
-        testPredicateSelection(annotatedCorpus);
+        //testPredicateSelection(annotatedCorpus);
         //testSemantic(annotatedCorpus);
         //testNER(annotatedCorpus);
-        //testDisambiguation(annotatedCorpus);
+        testDisambiguation(annotatedCorpus);
     }
 }
