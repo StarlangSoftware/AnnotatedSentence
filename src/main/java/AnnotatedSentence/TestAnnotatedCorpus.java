@@ -50,7 +50,7 @@ public class TestAnnotatedCorpus {
     public static void testDisambiguation(AnnotatedCorpus annotatedCorpus){
         int total = 0, totalAnnotated = 0, correct = 0;
         MorphologicalParse[] parses;
-        TurkishSentenceAutoDisambiguator turkishSentenceAutoDisambiguator = new TurkishSentenceAutoDisambiguator(new RootWordStatistics("Model/rootwordstatistics.bin"));
+        TurkishSentenceAutoDisambiguator turkishSentenceAutoDisambiguator = new TurkishSentenceAutoDisambiguator(new RootWordStatistics("rootwordstatistics.bin"));
         for (int i = 0; i < annotatedCorpus.sentenceCount(); i++){
             AnnotatedSentence sentence = (AnnotatedSentence) annotatedCorpus.getSentence(i);
             parses = new MorphologicalParse[sentence.wordCount()];
