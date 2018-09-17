@@ -70,7 +70,7 @@ public class TurkishSentenceAutoNER extends SentenceAutoNER{
                     int j = i - 1;
                     while (j >= 0){
                         AnnotatedWord previous = (AnnotatedWord) sentence.getWord(j);
-                        if (previous.getParse() != null && previous.getParse().containsTag(MorphologicalTag.CARDINAL)){
+                        if (previous.getParse() != null && (previous.getName().equalsIgnoreCase("amerikan") || previous.getParse().containsTag(MorphologicalTag.REAL) || previous.getParse().containsTag(MorphologicalTag.CARDINAL) || previous.getParse().containsTag(MorphologicalTag.NUMBER))){
                             previous.setNamedEntityType("MONEY");
                         } else {
                             break;
