@@ -1,6 +1,7 @@
 package AnnotatedSentence.AutoProcessor.AutoArgument;
 
 import AnnotatedSentence.*;
+import MorphologicalAnalysis.MorphologicalTag;
 
 public class TurkishSentenceAutoArgument extends SentenceAutoArgument{
 
@@ -19,7 +20,11 @@ public class TurkishSentenceAutoArgument extends SentenceAutoArgument{
                 AnnotatedWord word = (AnnotatedWord) sentence.getWord(i);
                 if (word.getArgument() == null){
                     if (word.getShallowParse() != null && word.getShallowParse().equalsIgnoreCase("ÖZNE")){
-                        word.setArgument("ARG0$" + predicateId);
+                        if (word.getParse() != null && word.getParse().containsTag(MorphologicalTag.PASSIVE)){
+                            word.setArgument("ARG1$" + predicateId);
+                        } else {
+                            word.setArgument("ARG0$" + predicateId);
+                        }
                         modified = true;
                     } else {
                         if (word.getShallowParse() != null && word.getShallowParse().equalsIgnoreCase("NESNE")){
