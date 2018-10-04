@@ -64,6 +64,41 @@ public class AnnotatedCorpus extends Corpus{
         }
     }
 
+    public void propBankAnnotationControl(String fileName, WordNet turkish) throws FileNotFoundException {
+        AnnotatedWord previous, word;
+        String wordPhrase;
+        PrintWriter output = new PrintWriter(new File(fileName));
+        for (int i = 0; i < sentenceCount(); i++){
+            AnnotatedSentence sentence = (AnnotatedSentence) getSentence(i);
+            previous = (AnnotatedWord) sentence.getWord(0);
+            wordPhrase = previous.getName();
+            for (int j = 1; j < sentence.wordCount(); j++){
+                word = (AnnotatedWord) sentence.getWord(j);
+                if (word.getArgument() != null && previous.getArgument() != null && word.getArgument().toString().equals(previous.getArgument().toString())){
+                    wordPhrase = wordPhrase + " " + word.getName();
+                } else {
+                    if (word.getArgument() == null && previous.getArgument() == null){
+                        wordPhrase = wordPhrase + " " + word.getName();
+                    } else {
+                        if (previous.getArgument() != null && previous.getArgument().getId() != null && turkish.getSynSetWithId(previous.getArgument().getId()) != null){
+                            output.println(sentence.getFileName() + "\t" + wordPhrase + "\t" + previous.getArgument() + "\t" + turkish.getSynSetWithId(previous.getArgument().getId()).getSynonym() + "\t" + turkish.getSynSetWithId(previous.getArgument().getId()).getDefinition() + "\t" + sentence.toWords());
+                        } else {
+                            output.println(sentence.getFileName() + "\t" + wordPhrase + "\t" + previous.getArgument() + "\t\t\t" + sentence.toWords());
+                        }
+                        previous = word;
+                        wordPhrase = previous.getName();
+                    }
+                }
+            }
+            if (previous.getArgument() != null && previous.getArgument().getId() != null && turkish.getSynSetWithId(previous.getArgument().getId()) != null){
+                output.println(sentence.getFileName() + "\t" + wordPhrase + "\t" + previous.getArgument() + "\t" + turkish.getSynSetWithId(previous.getArgument().getId()).getSynonym() + "\t" + turkish.getSynSetWithId(previous.getArgument().getId()).getDefinition() + "\t" + sentence.toWords());
+            } else {
+                output.println(sentence.getFileName() + "\t" + wordPhrase + "\t" + previous.getArgument() + "\t\t\t" + sentence.toWords());
+            }
+        }
+        output.close();
+    }
+
     public void shallowParseAnnotationControl(String fileName) throws FileNotFoundException {
         AnnotatedWord previous, word;
         String wordPhrase;
