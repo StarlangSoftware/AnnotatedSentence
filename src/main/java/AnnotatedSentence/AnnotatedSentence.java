@@ -63,6 +63,18 @@ public class AnnotatedSentence extends Sentence{
         return false;
     }
 
+    public boolean updateConnectedPredicate(String previousId, String currentId){
+        boolean modified = false;
+        for (Word word : words){
+            AnnotatedWord annotatedWord = (AnnotatedWord) word;
+            if (annotatedWord.getArgument() != null && annotatedWord.getArgument().getId() != null && annotatedWord.getArgument().getId().equals(previousId)){
+                annotatedWord.setArgument(annotatedWord.getArgument().getArgumentType() + "$" + currentId);
+                modified = true;
+            }
+        }
+        return modified;
+    }
+
     public ArrayList<AnnotatedWord> predicateCandidates(FramesetList framesetList){
         ArrayList<AnnotatedWord> candidateList = new ArrayList<>();
         for (Word word : words){

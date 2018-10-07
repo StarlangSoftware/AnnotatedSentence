@@ -14,6 +14,7 @@ import PropBank.FramesetList;
 import WordNet.*;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.HashSet;
 
 public class TestAnnotatedCorpus {
@@ -239,11 +240,16 @@ public class TestAnnotatedCorpus {
 
     public static void main(String[] args){
         AnnotatedCorpus annotatedCorpus = new AnnotatedCorpus(new File("../../Penn-Treebank/Turkish-Phrase/"));
+        try {
+            annotatedCorpus.propBankAnnotationControl("output.txt", new WordNet());
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
         //multiplePredicates(annotatedCorpus);
         //testArgument(annotatedCorpus);
         //testPredicateSelection(annotatedCorpus);
         //testSemantic(annotatedCorpus);
-        testNER(annotatedCorpus);
+        //testNER(annotatedCorpus);
         //testDisambiguation(annotatedCorpus);
     }
 }
