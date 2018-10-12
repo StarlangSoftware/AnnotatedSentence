@@ -82,8 +82,6 @@ public class AnnotatedCorpus extends Corpus{
                     } else {
                         if (previous.getArgument() != null && previous.getArgument().getId() != null && turkish.getSynSetWithId(previous.getArgument().getId()) != null){
                             output.println(sentence.getFileName() + "\t" + wordPhrase + "\t" + previous.getArgument() + "\t" + turkish.getSynSetWithId(previous.getArgument().getId()).getSynonym() + "\t" + turkish.getSynSetWithId(previous.getArgument().getId()).getDefinition() + "\t" + sentence.toWords());
-                        } else {
-                            output.println(sentence.getFileName() + "\t" + wordPhrase + "\t" + previous.getArgument() + "\t\t\t" + sentence.toWords());
                         }
                         previous = word;
                         wordPhrase = previous.getName();
@@ -92,8 +90,6 @@ public class AnnotatedCorpus extends Corpus{
             }
             if (previous.getArgument() != null && previous.getArgument().getId() != null && turkish.getSynSetWithId(previous.getArgument().getId()) != null){
                 output.println(sentence.getFileName() + "\t" + wordPhrase + "\t" + previous.getArgument() + "\t" + turkish.getSynSetWithId(previous.getArgument().getId()).getSynonym() + "\t" + turkish.getSynSetWithId(previous.getArgument().getId()).getDefinition() + "\t" + sentence.toWords());
-            } else {
-                output.println(sentence.getFileName() + "\t" + wordPhrase + "\t" + previous.getArgument() + "\t\t\t" + sentence.toWords());
             }
         }
         output.close();
