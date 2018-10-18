@@ -282,6 +282,7 @@ public class AnnotatedCorpus extends Corpus{
                                         frameset.addArgument("ARG1", prefix + new Transition("nHlAn").makeTransition(verbRoot, verbRoot.getName()) + " şey");
                                         break;
                                 }
+                                frameset.saveAsXml();
                                 framesetList.addFrameset(frameset);
                             }
                         }
@@ -289,7 +290,6 @@ public class AnnotatedCorpus extends Corpus{
                 }
             }
         }
-        framesetList.saveAsXml(null, null, null, -1);
     }
 
     public RootWordStatistics extractRootWordStatistics(FsmMorphologicalAnalyzer fsm){
