@@ -24,6 +24,18 @@ public class TurkishSentenceAutoDisambiguator extends SentenceAutoDisambiguator{
     }
 
     /**
+     * Constructor for the class.
+     * @param fsm                Finite State Machine based morphological analyzer
+     * @param rootWordStatistics The object contains information about the selected correct root words in a corpus for a set
+     *                           of possible lemma. For example, the lemma
+     *                           `günü': 2 possible root words `gün' and `günü'
+     *                           `çağlar' : 2 possible root words `çağ' and `çağlar'
+     */
+    public TurkishSentenceAutoDisambiguator(FsmMorphologicalAnalyzer fsm, RootWordStatistics rootWordStatistics) {
+        super(fsm, rootWordStatistics);
+    }
+
+    /**
      * The method disambiguates the words with a single morphological analysis. Basically the
      * method sets the morphological analysis of the words with one possible morphological analysis. If the word
      * is already morphologically disambiguated, the method does not disambiguate that word.
