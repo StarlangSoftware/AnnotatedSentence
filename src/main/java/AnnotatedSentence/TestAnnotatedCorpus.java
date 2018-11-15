@@ -241,13 +241,20 @@ public class TestAnnotatedCorpus {
         System.out.println("Correct: " + correct + " Annotated: " + totalAnnotated + " Total: " + total);
     }
 
+    public static void extractTourismRootWordStatistics(){
+        AnnotatedCorpus annotatedCorpus = new AnnotatedCorpus(new File("../../Etstur/Turkish-Phrase/"));
+        RootWordStatistics rootWordStatistics = annotatedCorpus.extractRootWordStatistics(new FsmMorphologicalAnalyzer("../../Etstur/Program/tourism_dictionary.txt"));
+        rootWordStatistics.saveStatistics("tourism_statistics.bin");
+    }
+
     public static void main(String[] args){
-        AnnotatedCorpus annotatedCorpus = new AnnotatedCorpus(new File("../../Penn-Treebank/Turkish-Phrase/"));
+        extractTourismRootWordStatistics();
+        /*AnnotatedCorpus annotatedCorpus = new AnnotatedCorpus(new File("../../Penn-Treebank/Turkish-Phrase/"));
         try {
             annotatedCorpus.propBankAnnotationControl("output.txt", new WordNet());
         } catch (FileNotFoundException e) {
             e.printStackTrace();
-        }
+        }*/
         //multiplePredicates(annotatedCorpus);
         //testArgument(annotatedCorpus);
         //testPredicateSelection(annotatedCorpus);
