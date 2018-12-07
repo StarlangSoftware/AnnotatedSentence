@@ -292,6 +292,40 @@ public class AnnotatedCorpus extends Corpus{
         }
     }
 
+    public TxtDictionary createDictionary() {
+        TxtDictionary dictionary = new TxtDictionary(new TurkishWordComparator());
+        for (int i = 0; i < sentenceCount(); i++){
+            AnnotatedSentence sentence = (AnnotatedSentence) getSentence(i);
+            for (int j = 0; j < sentence.wordCount(); j++){
+                AnnotatedWord word = (AnnotatedWord) sentence.getWord(j);
+                if (word.getParse() != null){
+                    MorphologicalParse morphologicalParse = word.getParse();
+                    String pos = morphologicalParse.getRootPos();
+                    String name = morphologicalParse.getWord().getName();
+                    switch (pos){
+                        case "NOUN":
+                            if (morphologicalParse.isProperNoun()){
+                                dictionary.addProperNoun(name);
+                            } else {
+                                dictionary.addNoun(name);
+                            }
+                            break;
+                        case "VERB":
+                            dictionary.addVerb(name);
+                            break;
+                        case "ADJ":
+                            dictionary.addAdjective(name);
+                            break;
+                        case "ADV":
+                            dictionary.addAdverb(name);
+                            break;
+                    }
+                }
+            }
+        }
+        return dictionary;
+    }
+
     public RootWordStatistics extractRootWordStatistics(FsmMorphologicalAnalyzer fsm){
         RootWordStatistics statistics = new RootWordStatistics();
         CounterHashMap<String> rootWordStatistics;
