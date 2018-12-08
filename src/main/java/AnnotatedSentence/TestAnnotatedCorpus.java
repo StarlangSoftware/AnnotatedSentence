@@ -5,6 +5,7 @@ import AnnotatedSentence.AutoProcessor.AutoDisambiguation.TurkishSentenceAutoDis
 import AnnotatedSentence.AutoProcessor.AutoNER.TurkishSentenceAutoNER;
 import AnnotatedSentence.AutoProcessor.AutoPredicate.TurkishSentenceAutoPredicate;
 import AnnotatedSentence.AutoProcessor.AutoSemantic.TurkishSentenceAutoSemantic;
+import Dictionary.TxtDictionary;
 import MorphologicalAnalysis.FsmMorphologicalAnalyzer;
 import MorphologicalAnalysis.MorphologicalParse;
 import MorphologicalDisambiguation.RootWordStatistics;
@@ -247,8 +248,14 @@ public class TestAnnotatedCorpus {
         rootWordStatistics.saveStatistics("tourism_statistics.bin");
     }
 
+    public static void extractDictionary(String pathName, String outputFileName){
+        AnnotatedCorpus annotatedCorpus = new AnnotatedCorpus(new File(pathName));
+        TxtDictionary dictionary = annotatedCorpus.createDictionary();
+        dictionary.saveAsTxt(outputFileName);
+    }
+
     public static void main(String[] args){
-        extractTourismRootWordStatistics();
+        //extractTourismRootWordStatistics();
         /*AnnotatedCorpus annotatedCorpus = new AnnotatedCorpus(new File("../../Penn-Treebank/Turkish-Phrase/"));
         try {
             annotatedCorpus.propBankAnnotationControl("output.txt", new WordNet());
@@ -261,5 +268,6 @@ public class TestAnnotatedCorpus {
         //testSemantic(annotatedCorpus);
         //testNER(annotatedCorpus);
         //testDisambiguation(annotatedCorpus);
+        extractDictionary("../../Penn-Treebank/Turkish-Phrase/", "deneme3.txt");
     }
 }
