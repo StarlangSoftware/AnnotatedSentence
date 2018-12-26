@@ -5,9 +5,12 @@ import AnnotatedSentence.AutoProcessor.AutoDisambiguation.TurkishSentenceAutoDis
 import AnnotatedSentence.AutoProcessor.AutoNER.TurkishSentenceAutoNER;
 import AnnotatedSentence.AutoProcessor.AutoPredicate.TurkishSentenceAutoPredicate;
 import AnnotatedSentence.AutoProcessor.AutoSemantic.TurkishSentenceAutoSemantic;
+import Corpus.Sentence;
 import Dictionary.TxtDictionary;
 import MorphologicalAnalysis.FsmMorphologicalAnalyzer;
 import MorphologicalAnalysis.MorphologicalParse;
+import MorphologicalDisambiguation.DisambiguatedWord;
+import MorphologicalDisambiguation.DisambiguationCorpus;
 import MorphologicalDisambiguation.RootWordStatistics;
 import NamedEntityRecognition.NamedEntityType;
 import PropBank.Argument;
@@ -254,7 +257,31 @@ public class TestAnnotatedCorpus {
         dictionary.saveAsTxt(outputFileName);
     }
 
+    public static void compareAnnotations(){
+        DisambiguationCorpus corpus = new DisambiguationCorpus("milliyet.txt");
+        AnnotatedCorpus annotatedCorpus = new AnnotatedCorpus(new File("../../Milliyet-5/Turkish-Phrase/"));
+        int oldj = 0;
+        for (int i = 0; i < corpus.sentenceCount(); i++){
+            Sentence sentence1 = corpus.getSentence(i);
+            for (int j = oldj; j < annotatedCorpus.sentenceCount(); j++){
+                Sentence sentence2 = annotatedCorpus.getSentence(j);
+                if (sentence1.toWords().equalsIgnoreCase(sentence2.toWords())){
+                    for (int k = 0; k < sentence1.wordCount(); k++){
+                        if (((DisambiguatedWord) sentence1.getWord(k)).getParse() != null && ((AnnotatedWord)sentence2.getWord(k)).getParse() != null){
+                            if (!((DisambiguatedWord) sentence1.getWord(k)).getParse().toString().equalsIgnoreCase(((AnnotatedWord) sentence2.getWord(k)).getParse().toString())){
+                                System.out.println(((AnnotatedSentence)sentence2).getFileName() + "\t" + sentence1.toWords() + "\t" + ((DisambiguatedWord) sentence1.getWord(k)).getName() + "\t" + ((DisambiguatedWord) sentence1.getWord(k)).getParse() + "\t" + ((AnnotatedWord)sentence2.getWord(k)).getParse());
+                            }
+                        }
+                    }
+                    oldj = j + 1;
+                    break;
+                }
+            }
+        }
+    }
+
     public static void main(String[] args){
+        compareAnnotations();
         //extractTourismRootWordStatistics();
         /*AnnotatedCorpus annotatedCorpus = new AnnotatedCorpus(new File("../../Penn-Treebank/Turkish-Phrase/"));
         try {
@@ -268,6 +295,6 @@ public class TestAnnotatedCorpus {
         //testSemantic(annotatedCorpus);
         //testNER(annotatedCorpus);
         //testDisambiguation(annotatedCorpus);
-        extractDictionary("../../Penn-Treebank/Turkish-Phrase/", "deneme3.txt");
+        //extractDictionary("../../Penn-Treebank/Turkish-Phrase/", "deneme3.txt");
     }
 }
