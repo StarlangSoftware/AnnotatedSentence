@@ -281,10 +281,10 @@ public class TestAnnotatedCorpus {
     }
 
     public static void main(String[] args){
-        compareAnnotations();
+        //compareAnnotations();
         //extractTourismRootWordStatistics();
-        /*AnnotatedCorpus annotatedCorpus = new AnnotatedCorpus(new File("../../Penn-Treebank/Turkish-Phrase/"));
-        try {
+        AnnotatedCorpus annotatedCorpus = new AnnotatedCorpus(new File("../../Penn-Treebank/Turkish-Phrase/"));
+        /*try {
             annotatedCorpus.propBankAnnotationControl("output.txt", new WordNet());
         } catch (FileNotFoundException e) {
             e.printStackTrace();
