@@ -2,7 +2,7 @@
 
 ## Data Format
 
-The structure of a sample annotated sentence is as follows:
+The structure of a sample annotated word is as follows:
 
 	{turkish=yatırımcılar}
 	{analysis=yatırımcı+NOUN+A3PL+PNON+NOM}
