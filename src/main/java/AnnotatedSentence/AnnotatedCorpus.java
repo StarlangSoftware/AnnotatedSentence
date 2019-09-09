@@ -13,12 +13,23 @@ import WordNet.*;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 
 public class AnnotatedCorpus extends Corpus{
 
+    /**
+     * Empty constructor for {@link AnnotatedCorpus}.
+     */
     public AnnotatedCorpus(){
     }
 
+    /**
+     * A constructor of {@link AnnotatedCorpus} class which reads all {@link AnnotatedSentence} files with the file
+     * name satisfying the given pattern inside the given folder. For each file inside that folder, the constructor
+     * creates an AnnotatedSentence and puts in inside the list parseTrees.
+     * @param folder Folder where all sentences reside.
+     * @param pattern File pattern such as "." ".train" ".test".
+     */
     public AnnotatedCorpus(File folder, String pattern){
         sentences = new ArrayList();
         File[] listOfFiles = folder.listFiles();
@@ -32,6 +43,11 @@ public class AnnotatedCorpus extends Corpus{
         }
     }
 
+    /**
+     * A constructor of {@link AnnotatedCorpus} class which reads all {@link AnnotatedSentence} files inside the given
+     * folder. For each file inside that folder, the constructor creates an AnnotatedSentence and puts in inside the
+     * list sentences.
+     */
     public AnnotatedCorpus(File folder){
         sentences = new ArrayList();
         File[] listOfFiles = folder.listFiles();
@@ -42,6 +58,11 @@ public class AnnotatedCorpus extends Corpus{
         }
     }
 
+    /**
+     * An obsolete constructor of the {@link AnnotatedSentence} class. If the contents of all the sentences are inside
+     * a single file, this constructor can be called. Each line in this file corresponds to a single AnnotatedSentence.
+     * @param fileName File containing the sentences.
+     */
     public AnnotatedCorpus(String fileName){
         this();
         this.fileName = fileName;
@@ -64,6 +85,13 @@ public class AnnotatedCorpus extends Corpus{
         }
     }
 
+    /**
+     * Traverses all sentences in the corpus for Propbank annotation. The method returns all word groups in all sentences
+     * which have the same semantic role annotation.
+     * @param fileName Output file name
+     * @param turkish Turkish wordnet
+     * @throws FileNotFoundException
+     */
     public void propBankAnnotationControl(String fileName, WordNet turkish) throws FileNotFoundException {
         AnnotatedWord previous, word;
         String wordPhrase;
@@ -95,6 +123,12 @@ public class AnnotatedCorpus extends Corpus{
         output.close();
     }
 
+    /**
+     * Traverses all sentences in the corpus for Propbank annotation. The method returns all word groups in all sentences
+     * which have the same shallow parse annotation.
+     * @param fileName Output file name
+     * @throws FileNotFoundException
+     */
     public void shallowParseAnnotationControl(String fileName) throws FileNotFoundException {
         AnnotatedWord previous, word;
         String wordPhrase;
@@ -122,6 +156,12 @@ public class AnnotatedCorpus extends Corpus{
         output.close();
     }
 
+    /**
+     * Traverses all sentences in the corpus for Propbank annotation. The method returns all word groups in all sentences
+     * which have the same named entity annotation.
+     * @param fileName Output file name
+     * @throws FileNotFoundException
+     */
     public void nerAnnotationControl(String fileName) throws FileNotFoundException {
         AnnotatedWord previous, word;
         String wordPhrase;
@@ -149,6 +189,9 @@ public class AnnotatedCorpus extends Corpus{
         output.close();
     }
 
+    /**
+     * The method removes all empty words from the sentences.
+     */
     public void clearNullWords(){
         for (int i = 0; i < sentenceCount(); i++){
             AnnotatedSentence sentence = (AnnotatedSentence) getSentence(i);
@@ -166,6 +209,9 @@ public class AnnotatedCorpus extends Corpus{
         }
     }
 
+    /**
+     * The method traverses all words in all sentences and prints the words which do not have a morphological analysis.
+     */
     public void checkMorphologicalAnalysis(){
         for (int i = 0; i < sentenceCount(); i++){
             AnnotatedSentence sentence = (AnnotatedSentence) getSentence(i);
@@ -182,6 +228,9 @@ public class AnnotatedCorpus extends Corpus{
         }
     }
 
+    /**
+     * The method traverses all words in all sentences and prints the words which do not have named entity annotation.
+     */
     public void checkNer(){
         for (int i = 0; i < sentenceCount(); i++){
             AnnotatedSentence sentence = (AnnotatedSentence) getSentence(i);
@@ -198,6 +247,9 @@ public class AnnotatedCorpus extends Corpus{
         }
     }
 
+    /**
+     * The method traverses all words in all sentences and prints the words which do not have shallow parse annotation.
+     */
     public void checkShallowParse(){
         for (int i = 0; i < sentenceCount(); i++){
             AnnotatedSentence sentence = (AnnotatedSentence) getSentence(i);
@@ -214,6 +266,9 @@ public class AnnotatedCorpus extends Corpus{
         }
     }
 
+    /**
+     * The method traverses all words in all sentences and prints the words which do not have sense annotation.
+     */
     public void checkSemantic(){
         FsmMorphologicalAnalyzer fsm = new FsmMorphologicalAnalyzer();
         WordNet turkish = new WordNet();
@@ -292,6 +347,10 @@ public class AnnotatedCorpus extends Corpus{
         }
     }
 
+    /**
+     * Creates a dictionary from the morphologically annotated words.
+     * @return A dictionary containing root forms of the morphological annotations of words.
+     */
     public TxtDictionary createDictionary() {
         TxtDictionary dictionary = new TxtDictionary(new TurkishWordComparator());
         for (int i = 0; i < sentenceCount(); i++){
@@ -328,7 +387,9 @@ public class AnnotatedCorpus extends Corpus{
 
     public RootWordStatistics extractRootWordStatistics(FsmMorphologicalAnalyzer fsm){
         RootWordStatistics statistics = new RootWordStatistics();
+        HashMap<String, ArrayList<String>> rootWordFiles = new HashMap<>();
         CounterHashMap<String> rootWordStatistics;
+        ArrayList<String> fileNames;
         for (int i = 0; i < sentenceCount(); i++){
             AnnotatedSentence sentence = (AnnotatedSentence) getSentence(i);
             for (int j = 0; j < sentence.wordCount(); j++){
@@ -341,15 +402,29 @@ public class AnnotatedCorpus extends Corpus{
                         if (rootWords.contains("$")){
                             if (!statistics.containsKey(rootWords)){
                                 rootWordStatistics = new CounterHashMap<>();
+                                fileNames = new ArrayList<>();
                             } else {
                                 rootWordStatistics = statistics.get(rootWords);
+                                fileNames = rootWordFiles.get(rootWords);
                             }
+                            fileNames.add(sentence.getFileName());
+                            rootWordFiles.put(rootWords, fileNames);
                             rootWordStatistics.put(parse.getWord().getName());
                             statistics.put(rootWords, rootWordStatistics);
                         }
                     }
                 }
             }
+        }
+        for (String s : rootWordFiles.keySet()){
+            System.out.print(s);
+            for (String s2 : statistics.get(s).keySet()){
+                System.out.print("\t" + s2 + ":" + statistics.get(s).get(s2));
+            }
+            for (String s2 : rootWordFiles.get(s)){
+                System.out.print("\t" + s2);
+            }
+            System.out.println();
         }
         return statistics;
     }

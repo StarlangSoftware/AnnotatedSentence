@@ -24,6 +24,11 @@ public class AnnotatedWord extends Word implements Serializable{
     private Rectangle area;
     private boolean selected = false;
 
+    /**
+     * Constructor for the {@link AnnotatedWord} class. Gets the word with its annotation layers as input and sets the
+     * corresponding layers.
+     * @param word Input word with annotation layers
+     */
     public AnnotatedWord(String word){
         String[] splitLayers = word.split("[\\{\\}]");
         for (String layer:splitLayers){
@@ -65,6 +70,11 @@ public class AnnotatedWord extends Word implements Serializable{
         }
     }
 
+    /**
+     * Converts an {@link AnnotatedWord} to string. For each annotation layer, the method puts a left brace, layer name,
+     * equal sign and layer value finishing with right brace.
+     * @return String form of the {@link AnnotatedWord}.
+     */
     public String toString(){
         String result = "{turkish=" + name + "}";
         if (parse != null){
@@ -88,6 +98,11 @@ public class AnnotatedWord extends Word implements Serializable{
         return result;
     }
 
+    /**
+     * Another constructor for {@link AnnotatedWord}. Gets the word and a namedEntityType and sets two layers.
+     * @param name Lemma of the word.
+     * @param namedEntityType Named entity of the word.
+     */
     public AnnotatedWord(String name, NamedEntityType namedEntityType){
         super(name);
         this.namedEntityType = namedEntityType;
@@ -98,6 +113,11 @@ public class AnnotatedWord extends Word implements Serializable{
         shallowParse = null;
     }
 
+    /**
+     * Another constructor for {@link AnnotatedWord}. Gets the word and morphological parse and sets two layers.
+     * @param name Lemma of the word.
+     * @param parse Morphological parse of the word.
+     */
     public AnnotatedWord(String name, MorphologicalParse parse){
         super(name);
         this.parse = parse;
@@ -108,6 +128,11 @@ public class AnnotatedWord extends Word implements Serializable{
         shallowParse = null;
     }
 
+    /**
+     * Another constructor for {@link AnnotatedWord}. Gets the word and morphological parse and sets two layers.
+     * @param name Lemma of the word.
+     * @param parse Morphological parse of the word.
+     */
     public AnnotatedWord(String name, FsmParse parse){
         super(name);
         this.parse = parse;
@@ -118,6 +143,11 @@ public class AnnotatedWord extends Word implements Serializable{
         shallowParse = null;
     }
 
+    /**
+     * Returns the value of a given layer.
+     * @param viewLayerType Layer for which the value questioned.
+     * @return The value of the given layer.
+     */
     public String getLayerInfo(ViewLayerType viewLayerType){
         switch (viewLayerType){
             case INFLECTIONAL_GROUP:
@@ -149,10 +179,18 @@ public class AnnotatedWord extends Word implements Serializable{
         return null;
     }
 
+    /**
+     * Returns the morphological parse layer of the word.
+     * @return The morphological parse of the word.
+     */
     public MorphologicalParse getParse() {
         return parse;
     }
 
+    /**
+     * Sets the morphological parse layer of the word.
+     * @param parseString The new morphological parse of the word in string form.
+     */
     public void setParse(String parseString){
         if (parseString != null){
             parse = new MorphologicalParse(parseString);
@@ -161,26 +199,50 @@ public class AnnotatedWord extends Word implements Serializable{
         }
     }
 
+    /**
+     * Returns the metamorphic parse layer of the word.
+     * @return The metamorphic parse of the word.
+     */
     public MetamorphicParse getMetamorphicParse() {
         return metamorphicParse;
     }
 
+    /**
+     * Sets the metamorphic parse layer of the word.
+     * @param parseString The new metamorphic parse of the word in string form.
+     */
     public void setMetamorphicParse(String parseString){
         metamorphicParse = new MetamorphicParse(parseString);
     }
 
+    /**
+     * Returns the semantic layer of the word.
+     * @return Sense id of the word.
+     */
     public String getSemantic() {
         return semantic;
     }
 
+    /**
+     * Sets the semantic layer of the word.
+     * @param semantic New sense id of the word.
+     */
     public void setSemantic(String semantic){
         this.semantic = semantic;
     }
 
+    /**
+     * Returns the named entity layer of the word.
+     * @return Named entity tag of the word.
+     */
     public NamedEntityType getNamedEntityType() {
         return namedEntityType;
     }
 
+    /**
+     * Sets the named entity layer of the word.
+     * @param namedEntity New named entity tag of the word.
+     */
     public void setNamedEntityType(String namedEntity){
         if (namedEntity != null){
             namedEntityType = NamedEntityType.getNamedEntityType(namedEntity);
@@ -189,10 +251,18 @@ public class AnnotatedWord extends Word implements Serializable{
         }
     }
 
+    /**
+     * Returns the semantic role layer of the word.
+     * @return Semantic role tag of the word.
+     */
     public Argument getArgument() {
         return argument;
     }
 
+    /**
+     * Sets the semantic role layer of the word.
+     * @param argument New semantic role tag of the word.
+     */
     public void setArgument(String argument){
         if (argument != null){
             this.argument = new Argument(argument);
@@ -201,10 +271,18 @@ public class AnnotatedWord extends Word implements Serializable{
         }
     }
 
+    /**
+     * Returns the shallow parse layer of the word.
+     * @return Shallow parse tag of the word.
+     */
     public String getShallowParse(){
         return shallowParse;
     }
 
+    /**
+     * Sets the shallow parse layer of the word.
+     * @param parse New shallow parse tag of the word.
+     */
     public void setShallowParse(String parse){
         shallowParse = parse;
     }
@@ -218,18 +296,34 @@ public class AnnotatedWord extends Word implements Serializable{
         }
     }
 
+    /**
+     * Accessor method for the area attribute.
+     * @return Area attribute.
+     */
     public Rectangle getArea(){
         return area;
     }
 
+    /**
+     * Mutator method for the area attribute.
+     * @param area New area attribute.
+     */
     public void setArea(Rectangle area){
         this.area = area;
     }
 
+    /**
+     * Accessor method for the selected attribute.
+     * @return Selected attribute value.
+     */
     public boolean isSelected(){
         return selected;
     }
 
+    /**
+     * Mutator method for the selected attribute.
+     * @param selected New value for the selected attribute.
+     */
     public void setSelected(boolean selected){
         this.selected = selected;
     }

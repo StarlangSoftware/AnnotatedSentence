@@ -17,6 +17,9 @@ import java.util.Scanner;
 public class AnnotatedSentence extends Sentence{
     private File file;
 
+    /**
+     * Empty constructor for the {@link AnnotatedSentence} class.
+     */
     public AnnotatedSentence(){
     }
 
@@ -53,6 +56,11 @@ public class AnnotatedSentence extends Sentence{
         }
     }
 
+    /**
+     * The method checks all words in the sentence and returns true if at least one of the words is annotated with
+     * PREDICATE tag.
+     * @return True if at least one of the words is annotated with PREDICATE tag; false otherwise.
+     */
     public boolean containsPredicate(){
         for (Word word : words){
             AnnotatedWord annotatedWord = (AnnotatedWord) word;
@@ -75,6 +83,14 @@ public class AnnotatedSentence extends Sentence{
         return modified;
     }
 
+    /**
+     * The method returns all possible words, which is
+     * 1. Verb
+     * 2. Its semantic tag is assigned
+     * 3. A frameset exists for that semantic tag
+     * @param framesetList Frameset list that contains all frames for Turkish
+     * @return An array of words, which are verbs, semantic tags assigned, and framesetlist assigned for that tag.
+     */
     public ArrayList<AnnotatedWord> predicateCandidates(FramesetList framesetList){
         ArrayList<AnnotatedWord> candidateList = new ArrayList<>();
         for (Word word : words){
@@ -95,6 +111,11 @@ public class AnnotatedSentence extends Sentence{
         return candidateList;
     }
 
+    /**
+     * Returns the i'th predicate in the sentence.
+     * @param index Predicate index
+     * @return The predicate with index index in the sentence.
+     */
     public String getPredicate(int index){
         int count1  = 0, count2 = 0;
         String data = "";
@@ -127,18 +148,40 @@ public class AnnotatedSentence extends Sentence{
         return data;
     }
 
+    /**
+     * Returns file name of the sentence
+     * @return File name of the sentence
+     */
     public String getFileName(){
         return file.getName();
     }
 
+    /**
+     * Removes the i'th word from the sentence
+     * @param index Word index
+     */
     public void removeWord(int index){
         words.remove(index);
     }
 
+
+    /**
+     * Saves the current sentence.
+     */
     public void save(){
         writeToFile(file);
     }
 
+    /**
+     * Creates a list of literal candidates for the i'th word in the sentence. It combines the results of
+     * 1. All possible root forms of the i'th word in the sentence
+     * 2. All possible 2-word expressions containing the i'th word in the sentence
+     * 3. All possible 3-word expressions containing the i'th word in the sentence
+     * @param wordNet Turkish wordnet
+     * @param fsm Turkish morphological analyzer
+     * @param wordIndex Word index
+     * @return List of literal candidates containing all possible root forms and multiword expressions.
+     */
     public ArrayList<Literal> constructLiterals(WordNet wordNet, FsmMorphologicalAnalyzer fsm, int wordIndex){
         AnnotatedWord word = (AnnotatedWord) getWord(wordIndex);
         ArrayList<Literal> possibleLiterals = new ArrayList<>();
@@ -163,7 +206,17 @@ public class AnnotatedSentence extends Sentence{
         return possibleLiterals;
     }
 
-    public ArrayList<SynSet> constructSynSets(WordNet wordNet,FsmMorphologicalAnalyzer fsm, int wordIndex) throws ParseRequiredException {
+    /**
+     * Creates a list of synset candidates for the i'th word in the sentence. It combines the results of
+     * 1. All possible synsets containing the i'th word in the sentence
+     * 2. All possible synsets containing 2-word expressions, which contains the i'th word in the sentence
+     * 3. All possible synsets containing 3-word expressions, which contains the i'th word in the sentence
+     * @param wordNet Turkish wordnet
+     * @param fsm Turkish morphological analyzer
+     * @param wordIndex Word index
+     * @return List of synset candidates containing all possible root forms and multiword expressions.
+     */
+    public ArrayList<SynSet> constructSynSets(WordNet wordNet, FsmMorphologicalAnalyzer fsm, int wordIndex) throws ParseRequiredException {
         AnnotatedWord word = (AnnotatedWord) getWord(wordIndex);
         ArrayList<SynSet> possibleSynSets = new ArrayList<>();
         MorphologicalParse morphologicalParse = word.getParse();

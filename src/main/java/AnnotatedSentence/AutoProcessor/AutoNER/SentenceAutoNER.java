@@ -19,37 +19,37 @@ import AnnotatedSentence.AnnotatedWord;
 public abstract class SentenceAutoNER extends AutoNER{
 
     /**
-     * The written method should detect PERSON named entities. PERSON corresponds to people or
+     * The method should detect PERSON named entities. PERSON corresponds to people or
      * characters. Example: {\bf Atatürk} yurdu düşmanlardan kurtardı.
      * @param sentence The sentence for which PERSON named entities checked.
      */
     protected abstract void autoDetectPerson(AnnotatedSentence sentence);
 
     /**
-     * The written method should detect LOCATION named entities. LOCATION corresponds to regions,
+     * The method should detect LOCATION named entities. LOCATION corresponds to regions,
      * mountains, seas. Example: Ülkemizin başkenti {\bf Ankara'dır}.
      * @param sentence The sentence for which LOCATION named entities checked.
      */
     protected abstract void autoDetectLocation(AnnotatedSentence sentence);
 
     /**
-     * The written method should detect ORGANIZATION named entities. ORGANIZATION corresponds to companies,
+     * The method should detect ORGANIZATION named entities. ORGANIZATION corresponds to companies,
      * teams etc. Example:  {\bf IMKB} günü 60 puan yükselerek kapattı.
      * @param sentence The sentence for which ORGANIZATION named entities checked.
      */
     protected abstract void autoDetectOrganization(AnnotatedSentence sentence);
 
     /**
-     * The written method should detect MONEY named entities. MONEY corresponds to monetarial
+     * The method should detect MONEY named entities. MONEY corresponds to monetarial
      * expressions. Example: Geçen gün {\bf 3000 TL} kazandık.
      * @param sentence The sentence for which MONEY named entities checked.
      */
     protected abstract void autoDetectMoney(AnnotatedSentence sentence);
 
     /**
-     * The written method should detect TIME named entities. TIME corresponds to time
+     * The method should detect TIME named entities. TIME corresponds to time
      * expressions. Example: {\bf Cuma günü} tatil yapacağım.
-     * @param sentence The sentence for which MONEY named entities checked.
+     * @param sentence The sentence for which TIME named entities checked.
      */
     protected abstract void autoDetectTime(AnnotatedSentence sentence);
 
