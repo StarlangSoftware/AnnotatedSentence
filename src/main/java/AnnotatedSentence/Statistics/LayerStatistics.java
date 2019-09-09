@@ -8,12 +8,19 @@ import java.util.Map;
 public class LayerStatistics {
     protected CounterHashMap<String> counts;
 
+    /**
+     * Prints top N statistics
+     * @param N Parameter N
+     */
     public void printTopN(int N){
         for (Map.Entry<String, Integer> entry: counts.topN(N)){
             System.out.println(String.format("%20s\t%10d", entry.getKey(), entry.getValue()));
         }
     }
 
+    /**
+     * Print all occurrence statistics
+     */
     public void printStatistics(){
         double sum = counts.sumOfCounts();
         for (String key : counts.keySet()){
