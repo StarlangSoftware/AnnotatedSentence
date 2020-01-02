@@ -282,11 +282,10 @@ public class TestAnnotatedCorpus {
 
     public static void main(String[] args){
         //compareAnnotations();
-        extractTourismRootWordStatistics();
-        AnnotatedCorpus annotatedCorpus = new AnnotatedCorpus(new File("../../Etstur/Turkish-Phrase/"));
-        FsmMorphologicalAnalyzer fsm = new FsmMorphologicalAnalyzer("../../Etstur/Program/tourism_dictionary.txt");
-        RootWordStatistics rootWordStatistics = annotatedCorpus.extractRootWordStatistics(fsm);
-        rootWordStatistics.get("etstur");
+        //extractTourismRootWordStatistics();
+        //FsmMorphologicalAnalyzer fsm = new FsmMorphologicalAnalyzer("../../Etstur/Program/tourism_dictionary.txt");
+        //RootWordStatistics rootWordStatistics = annotatedCorpus.extractRootWordStatistics(fsm);
+        //rootWordStatistics.get("etstur");
         /*try {
             annotatedCorpus.propBankAnnotationControl("output.txt", new WordNet());
         } catch (FileNotFoundException e) {
