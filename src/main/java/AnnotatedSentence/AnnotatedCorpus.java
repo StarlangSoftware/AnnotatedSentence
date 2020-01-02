@@ -111,14 +111,11 @@ public class AnnotatedCorpus extends Corpus{
     public void checkMorphologicalAnalysis(){
         for (int i = 0; i < sentenceCount(); i++){
             AnnotatedSentence sentence = (AnnotatedSentence) getSentence(i);
-            int count = 0;
             for (int j = 0; j < sentence.wordCount(); j++){
                 AnnotatedWord word = (AnnotatedWord) sentence.getWord(j);
                 if (word.getParse() == null){
-                    count++;
-                    if (count == 1){
-                        System.out.println("Morphological Analysis does not exist for sentence " + sentence.getFileName());
-                    }
+                    System.out.println("Morphological Analysis does not exist for sentence " + sentence.getFileName());
+                    break;
                 }
             }
         }
@@ -130,14 +127,11 @@ public class AnnotatedCorpus extends Corpus{
     public void checkNer(){
         for (int i = 0; i < sentenceCount(); i++){
             AnnotatedSentence sentence = (AnnotatedSentence) getSentence(i);
-            int count = 0;
             for (int j = 0; j < sentence.wordCount(); j++){
                 AnnotatedWord word = (AnnotatedWord) sentence.getWord(j);
                 if (word.getNamedEntityType() == null){
-                    count++;
-                    if (count == 1){
-                        System.out.println("NER annotation does not exist for sentence " + sentence.getFileName());
-                    }
+                    System.out.println("NER annotation does not exist for sentence " + sentence.getFileName());
+                    break;
                 }
             }
         }
@@ -149,14 +143,10 @@ public class AnnotatedCorpus extends Corpus{
     public void checkShallowParse(){
         for (int i = 0; i < sentenceCount(); i++){
             AnnotatedSentence sentence = (AnnotatedSentence) getSentence(i);
-            int count = 0;
             for (int j = 0; j < sentence.wordCount(); j++){
                 AnnotatedWord word = (AnnotatedWord) sentence.getWord(j);
                 if (word.getShallowParse() == null){
-                    count++;
-                    if (count == 1){
-                        System.out.println("Shallow Parse annotation does not exist for sentence " + sentence.getFileName());
-                    }
+                    System.out.println("Shallow Parse annotation does not exist for sentence " + sentence.getFileName());
                 }
             }
         }
@@ -166,22 +156,12 @@ public class AnnotatedCorpus extends Corpus{
      * The method traverses all words in all sentences and prints the words which do not have sense annotation.
      */
     public void checkSemantic(){
-        FsmMorphologicalAnalyzer fsm = new FsmMorphologicalAnalyzer();
-        WordNet turkish = new WordNet();
         for (int i = 0; i < sentenceCount(); i++){
             AnnotatedSentence sentence = (AnnotatedSentence) getSentence(i);
             for (int j = 0; j < sentence.wordCount(); j++){
                 AnnotatedWord word = (AnnotatedWord) sentence.getWord(j);
                 if (word.getSemantic() == null){
-                    System.out.println("File:" + sentence.getFileName() + " Semantic annotation does not exist for word " + word.getName());
-                } else {
-                    try {
-                        ArrayList<SynSet> synSets = sentence.constructSynSets(turkish, fsm, j);
-                        if (turkish.getSynSetWithId(word.getSemantic()) == null || !synSets.contains(turkish.getSynSetWithId(word.getSemantic()))){
-                            System.out.println("File:" + sentence.getFileName() + " Semantic annotation is not correct for word " + word.getName());
-                        }
-                    } catch (ParseRequiredException parseRequired) {
-                    }
+                    System.out.println("Semantic annotation does not exist for sentence " + sentence.getFileName());
                 }
             }
         }
