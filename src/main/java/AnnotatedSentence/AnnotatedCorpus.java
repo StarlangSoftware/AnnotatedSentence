@@ -147,6 +147,7 @@ public class AnnotatedCorpus extends Corpus{
                 AnnotatedWord word = (AnnotatedWord) sentence.getWord(j);
                 if (word.getShallowParse() == null){
                     System.out.println("Shallow Parse annotation does not exist for sentence " + sentence.getFileName());
+                    break;
                 }
             }
         }
@@ -162,6 +163,7 @@ public class AnnotatedCorpus extends Corpus{
                 AnnotatedWord word = (AnnotatedWord) sentence.getWord(j);
                 if (word.getSemantic() == null){
                     System.out.println("Semantic annotation does not exist for sentence " + sentence.getFileName());
+                    break;
                 }
             }
         }
