@@ -1,6 +1,7 @@
 package AnnotatedSentence;
 
 import Corpus.WordFormat;
+import DependencyParser.UniversalDependencyRelation;
 import Dictionary.Word;
 import MorphologicalAnalysis.FsmParse;
 import MorphologicalAnalysis.MetamorphicParse;
@@ -20,6 +21,7 @@ public class AnnotatedWord extends Word implements Serializable{
     private String semantic;
     private NamedEntityType namedEntityType;
     private Argument argument;
+    private UniversalDependencyRelation universalDependency;
     private String shallowParse;
     private Rectangle area;
     private boolean selected = false;
@@ -60,6 +62,11 @@ public class AnnotatedWord extends Word implements Serializable{
                                 } else {
                                     if (layerType.equalsIgnoreCase("shallowParse")){
                                         shallowParse = layerValue;
+                                    } else {
+                                        if (layerType.equalsIgnoreCase("universalDependency")){
+                                            String[] values = layerValue.split("\\$");
+                                            universalDependency = new UniversalDependencyRelation(Integer.parseInt(values[0]), values[1]);
+                                        }
                                     }
                                 }
                             }
@@ -94,6 +101,9 @@ public class AnnotatedWord extends Word implements Serializable{
         }
         if (shallowParse != null){
             result = result + "{shallowParse=" + shallowParse + "}";
+        }
+        if (universalDependency != null){
+            result = result + "{universalDependency=" + universalDependency.to() + "$" + universalDependency.toString() + "}";
         }
         return result;
     }
@@ -285,6 +295,23 @@ public class AnnotatedWord extends Word implements Serializable{
      */
     public void setShallowParse(String parse){
         shallowParse = parse;
+    }
+
+    /**
+     * Returns the universal dependency layer of the word.
+     * @return Universal dependency relation of the word.
+     */
+    public UniversalDependencyRelation getUniversalDependency(){
+        return universalDependency;
+    }
+
+    /**
+     * Sets the universal dependency layer of the word.
+     * @param to Word related to.
+     * @param dependencyType type of dependency the word is related to.
+     */
+    public void setUniversalDependency(int to, String dependencyType){
+        universalDependency = new UniversalDependencyRelation(to, dependencyType);
     }
 
     public String getFormattedString(WordFormat format) throws LayerNotExistsException {

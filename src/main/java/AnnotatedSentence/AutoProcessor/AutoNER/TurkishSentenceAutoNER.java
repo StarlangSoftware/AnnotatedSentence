@@ -27,7 +27,7 @@ public class TurkishSentenceAutoNER extends SentenceAutoNER{
     }
 
     /**
-     * The method checks the LOCATION gazettteer, and if the word exists in the gazetteer, it assigns the LOCATION tag.
+     * The method checks the LOCATION gazetteer, and if the word exists in the gazetteer, it assigns the LOCATION tag.
      * @param sentence The sentence for which LOCATION named entities checked.
      */
     protected void autoDetectLocation(AnnotatedSentence sentence) {
