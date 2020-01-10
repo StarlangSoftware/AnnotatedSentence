@@ -121,6 +121,7 @@ public class AnnotatedWord extends Word implements Serializable{
         semantic = null;
         argument = new Argument("NONE", null);
         shallowParse = null;
+        universalDependency = null;
     }
 
     /**
@@ -136,6 +137,7 @@ public class AnnotatedWord extends Word implements Serializable{
         metamorphicParse = null;
         semantic = null;
         shallowParse = null;
+        universalDependency = null;
     }
 
     /**
@@ -151,6 +153,7 @@ public class AnnotatedWord extends Word implements Serializable{
         setMetamorphicParse(parse.withList());
         semantic = null;
         shallowParse = null;
+        universalDependency = null;
     }
 
     /**
