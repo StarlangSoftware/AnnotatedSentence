@@ -57,6 +57,31 @@ public class AnnotatedSentence extends Sentence{
     }
 
     /**
+     * The method constructs all possible shallow parse groups of a sentence.
+     * @return Shallow parse groups of a sentence.
+     */
+    public ArrayList<AnnotatedSentence> getShallowParseGroups(){
+        ArrayList<AnnotatedSentence> shallowParseGroups = new ArrayList<>();
+        AnnotatedWord previousWord = null;
+        AnnotatedSentence current = null;
+        for (Word word : words){
+            AnnotatedWord annotatedWord = (AnnotatedWord) word;
+            if (previousWord == null){
+                current = new AnnotatedSentence();
+            } else {
+                if (previousWord.getShallowParse() != null && !previousWord.getShallowParse().equals(annotatedWord.getShallowParse())){
+                    shallowParseGroups.add(current);
+                    current = new AnnotatedSentence();
+                }
+            }
+            current.addWord(word);
+            previousWord = annotatedWord;
+        }
+        shallowParseGroups.add(current);
+        return shallowParseGroups;
+    }
+
+    /**
      * The method checks all words in the sentence and returns true if at least one of the words is annotated with
      * PREDICATE tag.
      * @return True if at least one of the words is annotated with PREDICATE tag; false otherwise.
