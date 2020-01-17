@@ -60,21 +60,21 @@ public class AnnotatedSentence extends Sentence{
      * The method constructs all possible shallow parse groups of a sentence.
      * @return Shallow parse groups of a sentence.
      */
-    public ArrayList<AnnotatedSentence> getShallowParseGroups(){
-        ArrayList<AnnotatedSentence> shallowParseGroups = new ArrayList<>();
+    public ArrayList<AnnotatedPhrase> getShallowParseGroups(){
+        ArrayList<AnnotatedPhrase> shallowParseGroups = new ArrayList<>();
         AnnotatedWord previousWord = null;
-        AnnotatedSentence current = null;
-        for (Word word : words){
-            AnnotatedWord annotatedWord = (AnnotatedWord) word;
+        AnnotatedPhrase current = null;
+        for (int i = 0; i < wordCount(); i++){
+            AnnotatedWord annotatedWord = (AnnotatedWord) getWord(i);
             if (previousWord == null){
-                current = new AnnotatedSentence();
+                current = new AnnotatedPhrase(i, annotatedWord.getShallowParse());
             } else {
                 if (previousWord.getShallowParse() != null && !previousWord.getShallowParse().equals(annotatedWord.getShallowParse())){
                     shallowParseGroups.add(current);
-                    current = new AnnotatedSentence();
+                    current = new AnnotatedPhrase(i, annotatedWord.getShallowParse());
                 }
             }
-            current.addWord(word);
+            current.addWord(annotatedWord);
             previousWord = annotatedWord;
         }
         shallowParseGroups.add(current);
