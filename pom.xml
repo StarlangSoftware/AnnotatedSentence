@@ -6,7 +6,7 @@
 
     <groupId>NlpToolkit</groupId>
     <artifactId>AnnotatedSentence</artifactId>
-    <version>1.0.4</version>
+    <version>1.0.5</version>
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
@@ -61,7 +61,7 @@
         <dependency>
             <groupId>NlpToolkit</groupId>
             <artifactId>DependencyParser</artifactId>
-            <version>1.0.0</version>
+            <version>1.0.2</version>
         </dependency>
     </dependencies>
 
