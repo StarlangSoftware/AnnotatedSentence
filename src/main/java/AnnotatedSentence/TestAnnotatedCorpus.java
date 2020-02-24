@@ -248,7 +248,13 @@ public class TestAnnotatedCorpus {
     public static void extractTourismRootWordStatistics(){
         AnnotatedCorpus annotatedCorpus = new AnnotatedCorpus(new File("../../Etstur/Turkish-Phrase/"));
         RootWordStatistics rootWordStatistics = annotatedCorpus.extractRootWordStatistics(new FsmMorphologicalAnalyzer("../../Etstur/Program/tourism_dictionary.txt"));
-        rootWordStatistics.saveStatistics("tourism_statistics.bin");
+        rootWordStatistics.saveStatistics("tourism_statistics.txt");
+    }
+
+    public static void extractPenntreebankRootWordStatistics(){
+        AnnotatedCorpus annotatedCorpus = new AnnotatedCorpus(new File("../../Penn-Treebank/Turkish-Phrase/"));
+        RootWordStatistics rootWordStatistics = annotatedCorpus.extractRootWordStatistics(new FsmMorphologicalAnalyzer());
+        rootWordStatistics.saveStatistics("penntreebank_statistics.txt");
     }
 
     public static void extractDictionary(String pathName, String outputFileName){
@@ -281,6 +287,16 @@ public class TestAnnotatedCorpus {
     }
 
     public static void main(String[] args){
+        extractTourismRootWordStatistics();
+        /*AnnotatedCorpus corpus = new AnnotatedCorpus(new File("../../EtsTur/Turkish-Phrase"));
+        for (int i = 0; i < corpus.sentenceCount(); i++){
+            AnnotatedSentence sentence = ((AnnotatedSentence) corpus.getSentence(i));
+            System.out.println(sentence.getFileName());
+            ArrayList<AnnotatedPhrase> groups = sentence.getShallowParseGroups();
+            for (int j = 0; j < groups.size(); j++){
+                System.out.println(((AnnotatedWord)groups.get(j).getWord(0)).getShallowParse() + "->" + groups.get(j).toWords());
+            }
+        }*/
         //compareAnnotations();
         //extractTourismRootWordStatistics();
         //FsmMorphologicalAnalyzer fsm = new FsmMorphologicalAnalyzer("../../Etstur/Program/tourism_dictionary.txt");

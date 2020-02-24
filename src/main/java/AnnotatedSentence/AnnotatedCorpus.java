@@ -53,8 +53,10 @@ public class AnnotatedCorpus extends Corpus{
         File[] listOfFiles = folder.listFiles();
         Arrays.sort(listOfFiles);
         for (File file:listOfFiles){
-            AnnotatedSentence sentence = new AnnotatedSentence(file);
-            sentences.add(sentence);
+            if (!file.isHidden()){
+                AnnotatedSentence sentence = new AnnotatedSentence(file);
+                sentences.add(sentence);
+            }
         }
     }
 
@@ -237,16 +239,6 @@ public class AnnotatedCorpus extends Corpus{
                     }
                 }
             }
-        }
-        for (String s : rootWordFiles.keySet()){
-            System.out.print(s);
-            for (String s2 : statistics.get(s).keySet()){
-                System.out.print("\t" + s2 + ":" + statistics.get(s).get(s2));
-            }
-            for (String s2 : rootWordFiles.get(s)){
-                System.out.print("\t" + s2);
-            }
-            System.out.println();
         }
         return statistics;
     }
