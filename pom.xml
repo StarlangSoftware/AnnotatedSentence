@@ -6,7 +6,7 @@
 
     <groupId>NlpToolkit</groupId>
     <artifactId>AnnotatedSentence</artifactId>
-    <version>1.0.7</version>
+    <version>1.0.8</version>
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
@@ -36,12 +36,12 @@
         <dependency>
             <groupId>NlpToolkit</groupId>
             <artifactId>PropBank</artifactId>
-            <version>1.0.5</version>
+            <version>1.0.6</version>
         </dependency>
         <dependency>
             <groupId>NlpToolkit</groupId>
             <artifactId>WordNet</artifactId>
-            <version>1.0.24</version>
+            <version>1.0.25</version>
         </dependency>
         <dependency>
             <groupId>NlpToolkit</groupId>
@@ -51,7 +51,7 @@
         <dependency>
             <groupId>NlpToolkit</groupId>
             <artifactId>MorphologicalDisambiguation</artifactId>
-            <version>1.0.8</version>
+            <version>1.0.9</version>
         </dependency>
         <dependency>
             <groupId>NlpToolkit</groupId>
