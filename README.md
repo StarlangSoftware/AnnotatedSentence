@@ -15,6 +15,8 @@ As is self-explanatory, 'turkish' tag shows the original Turkish word; 'analysis
 
 For Developers
 ============
+You can also see either [Python](https://github.com/olcaytaner/AnnotatedSentence-Py) 
+or [C++](https://github.com/olcaytaner/AnnotatedSentence-CPP) repository.
 
 ## Requirements
 
