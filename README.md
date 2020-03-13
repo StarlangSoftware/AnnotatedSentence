@@ -91,19 +91,116 @@ Use below line to generate jar file:
 
      mvn install
 
-
-
-------------------------------------------------
-
-AnnotatedSentence
-============
-+ [Maven Usage](#maven-usage)
-
-
-### Maven Usage
+## Maven Usage
 
 	<dependency>
 		<groupId>NlpToolkit</groupId>
 		<artifactId>AnnotatedSentence</artifactId>
 		<version>1.0.8</version>
 	</dependency>
+
+------------------------------------------------
+
+Detailed Description
+============
++ [AnnotatedCorpus](#annotatedcorpus)
++ [AnnotatedSentence](#annotatedsentence)
++ [AnnotatedWord](#annotatedword)
++ [Automatic Annotation](#automatic-annotation)
+
+
+## AnnotatedCorpus
+
+İşaretlenmiş corpusu yüklemek için
+
+	AnnotatedCorpus(File folder, String pattern)
+	a = AnnotatedCorpus(new File("/Turkish-Phrase"), ".train")
+
+	AnnotatedCorpus(File folder)
+	a = AnnotatedCorpus(new File("/Turkish-Phrase"))
+
+Bir AnnotatedCorpus'daki tüm cümlelere erişmek için
+
+	for (int i = 0; i < a.sentenceCount(); i++){
+		AnnotatedSentence annotatedSentence = (AnnotatedSentence) a.getSentence(i);
+		....
+	}
+
+## AnnotatedSentence
+
+Bir AnnotatedSentence'daki tüm kelimelere ulaşmak için de
+
+	for (int j = 0; j < annotatedSentence.wordCount(); j++){
+		AnnotatedWord annotatedWord = (AnnotatedWord) annotatedSentence.getWord(j);
+		...
+	}
+
+## AnnotatedWord
+
+İşaretlenmiş bir kelime AnnotatedWord sınıfında tutulur. İşaretlenmiş kelimenin morfolojik
+analizi
+
+	MorphologicalParse getParse()
+
+İşaretlenmiş kelimenin anlamı
+
+	String getSemantic()
+
+İşaretlenmiş kelimenin NER anotasyonu
+
+	NamedEntityType getNamedEntityType()
+
+İşaretlenmiş kelimenin özne, dolaylı tümleç, vs. shallow parse tagı
+
+	String getShallowParse()
+
+İşaretlenmiş kelimenin dependency anotasyonu
+
+	UniversalDependencyRelation getUniversalDependency()
+	
+## Automatic Annotation
+
+Bir cümlenin Predicatelarını otomatik olarak belirlemek için
+
+	TurkishSentenceAutoPredicate(FramesetList framesetList)
+
+sınıfı kullanılır. Örneğin,
+
+	a = TurkishSentenceAutoPredicate(new FramesetList());
+	a.autoPredicate(sentence);
+
+ile sentence cümlesinin predicateları otomatik olarak işaretlenir.
+
+Bir cümlenin argümanlarını otomatik olarak belirlemek için
+
+	TurkishSentenceAutoArgument()
+
+sınıfı kullanılır. Örneğin,
+
+	a = TurkishSentenceAutoArgument();
+	a.autoArgument(sentence);
+
+ile sentence cümlesinin argümanları otomatik olarak işaretlenir.
+
+Bir cümlede otomatik olarak morfolojik belirsizlik gidermek için
+
+	TurkishSentenceAutoDisambiguator(RootWordStatistics rootWordStatistics)
+	TurkishSentenceAutoDisambiguator(FsmMorphologicalAnalyzer fsm, RootWordStatistics rootWordStatistics)
+								  
+sınıfı kullanılır. Örneğin,
+
+	a = TurkishSentenceAutoDisambiguator(new RootWordStatistics());
+	a.autoDisambiguate(sentence);
+
+ile sentence cümlesinin morfolojik belirsizlik gidermesi otomatik olarak yapılır.
+
+Bür cümlede adlandırılmış varlık tanıma yapmak için
+
+	TurkishSentenceAutoNER()
+
+sınıfı kullanılır. Örneğin,
+
+	a = TurkishSentenceAutoNER();
+	a.autoNER(sentence);
+
+ile sentence cümlesinde varlık tanıma otomatik olarak yapılır.
