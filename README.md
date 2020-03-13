@@ -1,5 +1,7 @@
 # AnnotatedSentence
 
+This resource allows for matching of Turkish words or expressions with their corresponding entries within the Turkish dictionary and the Turkish PropBank, morphological analysis, named entity recognition and shallow parsing.
+
 ## Data Format
 
 The structure of a sample annotated word is as follows:
@@ -100,58 +102,8 @@ AnnotatedSentence
 
 ### Maven Usage
 
-    <groupId>NlpToolkit</groupId>
-    <artifactId>AnnotatedSentence</artifactId>
-    <version>1.0.2</version>
-    <properties>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
-    </properties>
-    <repositories>
-        <repository>
-            <id>NlpToolkit</id>
-            <url>http://haydut.isikun.edu.tr:8081/artifactory/NlpToolkit</url>
-        </repository>
-    </repositories>
-    <dependencies>
-        <dependency>
-            <groupId>NlpToolkit</groupId>
-            <artifactId>Corpus</artifactId>
-            <version>1.0.0</version>
-        </dependency>
-        <dependency>
-            <groupId>NlpToolkit</groupId>
-            <artifactId>Dictionary</artifactId>
-            <version>1.0.3</version>
-        </dependency>
-        <dependency>
-            <groupId>NlpToolkit</groupId>
-            <artifactId>MorphologicalAnalysis</artifactId>
-            <version>1.0.3</version>
-        </dependency>
-        <dependency>
-            <groupId>NlpToolkit</groupId>
-            <artifactId>PropBank</artifactId>
-            <version>1.0.2</version>
-        </dependency>
-        <dependency>
-            <groupId>NlpToolkit</groupId>
-            <artifactId>WordNet</artifactId>
-            <version>1.0.2</version>
-        </dependency>
-        <dependency>
-            <groupId>NlpToolkit</groupId>
-            <artifactId>NamedEntityRecognition</artifactId>
-            <version>1.0.1</version>
-        </dependency>
-        <dependency>
-            <groupId>NlpToolkit</groupId>
-            <artifactId>MorphologicalDisambiguation</artifactId>
-            <version>1.0.2</version>
-        </dependency>
-        <dependency>
-            <groupId>NlpToolkit</groupId>
-            <artifactId>DataStructure</artifactId>
-            <version>1.0.0</version>
-        </dependency>
-    </dependencies>
+	<dependency>
+		<groupId>NlpToolkit</groupId>
+		<artifactId>AnnotatedSentence</artifactId>
+		<version>1.0.8</version>
+	</dependency>
