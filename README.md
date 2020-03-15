@@ -194,7 +194,7 @@ sınıfı kullanılır. Örneğin,
 
 ile sentence cümlesinin morfolojik belirsizlik gidermesi otomatik olarak yapılır.
 
-Bür cümlede adlandırılmış varlık tanıma yapmak için
+Bir cümlede adlandırılmış varlık tanıma yapmak için
 
 	TurkishSentenceAutoNER()
 
@@ -204,3 +204,14 @@ sınıfı kullanılır. Örneğin,
 	a.autoNER(sentence);
 
 ile sentence cümlesinde varlık tanıma otomatik olarak yapılır.
+
+Bir cümlede anlamsal işaretleme için
+
+	TurkishSentenceAutoSemantic()
+
+sınıfı kullanılır. Örneğin,
+
+	a = TurkishSentenceAutoSemantic();
+	a.autoSemantic(sentence);
+
+ile sentence cümlesinde anlamsal işaretleme otomatik olarak yapılır.
