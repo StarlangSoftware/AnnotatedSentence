@@ -215,3 +215,38 @@ sınıfı kullanılır. Örneğin,
 	a.autoSemantic(sentence);
 
 ile sentence cümlesinde anlamsal işaretleme otomatik olarak yapılır.
+
+## Cite
+If you use this resource on your research, please cite the following paper: 
+
+```
+@INPROCEEDINGS{yildiz18, 
+	author={O. T. {Yıldız} and K. {Ak} and G. {Ercan} and O. {Topsakal} and C. {Asmazoğlu}}, 
+	booktitle={2018 2nd International Conference on Natural Language and Speech Processing (ICNLSP)}, 
+	title={A multilayer annotated corpus for Turkish}, 
+	year={2018}, 
+	pages={1-6}
+}
+
+@article{acikgoz,
+	title={All-words word sense disambiguation for {T}urkish},
+	author={O. Açıkg{\"o}z and A. T. G{\"u}rkan and B. Ertopçu and O. Topsakal and B. {\"O}zenç and A. B. Kanburoğlu and {\.{I}}. Çam and B. Avar and G. Ercan and O. T. Y{\i}ld{\i}z},
+	journal={2017 International Conference on Computer Science and Engineering (UBMK)},
+	year={2017},
+	pages={490-495}
+}
+
+@inproceedings{ertopcu17,  
+	author={B. {Ertopçu} and A. B. {Kanburoğlu} and O. {Topsakal} and O. {Açıkgöz} and A. T. {Gürkan} and B. {Özenç} and İ. {Çam} and B. {Avar} and G. {Ercan} and O. T. {Yıldız}},  
+	booktitle={2017 International Conference on Computer Science and Engineering (UBMK)},  title={A new approach for named entity recognition},   
+	year={2017},  
+	pages={474-479}
+}
+
+@INPROCEEDINGS{topsakal17,
+	author={O. {Topsakal} and O. {Açıkgöz} and A. T. {Gürkan} and A. B. {Kanburoğlu} and B. {Ertopçu} and B. {Özenç} and İ. {Çam} and B. {Avar} and G. {Ercan} and O. T. {Yıldız}}, 
+	booktitle={2017 International Conference on Computer Science and Engineering (UBMK)}, 
+	title={Shallow parsing in Turkish}, 
+	year={2017}, 
+	pages={480-485}
+}
