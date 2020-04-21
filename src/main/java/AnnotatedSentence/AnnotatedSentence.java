@@ -201,7 +201,7 @@ public class AnnotatedSentence extends Sentence{
         if (words.size() > 0) {
             annotatedWord = (AnnotatedWord) words.get(0);
             if (annotatedWord.getParse() != null){
-                result = ((AnnotatedWord) words.get(0)).getParse().getWord().getName();
+                result = annotatedWord.getParse().getWord().getName();
             } else {
                 result = words.get(0).getName();
             }
