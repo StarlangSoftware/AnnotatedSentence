@@ -196,7 +196,7 @@ public class AnnotatedSentence extends Sentence{
      * @return String result which has all the stems of each item in words {@link ArrayList}.
      */
     public String toStems() {
-        String result = "";
+        String result;
         AnnotatedWord annotatedWord;
         if (words.size() > 0) {
             annotatedWord = (AnnotatedWord) words.get(0);
