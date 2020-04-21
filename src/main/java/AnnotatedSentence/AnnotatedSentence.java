@@ -189,6 +189,35 @@ public class AnnotatedSentence extends Sentence{
         words.remove(index);
     }
 
+    /**
+     * The toStems method returns an accumulated string of each word's stems in words {@link ArrayList}.
+     * If the parse of the word does not exist, the method adds the surfaceform to the resulting string.
+     *
+     * @return String result which has all the stems of each item in words {@link ArrayList}.
+     */
+    public String toStems() {
+        String result = "";
+        AnnotatedWord annotatedWord;
+        if (words.size() > 0) {
+            annotatedWord = (AnnotatedWord) words.get(0);
+            if (annotatedWord.getParse() != null){
+                result = ((AnnotatedWord) words.get(0)).getParse().getWord().getName();
+            } else {
+                result = words.get(0).getName();
+            }
+            for (int i = 1; i < words.size(); i++) {
+                annotatedWord = (AnnotatedWord) words.get(i);
+                if (annotatedWord.getParse() != null){
+                    result = result + " " + annotatedWord.getParse().getWord().getName();
+                } else {
+                    result = result + " " + annotatedWord.getName();
+                }
+            }
+            return result;
+        } else {
+            return "";
+        }
+    }
 
     /**
      * Saves the current sentence.

@@ -287,7 +287,6 @@ public class TestAnnotatedCorpus {
     }
 
     public static void main(String[] args){
-        extractTourismRootWordStatistics();
         /*AnnotatedCorpus corpus = new AnnotatedCorpus(new File("../../EtsTur/Turkish-Phrase"));
         for (int i = 0; i < corpus.sentenceCount(); i++){
             AnnotatedSentence sentence = ((AnnotatedSentence) corpus.getSentence(i));
