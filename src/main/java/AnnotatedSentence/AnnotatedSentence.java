@@ -269,6 +269,7 @@ public class AnnotatedSentence extends Sentence{
      * @param fsm Turkish morphological analyzer
      * @param wordIndex Word index
      * @return List of synset candidates containing all possible root forms and multiword expressions.
+     * @throws ParseRequiredException When parse does not exists
      */
     public ArrayList<SynSet> constructSynSets(WordNet wordNet, FsmMorphologicalAnalyzer fsm, int wordIndex) throws ParseRequiredException {
         AnnotatedWord word = (AnnotatedWord) getWord(wordIndex);

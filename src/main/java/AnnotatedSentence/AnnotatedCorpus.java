@@ -47,6 +47,7 @@ public class AnnotatedCorpus extends Corpus{
      * A constructor of {@link AnnotatedCorpus} class which reads all {@link AnnotatedSentence} files inside the given
      * folder. For each file inside that folder, the constructor creates an AnnotatedSentence and puts in inside the
      * list sentences.
+     * @param folder Folder to load annotated courpus
      */
     public AnnotatedCorpus(File folder){
         sentences = new ArrayList();
