@@ -2,6 +2,11 @@
 
 This resource allows for matching of Turkish words or expressions with their corresponding entries within the Turkish dictionary and the Turkish PropBank, morphological analysis, named entity recognition and shallow parsing.
 
+For Developers
+============
+
+You can also see [Python](https://github.com/starlangsoftware/AnnotatedSentence-Py), [C++](https://github.com/starlangsoftware/AnnotatedSentence-CPP), or [C#](https://github.com/starlangsoftware/AnnotatedSentence-CS) repository.
+
 ## Data Format
 
 The structure of a sample annotated word is as follows:
@@ -14,11 +19,6 @@ The structure of a sample annotated word is as follows:
 	{propbank=ARG0:0006410}
 
 As is self-explanatory, 'turkish' tag shows the original Turkish word; 'analysis' tag shows the correct morphological parse of that word; 'semantics' tag shows the ID of the correct sense of that word; 'namedEntity' tag shows the named entity tag of that word; 'shallowParse' tag shows the semantic role of that word; 'propbank' tag shows the semantic role of that word for the verb synset id (frame id in the frame file) which is also given in that tag.
-
-For Developers
-============
-You can also see either [Python](https://github.com/olcaytaner/AnnotatedSentence-Py) 
-or [C++](https://github.com/olcaytaner/AnnotatedSentence-CPP) repository.
 
 ## Requirements
 
