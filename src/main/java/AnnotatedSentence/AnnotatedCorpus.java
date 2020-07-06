@@ -4,11 +4,7 @@ import Corpus.Corpus;
 import DataStructure.CounterHashMap;
 import Dictionary.*;
 import MorphologicalAnalysis.*;
-import MorphologicalDisambiguation.HmmDisambiguation;
 import MorphologicalDisambiguation.RootWordStatistics;
-import PropBank.Frameset;
-import PropBank.FramesetList;
-import WordNet.*;
 
 import java.io.*;
 import java.util.ArrayList;
