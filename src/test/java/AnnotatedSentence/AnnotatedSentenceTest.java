@@ -89,7 +89,7 @@ public class AnnotatedSentenceTest {
         assertEquals(1, sentence4.predicateCandidates(framesetList).size());
         assertEquals(0, sentence5.predicateCandidates(framesetList).size());
         assertEquals(0, sentence6.predicateCandidates(framesetList).size());
-        assertEquals(0, sentence7.predicateCandidates(framesetList).size());
+        assertEquals(1, sentence7.predicateCandidates(framesetList).size());
         assertEquals(1, sentence8.predicateCandidates(framesetList).size());
         assertEquals(2, sentence9.predicateCandidates(framesetList).size());
     }
