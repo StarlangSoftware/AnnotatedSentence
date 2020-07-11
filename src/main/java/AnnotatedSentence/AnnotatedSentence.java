@@ -227,6 +227,14 @@ public class AnnotatedSentence extends Sentence{
     }
 
     /**
+     * Saves the current sentence.
+     * @param fileName Name of the output file.
+     */
+    public void save(String fileName){
+        writeToFile(new File(fileName));
+    }
+
+    /**
      * Creates a list of literal candidates for the i'th word in the sentence. It combines the results of
      * 1. All possible root forms of the i'th word in the sentence
      * 2. All possible 2-word expressions containing the i'th word in the sentence

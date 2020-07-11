@@ -74,7 +74,7 @@ public class AnnotatedSentenceTest {
         assertEquals("shearson lehman hutton ınc. dün öğle sonra kadar yeni tv reklam yaz .", sentence4.toStems());
         assertEquals("bu kez , firma hazır .", sentence5.toStems());
         assertEquals("`` diyalog sür kesinlikle temel önem haiz .", sentence6.toStems());
-        assertEquals("cuma gün bu üzerine düşün çok geç kal olun .", sentence7.toStems());
+        assertEquals("cuma gün bu üzerine düşün çok geç kal ol .", sentence7.toStems());
         assertEquals("bu hakkında önceden düşün gerek . ''", sentence8.toStems());
         assertEquals("isim göre çeşit göster birkaç kefaret fon reklam yap için devam et .", sentence9.toStems());
     }
