@@ -1,10 +1,14 @@
 package AnnotatedSentence;
 
+import DataStructure.CounterHashMap;
+import DependencyParser.UniversalDependencyType;
 import PropBank.FramesetList;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -24,6 +28,32 @@ public class AnnotatedSentenceTest {
         sentence7 = new AnnotatedSentence(new File("sentences/0007.dev"));
         sentence8 = new AnnotatedSentence(new File("sentences/0008.dev"));
         sentence9 = new AnnotatedSentence(new File("sentences/0009.dev"));
+    }
+
+    @Test
+    public void testStatistics() {
+        CounterHashMap<String> counterHashMap = new CounterHashMap<>();
+        AnnotatedCorpus annotatedCorpus = new AnnotatedCorpus(new File("../../Penn-Treebank/Turkish-Phrase/", "."));
+        for (int i = 0; i < annotatedCorpus.sentenceCount(); i++){
+            AnnotatedSentence sentence = (AnnotatedSentence) annotatedCorpus.getSentence(i);
+            for (int j = 0; j < sentence.wordCount(); j++){
+                AnnotatedWord word = (AnnotatedWord) sentence.getWord(j);
+                if (word.getUniversalDependency() != null){
+                    counterHashMap.put(word.getUniversalDependency().toString());
+                }
+            }
+        }
+        AnnotatedCorpus annotatedCorpus2 = new AnnotatedCorpus(new File("../../Penn-Treebank-20/Turkish-Phrase/", "."));
+        for (int i = 0; i < annotatedCorpus2.sentenceCount(); i++){
+            AnnotatedSentence sentence = (AnnotatedSentence) annotatedCorpus2.getSentence(i);
+            for (int j = 0; j < sentence.wordCount(); j++){
+                AnnotatedWord word = (AnnotatedWord) sentence.getWord(j);
+                if (word.getUniversalDependency() != null){
+                    counterHashMap.put(word.getUniversalDependency().toString());
+                }
+            }
+        }
+        System.out.println(counterHashMap.sumOfCounts());
     }
 
     @Test
