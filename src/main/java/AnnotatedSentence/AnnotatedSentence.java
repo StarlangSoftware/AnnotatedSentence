@@ -186,6 +186,18 @@ public class AnnotatedSentence extends Sentence{
      * @param index Word index
      */
     public void removeWord(int index){
+        for (Word value : words) {
+            AnnotatedWord word = (AnnotatedWord) value;
+            if (word.getUniversalDependency() != null) {
+                if (word.getUniversalDependency().to() == index + 1) {
+                    word.setUniversalDependency(-1, "ROOT");
+                } else {
+                    if (word.getUniversalDependency().to() > index + 1) {
+                        word.setUniversalDependency(word.getUniversalDependency().to() - 1, word.getUniversalDependency().toString());
+                    }
+                }
+            }
+        }
         words.remove(index);
     }
 

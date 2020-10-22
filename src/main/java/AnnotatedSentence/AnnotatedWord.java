@@ -320,7 +320,11 @@ public class AnnotatedWord extends Word implements Serializable{
      * @param dependencyType type of dependency the word is related to.
      */
     public void setUniversalDependency(int to, String dependencyType){
-        universalDependency = new UniversalDependencyRelation(to, dependencyType);
+        if (to < 0){
+            universalDependency = null;
+        } else {
+            universalDependency = new UniversalDependencyRelation(to, dependencyType);
+        }
     }
 
     public String getFormattedString(WordFormat format) throws LayerNotExistsException {

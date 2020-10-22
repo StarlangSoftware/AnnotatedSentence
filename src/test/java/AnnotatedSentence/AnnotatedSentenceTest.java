@@ -53,7 +53,6 @@ public class AnnotatedSentenceTest {
                 }
             }
         }
-        System.out.println(counterHashMap.sumOfCounts());
     }
 
     @Test
