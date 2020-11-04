@@ -13,6 +13,7 @@ import PropBank.Argument;
 
 import java.awt.*;
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.Locale;
 
 public class AnnotatedWord extends Word implements Serializable{
@@ -325,6 +326,32 @@ public class AnnotatedWord extends Word implements Serializable{
         } else {
             universalDependency = new UniversalDependencyRelation(to, dependencyType);
         }
+    }
+
+    public String getUniversalDependencyFormat(){
+        String result = name + "\t" + parse.getWord().getName() + "\t" + parse.getUniversalDependencyPos() + "\t_\t";
+        HashMap<String, String> features = parse.getUniversalDependencyFeatures();
+        if (features.size() == 0){
+            result = result + "_";
+        } else {
+            boolean first = true;
+            for (String feature : features.keySet()){
+                if (first){
+                    first = false;
+                } else {
+                    result += "|";
+                }
+                result += feature + "=" + features.get(feature);
+            }
+        }
+        result += "\t";
+        if (universalDependency != null){
+            result += universalDependency.to() + "\t" + universalDependency.toString().toLowerCase() + "\t";
+        } else {
+            result += "_\t_\t";
+        }
+        result += "_\t_\t";
+        return result;
     }
 
     public String getFormattedString(WordFormat format) throws LayerNotExistsException {

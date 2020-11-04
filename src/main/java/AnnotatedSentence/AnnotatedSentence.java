@@ -246,6 +246,16 @@ public class AnnotatedSentence extends Sentence{
         writeToFile(new File(fileName));
     }
 
+    public String getUniversalDependencyFormat(){
+        String result = "# sent_id = " + getFileName() + "\n" + "# text = " + toWords() + "\n";
+        for (int i = 0; i < wordCount(); i++){
+            AnnotatedWord word = (AnnotatedWord) getWord(i);
+            result += (i + 1) + "\t" + word.getUniversalDependencyFormat() + "\n";
+        }
+        result += "\n";
+        return result;
+    }
+
     /**
      * Creates a list of literal candidates for the i'th word in the sentence. It combines the results of
      * 1. All possible root forms of the i'th word in the sentence

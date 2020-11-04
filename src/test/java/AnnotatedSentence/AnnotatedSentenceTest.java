@@ -31,6 +31,12 @@ public class AnnotatedSentenceTest {
     }
 
     @Test
+    public void test(){
+        AnnotatedCorpus corpus = new AnnotatedCorpus(new File("sentences/"), ".dev");
+        corpus.exportUniversalDependencyFormat("uv.txt");
+    }
+
+    @Test
     public void testStatistics() {
         CounterHashMap<String> counterHashMap = new CounterHashMap<>();
         AnnotatedCorpus annotatedCorpus = new AnnotatedCorpus(new File("../../Penn-Treebank/Turkish-Phrase/", "."));
