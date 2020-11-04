@@ -13,6 +13,7 @@ import PropBank.Argument;
 
 import java.awt.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Locale;
 
@@ -329,29 +330,33 @@ public class AnnotatedWord extends Word implements Serializable{
     }
 
     public String getUniversalDependencyFormat(){
-        String result = name + "\t" + parse.getWord().getName() + "\t" + parse.getUniversalDependencyPos() + "\t_\t";
-        HashMap<String, String> features = parse.getUniversalDependencyFeatures();
-        if (features.size() == 0){
-            result = result + "_";
-        } else {
-            boolean first = true;
-            for (String feature : features.keySet()){
-                if (first){
-                    first = false;
-                } else {
-                    result += "|";
+        if (parse != null){
+            String result = name + "\t" + parse.getWord().getName() + "\t" + parse.getUniversalDependencyPos() + "\t_\t";
+            ArrayList<String> features = parse.getUniversalDependencyFeatures();
+            if (features.size() == 0){
+                result = result + "_";
+            } else {
+                boolean first = true;
+                for (String feature : features){
+                    if (first){
+                        first = false;
+                    } else {
+                        result += "|";
+                    }
+                    result += feature;
                 }
-                result += feature + "=" + features.get(feature);
             }
-        }
-        result += "\t";
-        if (universalDependency != null){
-            result += universalDependency.to() + "\t" + universalDependency.toString().toLowerCase() + "\t";
+            result += "\t";
+            if (universalDependency != null){
+                result += universalDependency.to() + "\t" + universalDependency.toString().toLowerCase() + "\t";
+            } else {
+                result += "_\t_\t";
+            }
+            result += "_\t_";
+            return result;
         } else {
-            result += "_\t_\t";
+            return name + "\t" + name + "\t_\t_\t_\t_\t_\t_\t_";
         }
-        result += "_\t_\t";
-        return result;
     }
 
     public String getFormattedString(WordFormat format) throws LayerNotExistsException {
