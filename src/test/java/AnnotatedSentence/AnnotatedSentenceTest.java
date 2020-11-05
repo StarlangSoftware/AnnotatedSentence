@@ -32,8 +32,8 @@ public class AnnotatedSentenceTest {
 
     @Test
     public void testConvert(){
-        //AnnotatedCorpus corpus = new AnnotatedCorpus(new File("../../Penn-Treebank/Turkish-Phrase/"));
-        //corpus.exportUniversalDependencyFormat("uv.txt");
+        //AnnotatedCorpus corpus = new AnnotatedCorpus(new File("../../Etstur/Turkish-Phrase/"));
+        //corpus.exportUniversalDependencyFormat("uv4.txt");
     }
 
     @Test

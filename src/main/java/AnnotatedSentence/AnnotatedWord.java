@@ -329,7 +329,7 @@ public class AnnotatedWord extends Word implements Serializable{
         }
     }
 
-    public String getUniversalDependencyFormat(){
+    public String getUniversalDependencyFormat(int sentenceLength){
         if (parse != null){
             String result = name + "\t" + parse.getWord().getName() + "\t" + parse.getUniversalDependencyPos() + "\t_\t";
             ArrayList<String> features = parse.getUniversalDependencyFeatures();
@@ -347,7 +347,7 @@ public class AnnotatedWord extends Word implements Serializable{
                 }
             }
             result += "\t";
-            if (universalDependency != null){
+            if (universalDependency != null && universalDependency.to() <= sentenceLength){
                 result += universalDependency.to() + "\t" + universalDependency.toString().toLowerCase() + "\t";
             } else {
                 result += "_\t_\t";

@@ -250,7 +250,7 @@ public class AnnotatedSentence extends Sentence{
         String result = "# sent_id = " + getFileName() + "\n" + "# text = " + toWords() + "\n";
         for (int i = 0; i < wordCount(); i++){
             AnnotatedWord word = (AnnotatedWord) getWord(i);
-            result += (i + 1) + "\t" + word.getUniversalDependencyFormat() + "\n";
+            result += (i + 1) + "\t" + word.getUniversalDependencyFormat(wordCount()) + "\n";
         }
         result += "\n";
         return result;
