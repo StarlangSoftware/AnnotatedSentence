@@ -1,7 +1,7 @@
 package AnnotatedSentence;
 
 import Corpus.WordFormat;
-import DependencyParser.UniversalDependencyRelation;
+import DependencyParser.Universal.UniversalDependencyRelation;
 import Dictionary.Word;
 import MorphologicalAnalysis.FsmParse;
 import MorphologicalAnalysis.MetamorphicParse;
