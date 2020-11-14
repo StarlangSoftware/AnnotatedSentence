@@ -315,10 +315,44 @@ public class AnnotatedSentence extends Sentence{
         return true;
     }
 
-    public ArrayList<DependencyError> getDependencyErrors(){
-        ArrayList<DependencyError> errorList = new ArrayList<>();
+    public boolean checkMultipleRoots(){
+        int rootCount = 0;
         for (int i = 0; i < wordCount(); i++){
             AnnotatedWord word = (AnnotatedWord) getWord(i);
+            if (word.getUniversalDependency() != null && word.getUniversalDependency().toString().equals("ROOT")) {
+                rootCount++;
+            }
+        }
+        return rootCount <= 1;
+    }
+
+    public boolean checkMultipleSubjects(){
+        int subjectCount = 0;
+        for (int i = 0; i < wordCount(); i++){
+            AnnotatedWord word = (AnnotatedWord) getWord(i);
+            if (word.getUniversalDependency() != null && word.getUniversalDependency().toString().equals("NSUBJ")) {
+                AnnotatedWord toWord = (AnnotatedWord) getWord(word.getUniversalDependency().to() - 1);
+                if (toWord.getUniversalDependency() != null && toWord.getUniversalDependency().toString().equals("ROOT")){
+                    subjectCount++;
+                }
+            }
+        }
+        return subjectCount <= 1;
+    }
+
+    public ArrayList<DependencyError> getDependencyErrors(){
+        ArrayList<DependencyError> errorList = new ArrayList<>();
+        if (!checkMultipleRoots()){
+            errorList.add(new DependencyError(DependencyErrorType.MULTIPLE_ROOT, 0, "", ""));
+        }
+        if (!checkMultipleSubjects()){
+            errorList.add(new DependencyError(DependencyErrorType.MULTIPLE_SUBJECTS, 0, "", ""));
+        }
+        for (int i = 0; i < wordCount(); i++){
+            AnnotatedWord word = (AnnotatedWord) getWord(i);
+            if (word.getParse() == null){
+                errorList.add(new DependencyError(DependencyErrorType.NO_MORPHOLOGICAL_ANALYSIS, i + 1, "", ""));
+            }
             if (word.getUniversalDependency() != null){
                 int to = word.getUniversalDependency().to();
                 int from = i + 1;
@@ -356,6 +390,8 @@ public class AnnotatedSentence extends Sentence{
                         }
                     }
                 }
+            } else {
+                errorList.add(new DependencyError(DependencyErrorType.NO_DEPENDENCY, i + 1, "", ""));
             }
         }
         return errorList;
