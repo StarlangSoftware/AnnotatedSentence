@@ -1,6 +1,9 @@
 package AnnotatedSentence;
 
 import DataStructure.CounterHashMap;
+import MorphologicalAnalysis.FsmMorphologicalAnalyzer;
+import MorphologicalAnalysis.FsmParseList;
+import MorphologicalAnalysis.MorphologicalTag;
 import PropBank.FramesetList;
 import org.junit.Before;
 import org.junit.Test;
@@ -28,14 +31,26 @@ public class AnnotatedSentenceTest {
     }
 
     @Test
-    public void testConvert(){
+    public void testConvert1(){
         AnnotatedCorpus corpus = new AnnotatedCorpus(new File("../../Penn-Treebank/Turkish-Phrase/"));
         corpus.exportUniversalDependencyFormat("uv1.txt");
-        corpus = new AnnotatedCorpus(new File("../../Penn-Treebank/Turkish-Phrase2/"));
+    }
+
+    @Test
+    public void testConvert2(){
+        AnnotatedCorpus corpus = new AnnotatedCorpus(new File("../../Penn-Treebank/Turkish-Phrase2/"));
         corpus.exportUniversalDependencyFormat("uv2.txt");
-        corpus = new AnnotatedCorpus(new File("../../Penn-Treebank-20/Turkish-Phrase/"));
+    }
+
+    @Test
+    public void testConvert3(){
+        AnnotatedCorpus corpus = new AnnotatedCorpus(new File("../../Penn-Treebank-20/Turkish-Phrase/"));
         corpus.exportUniversalDependencyFormat("uv3.txt");
-        corpus = new AnnotatedCorpus(new File("../../Etstur/Turkish-Phrase/"));
+    }
+
+    @Test
+    public void testConvert4(){
+        AnnotatedCorpus corpus = new AnnotatedCorpus(new File("../../Etstur/Turkish-Phrase/"));
         corpus.exportUniversalDependencyFormat("uv4.txt");
     }
 

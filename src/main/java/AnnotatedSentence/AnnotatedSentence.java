@@ -1,5 +1,7 @@
 package AnnotatedSentence;
 
+import AnnotatedSentence.DependencyError.DependencyError;
+import AnnotatedSentence.DependencyError.DependencyErrorType;
 import Corpus.Sentence;
 import Dictionary.Word;
 import MorphologicalAnalysis.FsmMorphologicalAnalyzer;
@@ -244,6 +246,119 @@ public class AnnotatedSentence extends Sentence{
      */
     public void save(String fileName){
         writeToFile(new File(fileName));
+    }
+
+    public static boolean checkDependencyWithUniversalPosTag(String dependency, String universalPos){
+        if (dependency.equals("ADVMOD")){
+            if (!universalPos.equals("ADV") && !universalPos.equals("ADJ") && !universalPos.equals("CCONJ") &&
+                    !universalPos.equals("DET") && !universalPos.equals("PART") && !universalPos.equals("SYM")){
+                return false;
+            }
+        }
+        if (dependency.equals("AUX") && !universalPos.equals("AUX")){
+            return false;
+        }
+        if (dependency.equals("CASE")){
+            if (universalPos.equals("PROPN") || universalPos.equals("ADJ") || universalPos.equals("PRON") ||
+                    universalPos.equals("DET") || universalPos.equals("NUM") || universalPos.equals("AUX")){
+                return false;
+            }
+        }
+        if (dependency.equals("MARK") || dependency.equals("CC")){
+            if (universalPos.equals("NOUN") || universalPos.equals("PROPN") || universalPos.equals("ADJ") ||
+                    universalPos.equals("PRON") || universalPos.equals("DET") || universalPos.equals("NUM") ||
+                    universalPos.equals("VERB") || universalPos.equals("AUX") || universalPos.equals("INTJ")){
+                return false;
+            }
+        }
+        if (dependency.equals("COP")){
+            if (!universalPos.equals("AUX") && !universalPos.equals("PRON") &&
+                    !universalPos.equals("DET") && !universalPos.equals("SYM")){
+                return false;
+            }
+        }
+        if (dependency.equals("DET")){
+            if (!universalPos.equals("DET") && !universalPos.equals("PRON")){
+                return false;
+            }
+        }
+        if (dependency.equals("NUMMOD")){
+            if (!universalPos.equals("NUM") && !universalPos.equals("NOUN") && !universalPos.equals("SYM")){
+                return false;
+            }
+        }
+        if (!dependency.equals("PUNCT") && universalPos.equals("PUNCT")){
+            return false;
+        }
+        if (dependency.equals("COMPOUND") && universalPos.equals("AUX")){
+            return false;
+        }
+        return true;
+    }
+
+    public boolean checkForNonProjectivityOfPunctuation(int from, int to){
+        int min = Math.min(from, to);
+        int max = Math.max(from, to);
+        for (int i = 0; i < wordCount(); i++) {
+            AnnotatedWord word = (AnnotatedWord) getWord(i);
+            if (word.getUniversalDependency() != null) {
+                int currentTo = word.getUniversalDependency().to();
+                int currentFrom = i + 1;
+                if (currentFrom > min && currentFrom < max && (currentTo < min || currentTo > max)){
+                    return false;
+                }
+                if (currentTo > min && currentTo < max && (currentFrom < min || currentFrom > max)){
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    public ArrayList<DependencyError> getDependencyErrors(){
+        ArrayList<DependencyError> errorList = new ArrayList<>();
+        for (int i = 0; i < wordCount(); i++){
+            AnnotatedWord word = (AnnotatedWord) getWord(i);
+            if (word.getUniversalDependency() != null){
+                int to = word.getUniversalDependency().to();
+                int from = i + 1;
+                String dependency = word.getUniversalDependency().toString();
+                if (from == to){
+                    errorList.add(new DependencyError(DependencyErrorType.HEAD_EQUALS_ID, from, "", ""));
+                }
+                if (dependency.equals("PUNCT") && !checkForNonProjectivityOfPunctuation(from, to)){
+                    errorList.add(new DependencyError(DependencyErrorType.PUNCTUATION_NOT_PROJECTIVE, from, "", ""));
+                }
+                if (to > from && (dependency.equals("CONJ") || dependency.equals("GOESWITH") ||
+                        dependency.equals("FIXED") || dependency.equals("FLAT") || dependency.equals("APPOS"))){
+                    errorList.add(new DependencyError(DependencyErrorType.GO_LEFT_TO_RIGHT, from, dependency, ""));
+                }
+                if (from > to && from > to + 1 && dependency.equals("GOESWITH")){
+                    errorList.add(new DependencyError(DependencyErrorType.GAPS_IN_GOESWITH, from, "", ""));
+                }
+                if (word.getParse() != null){
+                    String universalPos = word.getParse().getUniversalDependencyPos();
+                    if (!checkDependencyWithUniversalPosTag(dependency, universalPos)){
+                        errorList.add(new DependencyError(DependencyErrorType.SHOULDNT_BE_OF_POS, from, dependency, universalPos));
+                    }
+                }
+                if (to > 0){
+                    AnnotatedWord toWord = (AnnotatedWord) getWord(to - 1);
+                    if (toWord.getUniversalDependency() != null){
+                        String toDependency = toWord.getUniversalDependency().toString();
+                        if (toDependency.equals("AUX") || toDependency.equals("COP") || toDependency.equals("CC") ||
+                                toDependency.equals("FIXED") || toDependency.equals("GOESTWITH") || toDependency.equals("CASE") ||
+                                toDependency.equals("MARK") || toDependency.equals("PUNCT")){
+                            errorList.add(new DependencyError(DependencyErrorType.NOT_EXPECTED_TO_HAVE_CHILDREN, from, toDependency, ""));
+                        }
+                        if (dependency.equals("ORPHAN") && !toDependency.equals("CONJ")){
+                            errorList.add(new DependencyError(DependencyErrorType.PARENT_ORPHAN_SHOULD_BE_CONJ, from, toDependency, ""));
+                        }
+                    }
+                }
+            }
+        }
+        return errorList;
     }
 
     public String getUniversalDependencyFormat(){
