@@ -1,9 +1,8 @@
 package AnnotatedSentence;
 
-import DataStructure.CounterHashMap;
+import Corpus.Corpus;
 import MorphologicalAnalysis.FsmMorphologicalAnalyzer;
 import MorphologicalAnalysis.FsmParseList;
-import MorphologicalAnalysis.MorphologicalTag;
 import PropBank.FramesetList;
 import org.junit.Before;
 import org.junit.Test;
@@ -28,6 +27,44 @@ public class AnnotatedSentenceTest {
         sentence7 = new AnnotatedSentence(new File("sentences/0007.dev"));
         sentence8 = new AnnotatedSentence(new File("sentences/0008.dev"));
         sentence9 = new AnnotatedSentence(new File("sentences/0009.dev"));
+    }
+
+    public void extractRoots(Corpus corpus, String prefixAndSuffix){
+        FsmMorphologicalAnalyzer fsm = new FsmMorphologicalAnalyzer();
+        for (int i = 0; i < corpus.sentenceCount(); i++){
+            AnnotatedSentence annotatedSentence = (AnnotatedSentence) corpus.getSentence(i);
+            for (int j = 0; j < annotatedSentence.wordCount(); j++){
+                AnnotatedWord word = (AnnotatedWord) annotatedSentence.getWord(j);
+                if (word.getName() != null && word.getParse() != null && word.getName().length() > 0){
+                    String root = word.getParse().getWord().getName();
+                    FsmParseList fsmParseList = fsm.morphologicalAnalysis(word.getName());
+                    if (fsmParseList.size() > 1){
+                        String rootWords = fsmParseList.rootWords();
+                        if (rootWords.contains(root)){
+                            fsmParseList.reduceToParsesWithSameRoot(root);
+                            if (fsmParseList.size() > 1){
+                                String reduced = fsmParseList.parsesWithoutPrefixAndSuffix();
+                                if (reduced.equals(prefixAndSuffix)){
+                                    System.out.println(word.getName() + "\t" + annotatedSentence.toWords());
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    public void testDisambiguation(){
+        String s = "A3PL+PNON+NOM$A3SG+PNON+NOM^DB+VERB+ZERO+PRES+A3PL$PROP+A3PL+PNON+NOM";
+        AnnotatedCorpus corpus = new AnnotatedCorpus(new File("../../Penn-Treebank/Turkish-Phrase/"));
+        extractRoots(corpus, s);
+        corpus = new AnnotatedCorpus(new File("../../Penn-Treebank/Turkish-Phrase2/"));
+        extractRoots(corpus, s);
+        corpus = new AnnotatedCorpus(new File("../../Penn-Treebank-20/Turkish-Phrase/"));
+        extractRoots(corpus, s);
+        corpus = new AnnotatedCorpus(new File("../../Etstur/Turkish-Phrase/"));
+        extractRoots(corpus, s);
     }
 
     @Test
