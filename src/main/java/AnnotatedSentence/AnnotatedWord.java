@@ -3,6 +3,7 @@ package AnnotatedSentence;
 import Corpus.WordFormat;
 import DependencyParser.Universal.UniversalDependencyRelation;
 import Dictionary.Word;
+import FrameNet.FrameElement;
 import MorphologicalAnalysis.FsmParse;
 import MorphologicalAnalysis.MetamorphicParse;
 import MorphologicalAnalysis.MorphologicalParse;
@@ -23,6 +24,7 @@ public class AnnotatedWord extends Word implements Serializable{
     private String semantic;
     private NamedEntityType namedEntityType;
     private Argument argument;
+    private FrameElement frameElement;
     private UniversalDependencyRelation universalDependency;
     private String shallowParse;
     private Rectangle area;
@@ -68,6 +70,10 @@ public class AnnotatedWord extends Word implements Serializable{
                                         if (layerType.equalsIgnoreCase("universalDependency")){
                                             String[] values = layerValue.split("\\$");
                                             universalDependency = new UniversalDependencyRelation(Integer.parseInt(values[0]), values[1]);
+                                        } else {
+                                            if (layerType.equalsIgnoreCase("framenet")){
+                                                frameElement = new FrameElement(layerValue);
+                                            }
                                         }
                                     }
                                 }
@@ -101,6 +107,9 @@ public class AnnotatedWord extends Word implements Serializable{
         if (argument != null){
             result = result + "{propbank=" + argument.toString() + "}";
         }
+        if (frameElement != null){
+            result = result + "{framenet=" + frameElement.toString() + "}";
+        }
         if (shallowParse != null){
             result = result + "{shallowParse=" + shallowParse + "}";
         }
@@ -124,6 +133,7 @@ public class AnnotatedWord extends Word implements Serializable{
         argument = new Argument("NONE", null);
         shallowParse = null;
         universalDependency = null;
+        frameElement = null;
     }
 
     /**
@@ -140,6 +150,7 @@ public class AnnotatedWord extends Word implements Serializable{
         semantic = null;
         shallowParse = null;
         universalDependency = null;
+        frameElement = null;
     }
 
     /**
@@ -156,6 +167,7 @@ public class AnnotatedWord extends Word implements Serializable{
         semantic = null;
         shallowParse = null;
         universalDependency = null;
+        frameElement = null;
     }
 
     /**
@@ -194,6 +206,11 @@ public class AnnotatedWord extends Word implements Serializable{
             case DEPENDENCY:
                 if (universalDependency != null){
                     return universalDependency.to() + "$" + universalDependency.toString();
+                }
+                break;
+            case FRAMENET:
+                if (frameElement != null){
+                    return frameElement.toString();
                 }
                 break;
         }
@@ -289,6 +306,18 @@ public class AnnotatedWord extends Word implements Serializable{
             this.argument = new Argument(argument);
         } else {
             this.argument = null;
+        }
+    }
+
+    public FrameElement getFrameElement(){
+        return frameElement;
+    }
+
+    public void setFrameElement(String frameElement){
+        if (frameElement != null){
+            this.frameElement = new FrameElement(frameElement);
+        } else {
+            this.frameElement = null;
         }
     }
 

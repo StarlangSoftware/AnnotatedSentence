@@ -18,19 +18,6 @@ import MorphologicalDisambiguation.RootWordStatistics;
 * metamorpheme of the word.
  * */
 public abstract class SentenceAutoDisambiguator extends AutoDisambiguator{
-    /**
-     * The method should disambiguate the words with a single morphological analysis. Basically the
-     * method should set the morphological analysis of the words with one possible morphological analysis.
-     * @param sentence The sentence to be disambiguated automatically.
-     */
-    protected abstract void autoFillSingleAnalysis(AnnotatedSentence sentence);
-
-    /**
-     * The method should disambiguate words whose morphological analyses contain only one distinct root word.
-     * For this case, the root word would be fixed, but the correct morphological analysis depends on the context.
-     * @param sentence The sentence to be disambiguated automatically.
-     */
-    protected abstract void autoDisambiguateSingleRootWords(AnnotatedSentence sentence);
 
     /**
      * The method should disambiguate morphological analyses where there are multiple candidate root words
@@ -64,8 +51,6 @@ public abstract class SentenceAutoDisambiguator extends AutoDisambiguator{
      * @param sentence The sentence to be disambiguated automatically.
      */
     public void autoDisambiguate(AnnotatedSentence sentence){
-        autoFillSingleAnalysis(sentence);
-        autoDisambiguateSingleRootWords(sentence);
         autoDisambiguateMultipleRootWords(sentence);
     }
 

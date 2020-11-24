@@ -45,7 +45,7 @@ public class AnnotatedSentenceTest {
                             if (fsmParseList.size() > 1){
                                 String reduced = fsmParseList.parsesWithoutPrefixAndSuffix();
                                 if (reduced.equals(prefixAndSuffix)){
-                                    System.out.println(word.getName() + "\t" + annotatedSentence.toWords());
+                                    System.out.println(word.getName() + "\t" + annotatedSentence.toWords() + "\t" + annotatedSentence.getFileName());
                                 }
                             }
                         }
@@ -56,7 +56,7 @@ public class AnnotatedSentenceTest {
     }
 
     public void testDisambiguation(){
-        String s = "A3PL+PNON+NOM$A3SG+PNON+NOM^DB+VERB+ZERO+PRES+A3PL$PROP+A3PL+PNON+NOM";
+        String s = "ADJ+JUSTLIKE^DB+NOUN+ZERO+A3SG+P2SG$NOUN+ZERO+A3SG+P3SG";
         AnnotatedCorpus corpus = new AnnotatedCorpus(new File("../../Penn-Treebank/Turkish-Phrase/"));
         extractRoots(corpus, s);
         corpus = new AnnotatedCorpus(new File("../../Penn-Treebank/Turkish-Phrase2/"));
@@ -67,28 +67,29 @@ public class AnnotatedSentenceTest {
         extractRoots(corpus, s);
     }
 
-    @Test
     public void testConvert1(){
         AnnotatedCorpus corpus = new AnnotatedCorpus(new File("../../Penn-Treebank/Turkish-Phrase/"));
         corpus.exportUniversalDependencyFormat("uv1.txt");
     }
 
-    @Test
     public void testConvert2(){
         AnnotatedCorpus corpus = new AnnotatedCorpus(new File("../../Penn-Treebank/Turkish-Phrase2/"));
         corpus.exportUniversalDependencyFormat("uv2.txt");
     }
 
-    @Test
     public void testConvert3(){
         AnnotatedCorpus corpus = new AnnotatedCorpus(new File("../../Penn-Treebank-20/Turkish-Phrase/"));
         corpus.exportUniversalDependencyFormat("uv3.txt");
     }
 
-    @Test
     public void testConvert4(){
-        AnnotatedCorpus corpus = new AnnotatedCorpus(new File("../../Etstur/Turkish-Phrase/"));
+        AnnotatedCorpus corpus = new AnnotatedCorpus(new File("../../Etstur/Turkish-Phrase/"), ".train");
         corpus.exportUniversalDependencyFormat("uv4.txt");
+    }
+
+    public void testConvert5(){
+        AnnotatedCorpus corpus = new AnnotatedCorpus(new File("../../Etstur/Turkish-Phrase/"), ".test");
+        corpus.exportUniversalDependencyFormat("uv5.txt");
     }
 
     @Test

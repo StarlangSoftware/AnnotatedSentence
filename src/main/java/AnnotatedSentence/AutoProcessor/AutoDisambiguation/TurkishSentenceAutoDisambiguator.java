@@ -6,11 +6,16 @@ import MorphologicalAnalysis.FsmMorphologicalAnalyzer;
 import MorphologicalAnalysis.FsmParse;
 import MorphologicalAnalysis.FsmParseList;
 import MorphologicalDisambiguation.RootWordStatistics;
+import MorphologicalDisambiguation.RootWordStatisticsDisambiguation;
+
+import java.util.ArrayList;
 
 /**
  * Class that implements SentenceAutoDisambiguator for Turkish language.
  */
 public class TurkishSentenceAutoDisambiguator extends SentenceAutoDisambiguator{
+
+    RootWordStatisticsDisambiguation rootWordStatisticsDisambiguation;
 
     /**
      * Constructor for the class.
@@ -21,6 +26,7 @@ public class TurkishSentenceAutoDisambiguator extends SentenceAutoDisambiguator{
      */
     public TurkishSentenceAutoDisambiguator(RootWordStatistics rootWordStatistics) {
         super(new FsmMorphologicalAnalyzer(), rootWordStatistics);
+        rootWordStatisticsDisambiguation = new RootWordStatisticsDisambiguation();
     }
 
     /**
@@ -36,38 +42,14 @@ public class TurkishSentenceAutoDisambiguator extends SentenceAutoDisambiguator{
     }
 
     /**
-     * The method disambiguates the words with a single morphological analysis. Basically the
-     * method sets the morphological analysis of the words with one possible morphological analysis. If the word
-     * is already morphologically disambiguated, the method does not disambiguate that word.
-     * @param sentence The sentence to be disambiguated automatically.
-     */
-    protected void autoFillSingleAnalysis(AnnotatedSentence sentence) {
-        for (int i = 0; i < sentence.wordCount(); i++){
-            AnnotatedWord word = (AnnotatedWord) sentence.getWord(i);
-            if (word.getParse() == null){
-                FsmParseList fsmParseList = morphologicalAnalyzer.robustMorphologicalAnalysis(word.getName());
-                if (fsmParseList.size() == 1){
-                    word.setParse(fsmParseList.getFsmParse(0).transitionList());
-                    word.setMetamorphicParse(fsmParseList.getFsmParse(0).withList());
-                }
-            }
-        }
-    }
-
-    /**
      * If the words has only single root in its possible parses, the method disambiguates by looking special cases.
      * The cases are implemented in the caseDisambiguator method.
-     * @param fsmParseList Morphological parses of the word.
+     * @param disambiguatedParse Morphological parse of the word.
      * @param word Word to be disambiguated.
      */
-    private void setParseAutomatically(FsmParseList fsmParseList, AnnotatedWord word){
-        if (fsmParseList.size() > 0 && !fsmParseList.rootWords().contains("$")){
-            FsmParse disambiguatedParse = fsmParseList.caseDisambiguator();
-            if (disambiguatedParse != null){
-                word.setParse(disambiguatedParse.transitionList());
-                word.setMetamorphicParse(disambiguatedParse.withList());
-            }
-        }
+    private void setParseAutomatically(FsmParse disambiguatedParse, AnnotatedWord word){
+        word.setParse(disambiguatedParse.transitionList());
+        word.setMetamorphicParse(disambiguatedParse.withList());
     }
 
     /**
@@ -79,34 +61,14 @@ public class TurkishSentenceAutoDisambiguator extends SentenceAutoDisambiguator{
      * @param sentence The sentence to be disambiguated automatically.
      */
     protected void autoDisambiguateMultipleRootWords(AnnotatedSentence sentence) {
+        FsmParseList[] fsmParses = morphologicalAnalyzer.robustMorphologicalAnalysis(sentence);
+        ArrayList<FsmParse> correctParses = rootWordStatisticsDisambiguation.disambiguate(fsmParses);
         for (int i = 0; i < sentence.wordCount(); i++){
             AnnotatedWord word = (AnnotatedWord) sentence.getWord(i);
             if (word.getParse() == null){
-                FsmParseList fsmParseList = morphologicalAnalyzer.robustMorphologicalAnalysis(word.getName());
-                if (fsmParseList.rootWords().contains("$")){
-                    String bestRootWord = rootWordStatistics.bestRootWord(fsmParseList, 0.0);
-                    if (bestRootWord != null){
-                        fsmParseList.reduceToParsesWithSameRoot(bestRootWord);
-                    }
-                }
-                setParseAutomatically(fsmParseList, word);
+                setParseAutomatically(correctParses.get(i), word);
             }
         }
     }
 
-    /**
-     * The method disambiguates words with single possible root word in its morphological parses. If the word
-     * is already morphologically disambiguated, the method does not disambiguate that word. Basically calls
-     * setParseAutomatically method.
-     * @param sentence The sentence to be disambiguated automatically.
-     */
-    protected void autoDisambiguateSingleRootWords(AnnotatedSentence sentence) {
-        for (int i = 0; i < sentence.wordCount(); i++){
-            AnnotatedWord word = (AnnotatedWord) sentence.getWord(i);
-            if (word.getParse() == null){
-                FsmParseList fsmParseList = morphologicalAnalyzer.robustMorphologicalAnalysis(word.getName());
-                setParseAutomatically(fsmParseList, word);
-            }
-        }
-    }
 }
