@@ -55,18 +55,6 @@ public class AnnotatedSentenceTest {
         }
     }
 
-    public void testDisambiguation(){
-        String s = "ADJ+JUSTLIKE^DB+NOUN+ZERO+A3SG+P2SG$NOUN+ZERO+A3SG+P3SG";
-        AnnotatedCorpus corpus = new AnnotatedCorpus(new File("../../Penn-Treebank/Turkish-Phrase/"));
-        extractRoots(corpus, s);
-        corpus = new AnnotatedCorpus(new File("../../Penn-Treebank/Turkish-Phrase2/"));
-        extractRoots(corpus, s);
-        corpus = new AnnotatedCorpus(new File("../../Penn-Treebank-20/Turkish-Phrase/"));
-        extractRoots(corpus, s);
-        corpus = new AnnotatedCorpus(new File("../../Etstur/Turkish-Phrase/"));
-        extractRoots(corpus, s);
-    }
-
     public void testConvert1(){
         AnnotatedCorpus corpus = new AnnotatedCorpus(new File("../../Penn-Treebank/Turkish-Phrase/"));
         corpus.exportUniversalDependencyFormat("uv1.txt");

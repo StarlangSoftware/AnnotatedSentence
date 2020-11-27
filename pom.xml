@@ -60,7 +60,7 @@
         <dependency>
             <groupId>io.github.starlangsoftware</groupId>
             <artifactId>FrameNet</artifactId>
-            <version>1.0.2</version>
+            <version>1.0.3</version>
         </dependency>
         <dependency>
             <groupId>io.github.starlangsoftware</groupId>
@@ -75,7 +75,7 @@
         <dependency>
             <groupId>io.github.starlangsoftware</groupId>
             <artifactId>WordNet</artifactId>
-            <version>1.0.39</version>
+            <version>1.0.40</version>
         </dependency>
         <dependency>
             <groupId>io.github.starlangsoftware</groupId>
