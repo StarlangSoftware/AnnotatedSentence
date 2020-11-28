@@ -99,6 +99,21 @@ public class AnnotatedSentence extends Sentence{
         return false;
     }
 
+    /**
+     * The method checks all words in the sentence and returns true if at least one of the words is annotated with
+     * PREDICATE tag.
+     * @return True if at least one of the words is annotated with PREDICATE tag; false otherwise.
+     */
+    public boolean containsFramePredicate(){
+        for (Word word : words){
+            AnnotatedWord annotatedWord = (AnnotatedWord) word;
+            if (annotatedWord.getFrameElement() != null && annotatedWord.getFrameElement().getFrameElementType().equals("PREDICATE")){
+                return true;
+            }
+        }
+        return false;
+    }
+
     public boolean updateConnectedPredicate(String previousId, String currentId){
         boolean modified = false;
         for (Word word : words){
