@@ -29,32 +29,6 @@ public class AnnotatedSentenceTest {
         sentence9 = new AnnotatedSentence(new File("sentences/0009.dev"));
     }
 
-    public void extractRoots(Corpus corpus, String prefixAndSuffix){
-        FsmMorphologicalAnalyzer fsm = new FsmMorphologicalAnalyzer();
-        for (int i = 0; i < corpus.sentenceCount(); i++){
-            AnnotatedSentence annotatedSentence = (AnnotatedSentence) corpus.getSentence(i);
-            for (int j = 0; j < annotatedSentence.wordCount(); j++){
-                AnnotatedWord word = (AnnotatedWord) annotatedSentence.getWord(j);
-                if (word.getName() != null && word.getParse() != null && word.getName().length() > 0){
-                    String root = word.getParse().getWord().getName();
-                    FsmParseList fsmParseList = fsm.morphologicalAnalysis(word.getName());
-                    if (fsmParseList.size() > 1){
-                        String rootWords = fsmParseList.rootWords();
-                        if (rootWords.contains(root)){
-                            fsmParseList.reduceToParsesWithSameRoot(root);
-                            if (fsmParseList.size() > 1){
-                                String reduced = fsmParseList.parsesWithoutPrefixAndSuffix();
-                                if (reduced.equals(prefixAndSuffix)){
-                                    System.out.println(word.getName() + "\t" + annotatedSentence.toWords() + "\t" + annotatedSentence.getFileName());
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-
     public void testConvert1(){
         AnnotatedCorpus corpus = new AnnotatedCorpus(new File("../../Penn-Treebank/Turkish-Phrase/"));
         corpus.exportUniversalDependencyFormat("uv1.txt");
