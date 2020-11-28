@@ -4,6 +4,7 @@ import AnnotatedSentence.DependencyError.DependencyError;
 import AnnotatedSentence.DependencyError.DependencyErrorType;
 import Corpus.Sentence;
 import Dictionary.Word;
+import FrameNet.FrameNet;
 import MorphologicalAnalysis.FsmMorphologicalAnalyzer;
 import MorphologicalAnalysis.MetamorphicParse;
 import MorphologicalAnalysis.MorphologicalParse;
@@ -123,6 +124,34 @@ public class AnnotatedSentence extends Sentence{
         for (Word word : words){
             AnnotatedWord annotatedWord = (AnnotatedWord) word;
             if (annotatedWord.getParse() != null && annotatedWord.getParse().isVerb() && annotatedWord.getSemantic() != null && framesetList.frameExists(annotatedWord.getSemantic())){
+                candidateList.add(annotatedWord);
+            }
+        }
+        for (int i = 0; i < 2; i++){
+            for (int j = 0; j < words.size() - i - 1; j++){
+                AnnotatedWord annotatedWord = (AnnotatedWord) words.get(j);
+                AnnotatedWord nextAnnotatedWord = (AnnotatedWord) words.get(j + 1);
+                if (!candidateList.contains(annotatedWord) && candidateList.contains(nextAnnotatedWord) && annotatedWord.getSemantic() != null && annotatedWord.getSemantic().equals(nextAnnotatedWord.getSemantic())){
+                    candidateList.add(annotatedWord);
+                }
+            }
+        }
+        return candidateList;
+    }
+
+    /**
+     * The method returns all possible words, which is
+     * 1. Verb
+     * 2. Its semantic tag is assigned
+     * 3. A frameset exists for that semantic tag
+     * @param frameNet FrameNet list that contains all frames for Turkish
+     * @return An array of words, which are verbs, semantic tags assigned, and framenet assigned for that tag.
+     */
+    public ArrayList<AnnotatedWord> predicateFrameCandidates(FrameNet frameNet){
+        ArrayList<AnnotatedWord> candidateList = new ArrayList<>();
+        for (Word word : words){
+            AnnotatedWord annotatedWord = (AnnotatedWord) word;
+            if (annotatedWord.getParse() != null && annotatedWord.getParse().isVerb() && annotatedWord.getSemantic() != null && frameNet.lexicalUnitExists(annotatedWord.getSemantic())){
                 candidateList.add(annotatedWord);
             }
         }
