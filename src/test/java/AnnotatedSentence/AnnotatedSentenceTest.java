@@ -1,8 +1,5 @@
 package AnnotatedSentence;
 
-import Corpus.Corpus;
-import MorphologicalAnalysis.FsmMorphologicalAnalyzer;
-import MorphologicalAnalysis.FsmParseList;
 import PropBank.FramesetList;
 import org.junit.Before;
 import org.junit.Test;
