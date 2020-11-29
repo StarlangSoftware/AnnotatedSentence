@@ -122,6 +122,10 @@ public class AnnotatedSentence extends Sentence{
                 annotatedWord.setArgument(annotatedWord.getArgument().getArgumentType() + "$" + currentId);
                 modified = true;
             }
+            if (annotatedWord.getFrameElement() != null && annotatedWord.getFrameElement().getId() != null && annotatedWord.getFrameElement().getId().equals(previousId)){
+                annotatedWord.setFrameElement(annotatedWord.getFrameElement().getFrameElementType() + "$" + annotatedWord.getFrameElement().getFrame() + "$" + currentId);
+                modified = true;
+            }
         }
         return modified;
     }
