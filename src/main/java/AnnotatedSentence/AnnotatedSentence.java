@@ -378,7 +378,7 @@ public class AnnotatedSentence extends Sentence{
         int subjectCount = 0;
         for (int i = 0; i < wordCount(); i++){
             AnnotatedWord word = (AnnotatedWord) getWord(i);
-            if (word.getUniversalDependency() != null && word.getUniversalDependency().toString().equals("NSUBJ")) {
+            if (word.getUniversalDependency() != null && word.getUniversalDependency().toString().equals("NSUBJ") && word.getUniversalDependency().to() - 1 >= 0 && word.getUniversalDependency().to() - 1 < wordCount()) {
                 AnnotatedWord toWord = (AnnotatedWord) getWord(word.getUniversalDependency().to() - 1);
                 if (toWord.getUniversalDependency() != null && toWord.getUniversalDependency().toString().equals("ROOT")){
                     subjectCount++;
@@ -424,7 +424,7 @@ public class AnnotatedSentence extends Sentence{
                         errorList.add(new DependencyError(DependencyErrorType.SHOULDNT_BE_OF_POS, from, dependency, universalPos));
                     }
                 }
-                if (to > 0){
+                if (to > 0 && to <= wordCount()){
                     AnnotatedWord toWord = (AnnotatedWord) getWord(to - 1);
                     if (toWord.getUniversalDependency() != null){
                         String toDependency = toWord.getUniversalDependency().toString();
