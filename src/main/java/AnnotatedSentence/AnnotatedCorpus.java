@@ -84,7 +84,7 @@ public class AnnotatedCorpus extends Corpus{
         }
     }
 
-    public void exportUniversalDependencyFormat(String path, String outputFileName){
+    public void exportUniversalDependencyFormat(String outputFileName, String path){
         try {
             PrintWriter output = new PrintWriter(outputFileName);
             for (int i = 0; i < sentenceCount(); i++){
