@@ -52,6 +52,18 @@ public class AnnotatedSentenceTest {
     }
 
     @Test
+    public void testConvert6(){
+        File[] listOfFiles = new File("../../FrameNet-Examples/Turkish-Phrase/").listFiles();
+        for (File file:listOfFiles) {
+            if (file.isDirectory()){
+                String fileName = file.getName();
+                AnnotatedCorpus corpus = new AnnotatedCorpus(new File("../../FrameNet-Examples/Turkish-Phrase/" + fileName), ".train");
+                corpus.exportUniversalDependencyFormat(fileName + "-", "uv-" + fileName + ".txt");
+            }
+        }
+    }
+
+    @Test
     public void testGetShallowParseGroups() {
         assertEquals(4, sentence0.getShallowParseGroups().size());
         assertEquals(5, sentence1.getShallowParseGroups().size());

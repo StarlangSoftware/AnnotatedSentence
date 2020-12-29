@@ -445,6 +445,16 @@ public class AnnotatedSentence extends Sentence{
         return errorList;
     }
 
+    public String getUniversalDependencyFormat(String path){
+        String result = "# sent_id = " + path + getFileName() + "\n" + "# text = " + toWords() + "\n";
+        for (int i = 0; i < wordCount(); i++){
+            AnnotatedWord word = (AnnotatedWord) getWord(i);
+            result += (i + 1) + "\t" + word.getUniversalDependencyFormat(wordCount()) + "\n";
+        }
+        result += "\n";
+        return result;
+    }
+
     public String getUniversalDependencyFormat(){
         String result = "# sent_id = " + getFileName() + "\n" + "# text = " + toWords() + "\n";
         for (int i = 0; i < wordCount(); i++){
