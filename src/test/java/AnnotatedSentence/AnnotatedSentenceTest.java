@@ -51,14 +51,13 @@ public class AnnotatedSentenceTest {
         corpus.exportUniversalDependencyFormat("uv5.txt");
     }
 
-    @Test
     public void testConvert6(){
         File[] listOfFiles = new File("../../FrameNet-Examples/Turkish-Phrase/").listFiles();
         for (File file:listOfFiles) {
             if (file.isDirectory()){
                 String fileName = file.getName();
-                AnnotatedCorpus corpus = new AnnotatedCorpus(new File("../../FrameNet-Examples/Turkish-Phrase/" + fileName), ".train");
-                corpus.exportUniversalDependencyFormat(fileName + "-", "uv-" + fileName + ".txt");
+                AnnotatedCorpus corpus = new AnnotatedCorpus(new File("../../FrameNet-Examples/Turkish-Phrase/" + fileName), ".dev");
+                corpus.exportUniversalDependencyFormat("uv-" + fileName + ".txt", fileName + "-");
             }
         }
     }

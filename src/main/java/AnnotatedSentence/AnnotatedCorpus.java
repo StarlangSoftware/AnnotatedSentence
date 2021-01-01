@@ -4,7 +4,6 @@ import Corpus.Corpus;
 import DataStructure.CounterHashMap;
 import Dictionary.*;
 import MorphologicalAnalysis.*;
-import MorphologicalDisambiguation.RootWordStatistics;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -230,40 +229,6 @@ public class AnnotatedCorpus extends Corpus{
             }
         }
         return dictionary;
-    }
-
-    public RootWordStatistics extractRootWordStatistics(FsmMorphologicalAnalyzer fsm){
-        RootWordStatistics statistics = new RootWordStatistics();
-        HashMap<String, ArrayList<String>> rootWordFiles = new HashMap<>();
-        CounterHashMap<String> rootWordStatistics;
-        ArrayList<String> fileNames;
-        for (int i = 0; i < sentenceCount(); i++){
-            AnnotatedSentence sentence = (AnnotatedSentence) getSentence(i);
-            for (int j = 0; j < sentence.wordCount(); j++){
-                AnnotatedWord word = (AnnotatedWord) sentence.getWord(j);
-                if (word.getName() != null){
-                    FsmParseList parseList = fsm.morphologicalAnalysis(word.getName());
-                    MorphologicalParse parse = word.getParse();
-                    if (parseList.size() > 0 && parse != null){
-                        String rootWords = parseList.rootWords();
-                        if (rootWords.contains("$")){
-                            if (!statistics.containsKey(rootWords)){
-                                rootWordStatistics = new CounterHashMap<>();
-                                fileNames = new ArrayList<>();
-                            } else {
-                                rootWordStatistics = statistics.get(rootWords);
-                                fileNames = rootWordFiles.get(rootWords);
-                            }
-                            fileNames.add(sentence.getFileName());
-                            rootWordFiles.put(rootWords, fileNames);
-                            rootWordStatistics.put(parse.getWord().getName());
-                            statistics.put(rootWords, rootWordStatistics);
-                        }
-                    }
-                }
-            }
-        }
-        return statistics;
     }
 
 }
