@@ -154,3 +154,15 @@ Shallow parse tag of the annotated word (e.g., subject, indirect object):
 Dependency annotation of the annotated word:
 
 	UniversalDependencyRelation getUniversalDependency()
+
+# Cite
+
+	@INPROCEEDINGS{8374369,
+  	author={O. T. {Yıldız} and K. {Ak} and G. {Ercan} and O. {Topsakal} and C. {Asmazoğlu}},
+  	booktitle={2018 2nd International Conference on Natural Language and Speech Processing (ICNLSP)}, 
+  	title={A multilayer annotated corpus for Turkish}, 
+  	year={2018},
+  	volume={},
+  	number={},
+  	pages={1-6},
+  	doi={10.1109/ICNLSP.2018.8374369}}
