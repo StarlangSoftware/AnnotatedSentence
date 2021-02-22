@@ -26,9 +26,24 @@ public class AnnotatedSentenceTest {
         sentence9 = new AnnotatedSentence(new File("sentences/0009.dev"));
     }
 
+    public void calculateGrade(){
+        AnnotatedCorpus corpus = new AnnotatedCorpus(new File("../../Kenet-Examples/Turkish-Phrase/"), ".test", 5100, 5399);
+        int totalWord = 0, totalAnnotated = 0;
+        for (int i = 0; i < corpus.sentenceCount(); i++){
+            AnnotatedSentence sentence = (AnnotatedSentence) corpus.getSentence(i);
+            for (int j = 0; j < sentence.wordCount(); j++){
+                if (((AnnotatedWord)sentence.getWord(j)).getSemantic() != null){
+                    totalAnnotated++;
+                }
+            }
+            totalWord += sentence.wordCount();
+        }
+        System.out.println(totalAnnotated / (totalWord + 0.0));
+    }
+
     public void testConvert1(){
-        AnnotatedCorpus corpus = new AnnotatedCorpus(new File("../../Penn-Treebank/Turkish-Phrase/"));
-        corpus.exportUniversalDependencyFormat("uv1.txt");
+        AnnotatedCorpus corpus = new AnnotatedCorpus(new File("../../Penn-Treebank/Turkish-Phrase/"), ".dev");
+        corpus.exportUniversalDependencyFormat("uv1-dev.txt");
     }
 
     public void testConvert2(){

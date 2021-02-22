@@ -38,6 +38,13 @@ public class AnnotatedCorpus extends Corpus{
         }
     }
 
+    public AnnotatedCorpus(File folder, String pattern, int from, int to){
+        sentences = new ArrayList();
+        for (int i = from; i <= to; i++){
+            sentences.add(new AnnotatedSentence(new File(folder.getAbsolutePath() + "/" + String.format("%04d", i) + pattern)));
+        }
+    }
+
     /**
      * A constructor of {@link AnnotatedCorpus} class which reads all {@link AnnotatedSentence} files inside the given
      * folder. For each file inside that folder, the constructor creates an AnnotatedSentence and puts in inside the

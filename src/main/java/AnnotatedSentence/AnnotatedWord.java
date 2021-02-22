@@ -10,12 +10,12 @@ import MorphologicalAnalysis.MorphologicalParse;
 import MorphologicalAnalysis.MorphologicalTag;
 import NamedEntityRecognition.Gazetteer;
 import NamedEntityRecognition.NamedEntityType;
+import NamedEntityRecognition.Slot;
 import PropBank.Argument;
 
 import java.awt.*;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Locale;
 
 public class AnnotatedWord extends Word implements Serializable{
@@ -27,6 +27,7 @@ public class AnnotatedWord extends Word implements Serializable{
     private FrameElement frameElement;
     private UniversalDependencyRelation universalDependency;
     private String shallowParse;
+    private Slot slot;
     private Rectangle area;
     private boolean selected = false;
 
@@ -73,6 +74,10 @@ public class AnnotatedWord extends Word implements Serializable{
                                         } else {
                                             if (layerType.equalsIgnoreCase("framenet")){
                                                 frameElement = new FrameElement(layerValue);
+                                            } else {
+                                                if (layerType.equalsIgnoreCase("slot")){
+                                                    slot = new Slot(layerValue);
+                                                }
                                             }
                                         }
                                     }
@@ -116,6 +121,9 @@ public class AnnotatedWord extends Word implements Serializable{
         if (universalDependency != null){
             result = result + "{universalDependency=" + universalDependency.to() + "$" + universalDependency.toString() + "}";
         }
+        if (slot != null){
+            result = result + "{slot=" + slot.toString() + "}";
+        }
         return result;
     }
 
@@ -134,6 +142,7 @@ public class AnnotatedWord extends Word implements Serializable{
         shallowParse = null;
         universalDependency = null;
         frameElement = null;
+        slot = null;
     }
 
     /**
@@ -151,6 +160,7 @@ public class AnnotatedWord extends Word implements Serializable{
         shallowParse = null;
         universalDependency = null;
         frameElement = null;
+        slot = null;
     }
 
     /**
@@ -168,6 +178,7 @@ public class AnnotatedWord extends Word implements Serializable{
         shallowParse = null;
         universalDependency = null;
         frameElement = null;
+        slot = null;
     }
 
     /**
@@ -211,6 +222,11 @@ public class AnnotatedWord extends Word implements Serializable{
             case FRAMENET:
                 if (frameElement != null){
                     return frameElement.toString();
+                }
+                break;
+            case SLOT:
+                if (slot != null){
+                    return slot.toString();
                 }
                 break;
         }
@@ -309,15 +325,43 @@ public class AnnotatedWord extends Word implements Serializable{
         }
     }
 
+    /**
+     * Returns the frameNet layer of the word.
+     * @return FrameNet tag of the word.
+     */
     public FrameElement getFrameElement(){
         return frameElement;
     }
 
+    /**
+     * Sets the framenet layer of the word.
+     * @param frameElement New frame element tag of the word.
+     */
     public void setFrameElement(String frameElement){
         if (frameElement != null){
             this.frameElement = new FrameElement(frameElement);
         } else {
             this.frameElement = null;
+        }
+    }
+
+    /**
+     * Returns the slot filling layer of the word.
+     * @return Slot tag of the word.
+     */
+    public Slot getSlot(){
+        return slot;
+    }
+
+    /**
+     * Sets the slot filling layer of the word.
+     * @param slot New slot tag of the word.
+     */
+    public void setSlot(String slot){
+        if (slot != null){
+            this.slot = new Slot(slot);
+        } else {
+            this.slot = null;
         }
     }
 
