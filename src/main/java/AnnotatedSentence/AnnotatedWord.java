@@ -404,8 +404,9 @@ public class AnnotatedWord extends Word implements Serializable{
 
     public String getUniversalDependencyFormat(int sentenceLength){
         if (parse != null){
-            String result = name + "\t" + parse.getWord().getName() + "\t" + parse.getUniversalDependencyPos() + "\t_\t";
-            ArrayList<String> features = parse.getUniversalDependencyFeatures();
+            String uPos = parse.getUniversalDependencyPos();
+            String result = name + "\t" + parse.getWord().getName() + "\t" + uPos + "\t_\t";
+            ArrayList<String> features = parse.getUniversalDependencyFeatures(uPos);
             if (features.size() == 0){
                 result = result + "_";
             } else {
