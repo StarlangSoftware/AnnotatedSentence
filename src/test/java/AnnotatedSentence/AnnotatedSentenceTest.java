@@ -41,40 +41,45 @@ public class AnnotatedSentenceTest {
         System.out.println(totalAnnotated / (totalWord + 0.0));
     }
 
-    public void testConvert1(){
-        AnnotatedCorpus corpus = new AnnotatedCorpus(new File("../../Penn-Treebank/Turkish-Phrase/"), ".dev");
-        corpus.exportUniversalDependencyFormat("uv1-dev.txt");
+    public void testConvertUdPenn(){
+        AnnotatedCorpus corpus = new AnnotatedCorpus(new File("../../Penn-Treebank/Turkish-Phrase/"), ".train");
+        corpus.exportUniversalDependencyFormat("tr_penn-ud-train.conllu");
+        corpus = new AnnotatedCorpus(new File("../../Penn-Treebank/Turkish-Phrase/"), ".test");
+        corpus.exportUniversalDependencyFormat("tr_penn-ud-test.conllu");
+        corpus = new AnnotatedCorpus(new File("../../Penn-Treebank/Turkish-Phrase/"), ".dev");
+        corpus.exportUniversalDependencyFormat("tr_penn-ud-dev.conllu");
     }
 
-    public void testConvert2(){
-        AnnotatedCorpus corpus = new AnnotatedCorpus(new File("../../Penn-Treebank/Turkish-Phrase2/"));
-        corpus.exportUniversalDependencyFormat("uv2.txt");
-    }
-
-    public void testConvert3(){
-        AnnotatedCorpus corpus = new AnnotatedCorpus(new File("../../Penn-Treebank-20/Turkish-Phrase/"));
-        corpus.exportUniversalDependencyFormat("uv3.txt");
-    }
-
-    public void testConvert4(){
+    public void testConvertUdTourism(){
         AnnotatedCorpus corpus = new AnnotatedCorpus(new File("../../Etstur/Turkish-Phrase/"), ".train");
-        corpus.exportUniversalDependencyFormat("uv4.txt");
+        corpus.exportUniversalDependencyFormat("tr_tourism-ud-train.conllu");
+        corpus = new AnnotatedCorpus(new File("../../Etstur/Turkish-Phrase/"), ".test");
+        corpus.exportUniversalDependencyFormat("tr_tourism-ud-test.conllu");
     }
 
-    public void testConvert5(){
-        AnnotatedCorpus corpus = new AnnotatedCorpus(new File("../../Etstur/Turkish-Phrase/"), ".test");
-        corpus.exportUniversalDependencyFormat("uv5.txt");
-    }
-
-    public void testConvert6(){
+    public void testConvertUdFramenet(){
         File[] listOfFiles = new File("../../FrameNet-Examples/Turkish-Phrase/").listFiles();
         for (File file:listOfFiles) {
             if (file.isDirectory()){
                 String fileName = file.getName();
-                AnnotatedCorpus corpus = new AnnotatedCorpus(new File("../../FrameNet-Examples/Turkish-Phrase/" + fileName), ".dev");
-                corpus.exportUniversalDependencyFormat("uv-" + fileName + ".txt", fileName + "-");
+                AnnotatedCorpus corpus = new AnnotatedCorpus(new File("../../FrameNet-Examples/Turkish-Phrase/" + fileName), ".train");
+                corpus.exportUniversalDependencyFormat("tr_framenet-ud-train.conllu", fileName + "-");
+                corpus = new AnnotatedCorpus(new File("../../FrameNet-Examples/Turkish-Phrase/" + fileName), ".test");
+                corpus.exportUniversalDependencyFormat("tr_framenet-ud-test.conllu", fileName + "-");
+                corpus = new AnnotatedCorpus(new File("../../FrameNet-Examples/Turkish-Phrase/" + fileName), ".dev");
+                corpus.exportUniversalDependencyFormat("tr_framenet-ud-dev.conllu", fileName + "-");
             }
         }
+    }
+
+    public void testConvert1(){
+        AnnotatedCorpus corpus = new AnnotatedCorpus(new File("../../Penn-Treebank/Turkish-Phrase2/"));
+        corpus.exportUniversalDependencyFormat("uv2.txt");
+    }
+
+    public void testConvert2(){
+        AnnotatedCorpus corpus = new AnnotatedCorpus(new File("../../Penn-Treebank-20/Turkish-Phrase/"));
+        corpus.exportUniversalDependencyFormat("uv3.txt");
     }
 
     @Test

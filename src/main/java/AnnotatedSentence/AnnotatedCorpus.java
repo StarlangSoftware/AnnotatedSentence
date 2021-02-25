@@ -92,13 +92,13 @@ public class AnnotatedCorpus extends Corpus{
 
     public void exportUniversalDependencyFormat(String outputFileName, String path){
         try {
-            PrintWriter output = new PrintWriter(outputFileName);
+            PrintWriter output = new PrintWriter(new FileWriter(outputFileName, true));
             for (int i = 0; i < sentenceCount(); i++){
                 AnnotatedSentence sentence = (AnnotatedSentence) getSentence(i);
-                output.write(sentence.getUniversalDependencyFormat(path));
+                output.append(sentence.getUniversalDependencyFormat(path));
             }
             output.close();
-        } catch (FileNotFoundException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
