@@ -12,6 +12,7 @@ import NamedEntityRecognition.Gazetteer;
 import NamedEntityRecognition.NamedEntityType;
 import NamedEntityRecognition.Slot;
 import PropBank.Argument;
+import SentiNet.PolarityType;
 
 import java.awt.*;
 import java.io.Serializable;
@@ -27,6 +28,7 @@ public class AnnotatedWord extends Word implements Serializable{
     private FrameElement frameElement;
     private UniversalDependencyRelation universalDependency;
     private String shallowParse;
+    private PolarityType polarity;
     private Slot slot;
     private Rectangle area;
     private boolean selected = false;
@@ -77,6 +79,10 @@ public class AnnotatedWord extends Word implements Serializable{
                                             } else {
                                                 if (layerType.equalsIgnoreCase("slot")){
                                                     slot = new Slot(layerValue);
+                                                } else {
+                                                    if (layerType.equalsIgnoreCase("polarity")){
+                                                        setPolarity(layerValue);
+                                                    }
                                                 }
                                             }
                                         }
@@ -124,6 +130,9 @@ public class AnnotatedWord extends Word implements Serializable{
         if (slot != null){
             result = result + "{slot=" + slot.toString() + "}";
         }
+        if (polarity != null){
+            result = result + "{polarity=" + polarity.toString() + "}";
+        }
         return result;
     }
 
@@ -143,6 +152,7 @@ public class AnnotatedWord extends Word implements Serializable{
         universalDependency = null;
         frameElement = null;
         slot = null;
+        polarity = null;
     }
 
     /**
@@ -161,6 +171,7 @@ public class AnnotatedWord extends Word implements Serializable{
         universalDependency = null;
         frameElement = null;
         slot = null;
+        polarity = null;
     }
 
     /**
@@ -179,6 +190,7 @@ public class AnnotatedWord extends Word implements Serializable{
         universalDependency = null;
         frameElement = null;
         slot = null;
+        polarity = null;
     }
 
     /**
@@ -227,6 +239,11 @@ public class AnnotatedWord extends Word implements Serializable{
             case SLOT:
                 if (slot != null){
                     return slot.toString();
+                }
+                break;
+            case POLARITY:
+                if (polarity != null){
+                    return polarity.toString();
                 }
                 break;
         }
@@ -360,6 +377,37 @@ public class AnnotatedWord extends Word implements Serializable{
     public void setSlot(String slot){
         if (slot != null){
             this.slot = new Slot(slot);
+        } else {
+            this.slot = null;
+        }
+    }
+
+    /**
+     * Returns the polarity layer of the word.
+     * @return Slot tag of the word.
+     */
+    public PolarityType getPolarity(){
+        return polarity;
+    }
+
+    /**
+     * Sets the polarity layer of the word.
+     * @param polarity New polarity tag of the word.
+     */
+    public void setPolarity(String polarity){
+        if (polarity != null){
+            switch (polarity.toLowerCase()){
+                case "positive":
+                case "pos":
+                    this.polarity = PolarityType.POSITIVE;
+                    break;
+                case "negative":
+                case "neg":
+                    this.polarity = PolarityType.NEGATIVE;
+                    break;
+                default:
+                    this.polarity = PolarityType.NEUTRAL;
+            }
         } else {
             this.slot = null;
         }
