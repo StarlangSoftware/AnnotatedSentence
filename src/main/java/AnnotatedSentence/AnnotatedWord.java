@@ -384,7 +384,7 @@ public class AnnotatedWord extends Word implements Serializable{
 
     /**
      * Returns the polarity layer of the word.
-     * @return Slot tag of the word.
+     * @return Polarity tag of the word.
      */
     public PolarityType getPolarity(){
         return polarity;
@@ -392,7 +392,7 @@ public class AnnotatedWord extends Word implements Serializable{
 
     /**
      * Returns the polarity layer of the word.
-     * @return Slot tag of the word.
+     * @return Polarity string of the word.
      */
     public String getPolarityString(){
         switch (polarity){
