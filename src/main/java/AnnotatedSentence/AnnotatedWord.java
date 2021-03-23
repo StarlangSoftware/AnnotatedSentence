@@ -426,7 +426,7 @@ public class AnnotatedWord extends Word implements Serializable{
                     this.polarity = PolarityType.NEUTRAL;
             }
         } else {
-            this.slot = null;
+            this.polarity = null;
         }
     }
 
