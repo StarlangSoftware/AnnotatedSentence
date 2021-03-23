@@ -131,7 +131,7 @@ public class AnnotatedWord extends Word implements Serializable{
             result = result + "{slot=" + slot.toString() + "}";
         }
         if (polarity != null){
-            result = result + "{polarity=" + polarity.toString() + "}";
+            result = result + "{polarity=" + getPolarityString() + "}";
         }
         return result;
     }
@@ -243,7 +243,7 @@ public class AnnotatedWord extends Word implements Serializable{
                 break;
             case POLARITY:
                 if (polarity != null){
-                    return polarity.toString();
+                    return getPolarityString();
                 }
                 break;
         }
@@ -388,6 +388,23 @@ public class AnnotatedWord extends Word implements Serializable{
      */
     public PolarityType getPolarity(){
         return polarity;
+    }
+
+    /**
+     * Returns the polarity layer of the word.
+     * @return Slot tag of the word.
+     */
+    public String getPolarityString(){
+        switch (polarity){
+            case POSITIVE:
+                return "positive";
+            case NEGATIVE:
+                return "negative";
+            case NEUTRAL:
+                return "neutral";
+            default:
+                return "neutral";
+        }
     }
 
     /**
