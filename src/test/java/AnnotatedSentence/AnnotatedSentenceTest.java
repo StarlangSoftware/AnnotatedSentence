@@ -57,6 +57,13 @@ public class AnnotatedSentenceTest {
         corpus.exportUniversalDependencyFormat("tr_tourism-ud-test.conllu");
     }
 
+    public void testConvertUdKeNet(){
+        AnnotatedCorpus corpus = new AnnotatedCorpus(new File("../../Kenet-Examples/Turkish-Phrase/"), ".train");
+        corpus.exportUniversalDependencyFormat("tr_kenet-ud-train.conllu");
+        corpus = new AnnotatedCorpus(new File("../../Kenet-Examples/Turkish-Phrase/"), ".test");
+        corpus.exportUniversalDependencyFormat("tr_kenet-ud-test.conllu");
+    }
+
     public void testConvertUdFramenet(){
         File[] listOfFiles = new File("../../FrameNet-Examples/Turkish-Phrase/").listFiles();
         for (File file:listOfFiles) {

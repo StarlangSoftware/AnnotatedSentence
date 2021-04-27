@@ -1,14 +1,12 @@
 package AnnotatedSentence;
 
 import Corpus.Corpus;
-import DataStructure.CounterHashMap;
 import Dictionary.*;
 import MorphologicalAnalysis.*;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 
 public class AnnotatedCorpus extends Corpus{
 
