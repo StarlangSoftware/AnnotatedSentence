@@ -93,7 +93,9 @@ public class AnnotatedCorpus extends Corpus{
             PrintWriter output = new PrintWriter(new FileWriter(outputFileName, true));
             for (int i = 0; i < sentenceCount(); i++){
                 AnnotatedSentence sentence = (AnnotatedSentence) getSentence(i);
-                output.append(sentence.getUniversalDependencyFormat(path));
+                if (sentence.wordCount() > 0){
+                    output.append(sentence.getUniversalDependencyFormat(path));
+                }
             }
             output.close();
         } catch (IOException e) {
@@ -106,7 +108,9 @@ public class AnnotatedCorpus extends Corpus{
             PrintWriter output = new PrintWriter(outputFileName);
             for (int i = 0; i < sentenceCount(); i++){
                 AnnotatedSentence sentence = (AnnotatedSentence) getSentence(i);
-                output.write(sentence.getUniversalDependencyFormat());
+                if (sentence.wordCount() > 0){
+                    output.write(sentence.getUniversalDependencyFormat());
+                }
             }
             output.close();
         } catch (FileNotFoundException e) {

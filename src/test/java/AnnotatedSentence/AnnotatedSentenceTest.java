@@ -51,16 +51,24 @@ public class AnnotatedSentenceTest {
     }
 
     public void testConvertUdTourism(){
-        AnnotatedCorpus corpus = new AnnotatedCorpus(new File("../../Etstur/Turkish-Phrase/"), ".train");
+        AnnotatedCorpus corpus = new AnnotatedCorpus(new File("../../Etstur/Turkish-Phrase/"), ".train", 0, 7749);
+        AnnotatedCorpus corpus2 = new AnnotatedCorpus(new File("../../Etstur/Turkish-Phrase/"), ".test", 0, 7749);
+        corpus.combine(corpus2);
         corpus.exportUniversalDependencyFormat("tr_tourism-ud-train.conllu");
-        corpus = new AnnotatedCorpus(new File("../../Etstur/Turkish-Phrase/"), ".test");
+        corpus = new AnnotatedCorpus(new File("../../Etstur/Turkish-Phrase/"), ".train", 7750, 9999);
+        corpus.exportUniversalDependencyFormat("tr_tourism-ud-dev.conllu");
+        corpus = new AnnotatedCorpus(new File("../../Etstur/Turkish-Phrase/"), ".test", 7750, 9999);
         corpus.exportUniversalDependencyFormat("tr_tourism-ud-test.conllu");
     }
 
     public void testConvertUdKeNet(){
-        AnnotatedCorpus corpus = new AnnotatedCorpus(new File("../../Kenet-Examples/Turkish-Phrase/"), ".train");
+        AnnotatedCorpus corpus = new AnnotatedCorpus(new File("../../Kenet-Examples/Turkish-Phrase/"), ".train", 1, 7699);
+        AnnotatedCorpus corpus2 = new AnnotatedCorpus(new File("../../Kenet-Examples/Turkish-Phrase/"), ".test", 1, 7699);
+        corpus.combine(corpus2);
         corpus.exportUniversalDependencyFormat("tr_kenet-ud-train.conllu");
-        corpus = new AnnotatedCorpus(new File("../../Kenet-Examples/Turkish-Phrase/"), ".test");
+        corpus = new AnnotatedCorpus(new File("../../Kenet-Examples/Turkish-Phrase/"), ".train", 7700, 9345);
+        corpus.exportUniversalDependencyFormat("tr_kenet-ud-dev.conllu");
+        corpus = new AnnotatedCorpus(new File("../../Kenet-Examples/Turkish-Phrase/"), ".test", 7700, 9342);
         corpus.exportUniversalDependencyFormat("tr_kenet-ud-test.conllu");
     }
 
