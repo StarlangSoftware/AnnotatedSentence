@@ -6,7 +6,7 @@
 
     <groupId>io.github.starlangsoftware</groupId>
     <artifactId>AnnotatedSentence</artifactId>
-    <version>1.0.27</version>
+    <version>1.0.28</version>
     <packaging>jar</packaging>
 
     <name>NlpToolkit.AnnotatedSentence</name>
@@ -49,23 +49,8 @@
     <dependencies>
         <dependency>
             <groupId>io.github.starlangsoftware</groupId>
-            <artifactId>Corpus</artifactId>
-            <version>1.0.2</version>
-        </dependency>
-        <dependency>
-            <groupId>io.github.starlangsoftware</groupId>
-            <artifactId>Dictionary</artifactId>
-            <version>1.0.21</version>
-        </dependency>
-        <dependency>
-            <groupId>io.github.starlangsoftware</groupId>
             <artifactId>FrameNet</artifactId>
             <version>1.0.6</version>
-        </dependency>
-        <dependency>
-            <groupId>io.github.starlangsoftware</groupId>
-            <artifactId>MorphologicalAnalysis</artifactId>
-            <version>1.0.38</version>
         </dependency>
         <dependency>
             <groupId>io.github.starlangsoftware</groupId>
@@ -75,12 +60,12 @@
         <dependency>
             <groupId>io.github.starlangsoftware</groupId>
             <artifactId>WordNet</artifactId>
-            <version>1.0.42</version>
+            <version>1.0.43</version>
         </dependency>
         <dependency>
             <groupId>io.github.starlangsoftware</groupId>
             <artifactId>NamedEntityRecognition</artifactId>
-            <version>1.0.5</version>
+            <version>1.0.6</version>
         </dependency>
         <dependency>
             <groupId>io.github.starlangsoftware</groupId>
@@ -89,13 +74,8 @@
         </dependency>
         <dependency>
             <groupId>io.github.starlangsoftware</groupId>
-            <artifactId>DataStructure</artifactId>
-            <version>1.0.4</version>
-        </dependency>
-        <dependency>
-            <groupId>io.github.starlangsoftware</groupId>
             <artifactId>DependencyParser</artifactId>
-            <version>1.0.14</version>
+            <version>1.0.15</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
