@@ -30,6 +30,7 @@ public class AnnotatedWord extends Word implements Serializable{
     private String shallowParse;
     private PolarityType polarity;
     private Slot slot;
+    private String ccg;
     private Rectangle area;
     private boolean selected = false;
 
@@ -82,6 +83,10 @@ public class AnnotatedWord extends Word implements Serializable{
                                                 } else {
                                                     if (layerType.equalsIgnoreCase("polarity")){
                                                         setPolarity(layerValue);
+                                                    } else {
+                                                        if (layerType.equalsIgnoreCase("ccg")) {
+                                                            ccg = layerValue;
+                                                        }
                                                     }
                                                 }
                                             }
@@ -133,6 +138,9 @@ public class AnnotatedWord extends Word implements Serializable{
         if (polarity != null){
             result = result + "{polarity=" + getPolarityString() + "}";
         }
+        if (ccg != null) {
+            result = result + "{ccg=" + ccg + "}";
+        }
         return result;
     }
 
@@ -153,6 +161,7 @@ public class AnnotatedWord extends Word implements Serializable{
         frameElement = null;
         slot = null;
         polarity = null;
+        ccg = null;
     }
 
     /**
@@ -172,6 +181,7 @@ public class AnnotatedWord extends Word implements Serializable{
         frameElement = null;
         slot = null;
         polarity = null;
+        ccg = null;
     }
 
     /**
@@ -191,6 +201,7 @@ public class AnnotatedWord extends Word implements Serializable{
         frameElement = null;
         slot = null;
         polarity = null;
+        ccg = null;
     }
 
     /**
@@ -244,6 +255,11 @@ public class AnnotatedWord extends Word implements Serializable{
             case POLARITY:
                 if (polarity != null){
                     return getPolarityString();
+                }
+                break;
+            case CCG:
+                if (ccg != null) {
+                    return ccg;
                 }
                 break;
         }
@@ -505,6 +521,22 @@ public class AnnotatedWord extends Word implements Serializable{
             default:
                 return name;
         }
+    }
+
+    /**
+     * Returns the CCG layer of the word.
+     * @return CCG string of the word.
+     */
+    public String getCcg() {
+        return ccg;
+    }
+
+    /**
+     * Sets the CCG layer of the word.
+     * @param ccg New CCG of the word.
+     */
+    public void setCcg(String ccg) {
+        this.ccg = ccg;
     }
 
     /**
