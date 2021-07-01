@@ -20,6 +20,17 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 public class AnnotatedWord extends Word implements Serializable{
+    /**
+     * In order to add another layer, do the following:
+     * 1. Select a name for the layer.
+     * 2. Add a new constant to ViewLayerType.
+     * 3. Add private attribute.
+     * 4. Add an if-else to the constructor, where you set the private attribute with the layer name.
+     * 5. Update toString method.
+     * 6. Add initial value to the private attribute in other constructors.
+     * 7. Update getLayerInfo.
+     * 8. Add getter and setter methods.
+     */
     private MorphologicalParse parse;
     private MetamorphicParse metamorphicParse;
     private String semantic;
