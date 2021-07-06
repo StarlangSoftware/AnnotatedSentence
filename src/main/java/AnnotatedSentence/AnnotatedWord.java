@@ -42,6 +42,7 @@ public class AnnotatedWord extends Word implements Serializable{
     private PolarityType polarity;
     private Slot slot;
     private String ccg;
+    private String posTag;
     private Rectangle area;
     private boolean selected = false;
 
@@ -97,6 +98,10 @@ public class AnnotatedWord extends Word implements Serializable{
                                                     } else {
                                                         if (layerType.equalsIgnoreCase("ccg")) {
                                                             ccg = layerValue;
+                                                        } else {
+                                                            if (layerType.equalsIgnoreCase("posTag")){
+                                                                posTag = layerValue;
+                                                            }
                                                         }
                                                     }
                                                 }
@@ -152,6 +157,9 @@ public class AnnotatedWord extends Word implements Serializable{
         if (ccg != null) {
             result = result + "{ccg=" + ccg + "}";
         }
+        if (posTag != null) {
+            result = result + "{posTag=" + posTag + "}";
+        }
         return result;
     }
 
@@ -173,6 +181,7 @@ public class AnnotatedWord extends Word implements Serializable{
         slot = null;
         polarity = null;
         ccg = null;
+        posTag = null;
     }
 
     /**
@@ -193,6 +202,7 @@ public class AnnotatedWord extends Word implements Serializable{
         slot = null;
         polarity = null;
         ccg = null;
+        posTag = null;
     }
 
     /**
@@ -213,6 +223,7 @@ public class AnnotatedWord extends Word implements Serializable{
         slot = null;
         polarity = null;
         ccg = null;
+        posTag = null;
     }
 
     /**
@@ -271,6 +282,11 @@ public class AnnotatedWord extends Word implements Serializable{
             case CCG:
                 if (ccg != null) {
                     return ccg;
+                }
+                break;
+            case POS_TAG:
+                if (posTag != null) {
+                    return posTag;
                 }
                 break;
         }
@@ -548,6 +564,22 @@ public class AnnotatedWord extends Word implements Serializable{
      */
     public void setCcg(String ccg) {
         this.ccg = ccg;
+    }
+
+    /**
+     * Returns the posTag layer of the word.
+     * @return posTag string of the word.
+     */
+    public String getPosTag() {
+        return posTag;
+    }
+
+    /**
+     * Sets the posTag layer of the word.
+     * @param posTag New posTag of the word.
+     */
+    public void setPosTag(String posTag) {
+        this.posTag = posTag;
     }
 
     /**
