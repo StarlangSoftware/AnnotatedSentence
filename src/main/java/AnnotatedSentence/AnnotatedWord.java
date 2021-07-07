@@ -44,6 +44,7 @@ public class AnnotatedWord extends Word implements Serializable{
     private String ccg;
     private String posTag;
     private Rectangle area;
+    private Language language;
     private boolean selected = false;
 
     /**
@@ -62,8 +63,10 @@ public class AnnotatedWord extends Word implements Serializable{
             }
             String layerType = layer.substring(0, layer.indexOf("="));
             String layerValue = layer.substring(layer.indexOf("=") + 1);
-            if (layerType.equalsIgnoreCase("turkish")){
+            if (layerType.equalsIgnoreCase("turkish") || layerType.equalsIgnoreCase("english")
+                    || layerType.equalsIgnoreCase("persian")){
                 name = layerValue;
+                language = getLanguageFromString(layerType);
             } else {
                 if (layerType.equalsIgnoreCase("morphologicalAnalysis")){
                     parse = new MorphologicalParse(layerValue);
@@ -123,7 +126,19 @@ public class AnnotatedWord extends Word implements Serializable{
      * @return String form of the {@link AnnotatedWord}.
      */
     public String toString(){
-        String result = "{turkish=" + name + "}";
+        String result;
+        switch (language){
+            case TURKISH:
+            default:
+                result = "{turkish=" + name + "}";
+                break;
+            case ENGLISH:
+                result = "{english=" + name + "}";
+                break;
+            case PERSIAN:
+                result = "{persian=" + name + "}";
+                break;
+        }
         if (parse != null){
             result = result + "{morphologicalAnalysis=" + parse.toString() + "}";
         }
@@ -622,6 +637,34 @@ public class AnnotatedWord extends Word implements Serializable{
         if (wordLowercase.contains("'") && gazetteer.contains(wordLowercase.substring(0, wordLowercase.indexOf("'"))) && parse.containsTag(MorphologicalTag.PROPERNOUN)){
             setNamedEntityType(gazetteer.getName());
         }
+    }
+
+    /**
+     * Converts a language string to language.
+     * @param languageString String defining the language name.
+     * @return Language corresponding to the languageString.
+     */
+    private Language getLanguageFromString(String languageString){
+        switch (languageString){
+            case "turkish":
+            case "Turkish":
+                return Language.TURKISH;
+            case "english":
+            case "English":
+                return Language.ENGLISH;
+            case "persian":
+            case "Persian":
+                return Language.PERSIAN;
+        }
+        return Language.TURKISH;
+    }
+
+    /**
+     * Returns the language of the word.
+     * @return The language of the word.
+     */
+    public Language getLanguage(){
+        return language;
     }
 
 }
