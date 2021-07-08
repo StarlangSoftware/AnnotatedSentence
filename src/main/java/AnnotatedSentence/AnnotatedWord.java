@@ -44,7 +44,7 @@ public class AnnotatedWord extends Word implements Serializable{
     private String ccg;
     private String posTag;
     private Rectangle area;
-    private Language language;
+    private Language language = Language.TURKISH;
     private boolean selected = false;
 
     /**
