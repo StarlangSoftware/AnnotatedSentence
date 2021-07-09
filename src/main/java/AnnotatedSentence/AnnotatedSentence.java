@@ -398,7 +398,7 @@ public class AnnotatedSentence extends Sentence{
         }
         for (int i = 0; i < wordCount(); i++){
             AnnotatedWord word = (AnnotatedWord) getWord(i);
-            if (word.getParse() == null){
+            if (word.getUniversalDependencyPos() == null){
                 errorList.add(new DependencyError(DependencyErrorType.NO_MORPHOLOGICAL_ANALYSIS, i + 1, "", ""));
             }
             if (word.getUniversalDependency() != null){
@@ -418,8 +418,8 @@ public class AnnotatedSentence extends Sentence{
                 if (from > to && from > to + 1 && dependency.equals("GOESWITH")){
                     errorList.add(new DependencyError(DependencyErrorType.GAPS_IN_GOESWITH, from, "", ""));
                 }
-                if (word.getParse() != null){
-                    String universalPos = word.getParse().getUniversalDependencyPos();
+                if (word.getUniversalDependencyPos() != null){
+                    String universalPos = word.getUniversalDependencyPos();
                     if (!checkDependencyWithUniversalPosTag(dependency, universalPos)){
                         errorList.add(new DependencyError(DependencyErrorType.SHOULDNT_BE_OF_POS, from, dependency, universalPos));
                     }
@@ -429,7 +429,7 @@ public class AnnotatedSentence extends Sentence{
                     if (toWord.getUniversalDependency() != null){
                         String toDependency = toWord.getUniversalDependency().toString();
                         if (toDependency.equals("AUX") || toDependency.equals("COP") || toDependency.equals("CC") ||
-                                toDependency.equals("FIXED") || toDependency.equals("GOESTWITH") || toDependency.equals("CASE") ||
+                                toDependency.equals("FIXED") || toDependency.equals("GOESWITH") || toDependency.equals("CASE") ||
                                 toDependency.equals("MARK") || toDependency.equals("PUNCT")){
                             errorList.add(new DependencyError(DependencyErrorType.NOT_EXPECTED_TO_HAVE_CHILDREN, from, toDependency, ""));
                         }

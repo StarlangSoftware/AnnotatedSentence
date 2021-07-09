@@ -525,11 +525,218 @@ public class AnnotatedWord extends Word implements Serializable{
         }
     }
 
+    public String getUniversalDependencyPos(){
+        if (language == Language.TURKISH && parse != null){
+            return parse.getUniversalDependencyPos();
+        } else {
+            if (language == Language.ENGLISH && posTag != null){
+                switch (posTag){
+                    case "#":
+                    case "$":
+                    case "SYM":
+                        return "SYM";
+                    case "\"":
+                    case ",":
+                    case "-LRB-":
+                    case "-RRB-":
+                    case ".":
+                    case ":":
+                    case "``":
+                    case "HYPH":
+                        return "PUNCT";
+                    case "AFX":
+                    case "JJ":
+                    case "JJR":
+                    case "JJS":
+                        return "ADJ";
+                    case "CC":
+                        return "CCONJ";
+                    case "CD":
+                        return "NUM";
+                    case "DT":
+                    case "PDT":
+                    case "PRP$":
+                    case "WDT":
+                    case "WP$":
+                        return "DET";
+                    case "IN":
+                    case "RP":
+                        return "ADP";
+                    case "FW":
+                    case "LS":
+                    case "NIL":
+                        return "X";
+                    case "MD":
+                    case "VB":
+                    case "VBD":
+                    case "VBG":
+                    case "VBN":
+                    case "VBP":
+                    case "VBZ":
+                        return "VERB";
+                    case "NN":
+                    case "NNS":
+                        return "NOUN";
+                    case "NNP":
+                    case "NNPS":
+                        return "PROPN";
+                    case "POS":
+                    case "TO":
+                        return "PART";
+                    case "EX":
+                    case "PRP":
+                    case "WP":
+                        return "PRON";
+                    case "RB":
+                    case "RBR":
+                    case "RBS":
+                    case "WRB":
+                        return "ADV";
+                    case "UH":
+                        return "INTJ";
+                }
+            }
+        }
+        return null;
+    }
+
+    public ArrayList<String> getUniversalDependencyFeatures(){
+        ArrayList<String> featureList = new ArrayList<>();
+        if (language == Language.TURKISH && parse != null){
+            return parse.getUniversalDependencyFeatures(parse.getUniversalDependencyPos());
+        } else {
+            if (language == Language.ENGLISH && posTag != null) {
+                switch (posTag){
+                    case "\"":
+                        featureList.add("PunctSide=Fin");
+                        featureList.add("PunctType=Quot");
+                        break;
+                    case ",":
+                        featureList.add("PunctType=Comm");
+                        break;
+                    case "-LRB-":
+                        featureList.add("PunctSide=Ini");
+                        featureList.add("PunctType=Brck");
+                        break;
+                    case "-RRB-":
+                        featureList.add("PunctSide=Fin");
+                        featureList.add("PunctType=Brck");
+                        break;
+                    case ".":
+                        featureList.add("PunctType=Peri");
+                        break;
+                    case "``":
+                        featureList.add("PunctSide=Ini");
+                        featureList.add("PunctType=Quot");
+                        break;
+                    case "HYPH":
+                        featureList.add("PunctType=Dash");
+                        break;
+                    case "AFX":
+                        featureList.add("Hyph=Yes");
+                        break;
+                    case "JJ":
+                    case "RB":
+                        featureList.add("Degree=Pos");
+                        break;
+                    case "JJR":
+                    case "RBR":
+                        featureList.add("Degree=Cmp");
+                        break;
+                    case "JJS":
+                    case "RBS":
+                        featureList.add("Degree=Sup");
+                        break;
+                    case "CD":
+                        featureList.add("NumType=Card");
+                        break;
+                    case "PDT":
+                        featureList.add("AdjType=Pdt");
+                        break;
+                    case "PRP$":
+                        featureList.add("Poss=Yes");
+                        featureList.add("PronType=Prs");
+                        break;
+                    case "WDT":
+                    case "WP":
+                    case "WRB":
+                        featureList.add("PronType=Int,Rel");
+                        break;
+                    case "WP$":
+                        featureList.add("Poss=Yes");
+                        featureList.add("PronType=Int,Rel");
+                        break;
+                    case "RP":
+                        featureList.add("PartType=Vbp");
+                        break;
+                    case "FW":
+                        featureList.add("Foreign=Yes");
+                        break;
+                    case "LS":
+                        featureList.add("NumType=Ord");
+                        break;
+                    case "MD":
+                        featureList.add("VerbType=Mod");
+                        break;
+                    case "VB":
+                        featureList.add("VerbForm=Inf");
+                        break;
+                    case "VBD":
+                        featureList.add("Tense=Past");
+                        featureList.add("VerbForm=Fin");
+                        break;
+                    case "VBG":
+                        featureList.add("Aspect=Prog");
+                        featureList.add("Tense=Pres");
+                        featureList.add("VerbForm=Part");
+                        break;
+                    case "VBN":
+                        featureList.add("Aspect=Perf");
+                        featureList.add("Tense=Past");
+                        featureList.add("VerbForm=Part");
+                        break;
+                    case "VBP":
+                        featureList.add("Tense=Pres");
+                        featureList.add("VerbForm=Fin");
+                        break;
+                    case "VBZ":
+                        featureList.add("Number=Sing");
+                        featureList.add("Person=3");
+                        featureList.add("Tense=Pres");
+                        featureList.add("VerbForm=Fin");
+                        break;
+                    case "NN":
+                    case "NNP":
+                        featureList.add("Number=Sing");
+                        break;
+                    case "NNS":
+                    case "NNPS":
+                        featureList.add("Number=Plur");
+                        break;
+                    case "POS":
+                        featureList.add("Poss=Yes");
+                        break;
+                    case "TO":
+                        featureList.add("PartType=Inf");
+                        featureList.add("VerbForm=Inf");
+                        break;
+                    case "EX":
+                        featureList.add("AdvType=Ex");
+                        break;
+                    case "PRP":
+                        featureList.add("PronType=Prs");
+                        break;
+                }
+            }
+        }
+        return featureList;
+    }
+
     public String getUniversalDependencyFormat(int sentenceLength){
-        if (parse != null){
-            String uPos = parse.getUniversalDependencyPos();
+        String uPos = getUniversalDependencyPos();
+        if (uPos != null){
             String result = name + "\t" + parse.getWord().getName() + "\t" + uPos + "\t_\t";
-            ArrayList<String> features = parse.getUniversalDependencyFeatures(uPos);
+            ArrayList<String> features = getUniversalDependencyFeatures();
             if (features.size() == 0){
                 result = result + "_";
             } else {
