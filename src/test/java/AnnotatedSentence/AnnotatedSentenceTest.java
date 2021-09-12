@@ -26,6 +26,10 @@ public class AnnotatedSentenceTest {
         sentence9 = new AnnotatedSentence(new File("sentences/0009.dev"));
     }
 
+    public void atisControl() {
+        AnnotatedCorpus corpus = new AnnotatedCorpus(new File("../../Atis/Turkish-Phrase/"));
+    }
+
     public void calculateGrade(){
         AnnotatedCorpus corpus = new AnnotatedCorpus(new File("../../Kenet-Examples/Turkish-Phrase/"), ".test", 5100, 5399);
         int totalWord = 0, totalAnnotated = 0;
