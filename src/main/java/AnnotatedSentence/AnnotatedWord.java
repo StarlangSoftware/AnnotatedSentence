@@ -574,6 +574,13 @@ public class AnnotatedWord extends Word implements Serializable{
                     case "VBP":
                     case "VBZ":
                         return "VERB";
+                    case "AUX:VB":
+                    case "AUX:VBD":
+                    case "AUX:VBG":
+                    case "AUX:VBN":
+                    case "AUX:VBP":
+                    case "AUX:VBZ":
+                        return "AUX";
                     case "NN":
                     case "NNS":
                         return "NOUN";
@@ -679,27 +686,33 @@ public class AnnotatedWord extends Word implements Serializable{
                         featureList.add("VerbType=Mod");
                         break;
                     case "VB":
+                    case "AUX:VB":
                         featureList.add("VerbForm=Inf");
                         break;
                     case "VBD":
+                    case "AUX:VBD":
                         featureList.add("Tense=Past");
                         featureList.add("VerbForm=Fin");
                         break;
                     case "VBG":
+                    case "AUX:VBG":
                         featureList.add("Aspect=Prog");
                         featureList.add("Tense=Pres");
                         featureList.add("VerbForm=Part");
                         break;
                     case "VBN":
+                    case "AUX:VBN":
                         featureList.add("Aspect=Perf");
                         featureList.add("Tense=Past");
                         featureList.add("VerbForm=Part");
                         break;
                     case "VBP":
+                    case "AUX:VBP":
                         featureList.add("Tense=Pres");
                         featureList.add("VerbForm=Fin");
                         break;
                     case "VBZ":
+                    case "AUX:VBZ":
                         featureList.add("Number=Sing");
                         featureList.add("Person=3");
                         featureList.add("Tense=Pres");
