@@ -566,7 +566,6 @@ public class AnnotatedWord extends Word implements Serializable{
                     case "LS":
                     case "NIL":
                         return "X";
-                    case "MD":
                     case "VB":
                     case "VBD":
                     case "VBG":
@@ -574,6 +573,7 @@ public class AnnotatedWord extends Word implements Serializable{
                     case "VBP":
                     case "VBZ":
                         return "VERB";
+                    case "MD":
                     case "AUX:VB":
                     case "AUX:VBD":
                     case "AUX:VBG":
