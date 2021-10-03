@@ -525,6 +525,11 @@ public class AnnotatedWord extends Word implements Serializable{
         }
     }
 
+    /**
+     * Returns the universal pos of the word.
+     * @return If the language is Turkish, it directly calls getUniversalDependencyPos of the parse. If the language
+     * is English, it returns pos according to the Penn tag of the current word.
+     */
     public String getUniversalDependencyPos(){
         if (language == Language.TURKISH && parse != null){
             return parse.getUniversalDependencyPos();
@@ -607,6 +612,11 @@ public class AnnotatedWord extends Word implements Serializable{
         return null;
     }
 
+    /**
+     * Returns the features of the universal dependency relation of the current word.
+     * @return If the language is Turkish, it calls getUniversalDependencyFeatures of the parse. If the language is
+     * English, it returns dependency features according to the Penn tag of the current word.
+     */
     public ArrayList<String> getUniversalDependencyFeatures(){
         ArrayList<String> featureList = new ArrayList<>();
         if (language == Language.TURKISH && parse != null){

@@ -282,6 +282,88 @@ public class AnnotatedSentence extends Sentence{
     }
 
     /**
+     * Creates a html string for the annotated sentence, where the dependency relation of the word with the give
+     * wordIndex is specified with color codes. The parameter word is drawn in red color, the dependent word is
+     * drawn in blue color.
+     * @param wordIndex The word for which the dependency relation will be displayed.
+     * @return Html string.
+     */
+    public String toDependencyString(int wordIndex) {
+        String sentenceString = "";
+        AnnotatedWord word = (AnnotatedWord) getWord(wordIndex);
+        for (int k = 0; k < words.size(); k++){
+            if (wordIndex == k){
+                sentenceString += " <b><font color=\"red\">" + words.get(k).getName() + "</font></b>";
+            } else {
+                if (k + 1 == word.getUniversalDependency().to()){
+                    sentenceString += " <b><font color=\"blue\">" + words.get(k).getName() + "</font></b>";
+                } else {
+                    sentenceString += " " + words.get(k).getName();
+                }
+            }
+        }
+        return sentenceString;
+    }
+
+    /**
+     * Creates a shallow parse string for the annotated sentence, where the shallow parse of the word with the give
+     * wordIndex and the surrounding words with the same shallow parse tag are specified with blue color.
+     * @param wordIndex The word for which the shallow parse tag will be displayed.
+     * @return Html string.
+     */
+    public String toShallowParseString(int wordIndex){
+        String sentenceString = "";
+        AnnotatedWord word = (AnnotatedWord) getWord(wordIndex);
+        int startIndex = wordIndex - 1;
+        while (startIndex >= 0 && ((AnnotatedWord) words.get(startIndex)).getShallowParse() != null && ((AnnotatedWord) words.get(startIndex)).getShallowParse().equals(word.getShallowParse())){
+            startIndex--;
+        }
+        startIndex++;
+        int endIndex = wordIndex + 1;
+        while (endIndex < words.size() && ((AnnotatedWord) words.get(endIndex)).getShallowParse() != null && ((AnnotatedWord) words.get(endIndex)).getShallowParse().equals(word.getShallowParse())){
+            endIndex++;
+        }
+        endIndex--;
+        for (int k = 0; k < words.size(); k++){
+            if (k >= startIndex && k <= endIndex){
+                sentenceString += " <b><font color=\"blue\">" + words.get(k).getName() + "</font></b>";
+            } else {
+                sentenceString += " " + words.get(k).getName();
+            }
+        }
+        return sentenceString;
+    }
+
+    /**
+     * Creates a html string for the annotated sentence, where the named entity of the word with the give
+     * wordIndex and the surrounding words with the same named entity tag are specified with blue color.
+     * @param wordIndex The word for which the named entity tag will be displayed.
+     * @return Html string.
+     */
+    public String toNamedEntityString(int wordIndex){
+        String sentenceString = "";
+        AnnotatedWord word = (AnnotatedWord) getWord(wordIndex);
+        int startIndex = wordIndex - 1;
+        while (startIndex >= 0 && ((AnnotatedWord) words.get(startIndex)).getNamedEntityType() != null && ((AnnotatedWord) words.get(startIndex)).getNamedEntityType().equals(word.getNamedEntityType())){
+            startIndex--;
+        }
+        startIndex++;
+        int endIndex = wordIndex + 1;
+        while (endIndex < words.size() && ((AnnotatedWord) words.get(endIndex)).getNamedEntityType() != null && ((AnnotatedWord) words.get(endIndex)).getNamedEntityType().equals(word.getNamedEntityType())){
+            endIndex++;
+        }
+        endIndex--;
+        for (int k = 0; k < words.size(); k++){
+            if (k >= startIndex && k <= endIndex){
+                sentenceString += " <b><font color=\"blue\">" + words.get(k).getName() + "</font></b>";
+            } else {
+                sentenceString += " " + words.get(k).getName();
+            }
+        }
+        return sentenceString;
+    }
+
+    /**
      * Saves the current sentence.
      */
     public void save(){
@@ -296,6 +378,12 @@ public class AnnotatedSentence extends Sentence{
         writeToFile(new File(fileName));
     }
 
+    /**
+     * Checks if there is an error with the dependency relation and the universal pos tag of the word.
+     * @param dependency Dependency tag of the dependency relation.
+     * @param universalPos Universal pos tag of the dependent word.
+     * @return True if there is no error, false if there is an error.
+     */
     public static boolean checkDependencyWithUniversalPosTag(String dependency, String universalPos){
         if (dependency.equals("ADVMOD")){
             if (!universalPos.equals("ADV") && !universalPos.equals("ADJ") && !universalPos.equals("CCONJ") &&
@@ -344,6 +432,13 @@ public class AnnotatedSentence extends Sentence{
         return true;
     }
 
+    /**
+     * Checks if there is a non-projectivity case between two words.
+     * @param from Index of the first word
+     * @param to Index of the second word
+     * @return True if there are no outgoing arcs to out of the group specified with indexes (from, to), false
+     * otherwise.
+     */
     public boolean checkForNonProjectivityOfPunctuation(int from, int to){
         int min = Math.min(from, to);
         int max = Math.max(from, to);
@@ -363,6 +458,10 @@ public class AnnotatedSentence extends Sentence{
         return true;
     }
 
+    /**
+     * Checks if there are multiple root words in the sentence or not.
+     * @return True if there are multiple roots, false otherwise.
+     */
     public boolean checkMultipleRoots(){
         int rootCount = 0;
         for (int i = 0; i < wordCount(); i++){
@@ -374,6 +473,10 @@ public class AnnotatedSentence extends Sentence{
         return rootCount <= 1;
     }
 
+    /**
+     * Checks if there are multiple subjects dependent to the root node.
+     * @return True if there are multiple subjects dependent to the root node. False otherwise.
+     */
     public boolean checkMultipleSubjects(){
         int subjectCount = 0;
         for (int i = 0; i < wordCount(); i++){
@@ -388,6 +491,10 @@ public class AnnotatedSentence extends Sentence{
         return subjectCount <= 1;
     }
 
+    /**
+     * Checks the annotated sentence for dependency errors, and returns them as a list.
+     * @return An arraylist of dependency annotation errors.
+     */
     public ArrayList<DependencyError> getDependencyErrors(){
         ArrayList<DependencyError> errorList = new ArrayList<>();
         if (!checkMultipleRoots()){
