@@ -45,13 +45,20 @@ public class AnnotatedSentenceTest {
         System.out.println(totalAnnotated / (totalWord + 0.0));
     }
 
+    @Test
     public void testConvertUdPenn(){
         AnnotatedCorpus corpus = new AnnotatedCorpus(new File("../../Penn-Treebank/Turkish-Phrase/"), ".train");
-        corpus.exportUniversalDependencyFormat("tr_penn-ud-train.conllu");
+        corpus.exportUniversalDependencyFormat("tr_penn-ud-train.conllu", "15-");
         corpus = new AnnotatedCorpus(new File("../../Penn-Treebank/Turkish-Phrase/"), ".test");
-        corpus.exportUniversalDependencyFormat("tr_penn-ud-test.conllu");
+        corpus.exportUniversalDependencyFormat("tr_penn-ud-test.conllu", "15-");
         corpus = new AnnotatedCorpus(new File("../../Penn-Treebank/Turkish-Phrase/"), ".dev");
-        corpus.exportUniversalDependencyFormat("tr_penn-ud-dev.conllu");
+        corpus.exportUniversalDependencyFormat("tr_penn-ud-dev.conllu", "15-");
+        corpus = new AnnotatedCorpus(new File("../../Penn-Treebank-20/Turkish-Phrase/"), ".train");
+        corpus.exportUniversalDependencyFormat("tr_penn-ud-train.conllu", "20-");
+        corpus = new AnnotatedCorpus(new File("../../Penn-Treebank-20/Turkish-Phrase/"), ".test");
+        corpus.exportUniversalDependencyFormat("tr_penn-ud-test.conllu", "20-");
+        corpus = new AnnotatedCorpus(new File("../../Penn-Treebank-20/Turkish-Phrase/"), ".dev");
+        corpus.exportUniversalDependencyFormat("tr_penn-ud-dev.conllu", "20-");
     }
 
     public void testConvertUdTourism(){
