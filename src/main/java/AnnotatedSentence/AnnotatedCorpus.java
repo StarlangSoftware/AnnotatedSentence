@@ -1,6 +1,7 @@
 package AnnotatedSentence;
 
 import Corpus.Corpus;
+import DependencyParser.ParserEvaluationScore;
 import Dictionary.*;
 import MorphologicalAnalysis.*;
 
@@ -86,6 +87,16 @@ public class AnnotatedCorpus extends Corpus{
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public ParserEvaluationScore compareParses(AnnotatedCorpus corpus){
+        ParserEvaluationScore result = new ParserEvaluationScore();
+        for (int i = 0; i < sentences.size(); i++){
+            AnnotatedSentence sentence1 = (AnnotatedSentence) sentences.get(i);
+            AnnotatedSentence sentence2 = (AnnotatedSentence) corpus.getSentence(i);
+            result.add(sentence1.compareParses(sentence2));
+        }
+        return result;
     }
 
     public void exportUniversalDependencyFormat(String outputFileName, String path){

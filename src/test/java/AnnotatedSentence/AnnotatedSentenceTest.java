@@ -26,10 +26,6 @@ public class AnnotatedSentenceTest {
         sentence9 = new AnnotatedSentence(new File("sentences/0009.dev"));
     }
 
-    public void atisControl() {
-        AnnotatedCorpus corpus = new AnnotatedCorpus(new File("../../Atis/Turkish-Phrase/"));
-    }
-
     public void calculateGrade(){
         AnnotatedCorpus corpus = new AnnotatedCorpus(new File("../../Kenet-Examples/Turkish-Phrase/"), ".test", 5100, 5399);
         int totalWord = 0, totalAnnotated = 0;
@@ -45,7 +41,24 @@ public class AnnotatedSentenceTest {
         System.out.println(totalAnnotated / (totalWord + 0.0));
     }
 
-    @Test
+    public void testConvertAtisEnglish() {
+        AnnotatedCorpus corpus = new AnnotatedCorpus(new File("../../Atis/English-Phrase/"), ".train");
+        corpus.exportUniversalDependencyFormat("en_atis-ud-train.conllu");
+        corpus = new AnnotatedCorpus(new File("../../Atis/English-Phrase/"), ".test");
+        corpus.exportUniversalDependencyFormat("en_atis-ud-test.conllu");
+        corpus = new AnnotatedCorpus(new File("../../Atis/English-Phrase/"), ".dev");
+        corpus.exportUniversalDependencyFormat("en_atis-ud-dev.conllu");
+    }
+
+    public void testConvertAtisTurkish() {
+        AnnotatedCorpus corpus = new AnnotatedCorpus(new File("../../Atis/Turkish-Phrase/"), ".train");
+        corpus.exportUniversalDependencyFormat("tr_atis-ud-train.conllu");
+        corpus = new AnnotatedCorpus(new File("../../Atis/Turkish-Phrase/"), ".test");
+        corpus.exportUniversalDependencyFormat("tr_atis-ud-test.conllu");
+        corpus = new AnnotatedCorpus(new File("../../Atis/Turkish-Phrase/"), ".dev");
+        corpus.exportUniversalDependencyFormat("tr_atis-ud-dev.conllu");
+    }
+
     public void testConvertUdPenn(){
         AnnotatedCorpus corpus = new AnnotatedCorpus(new File("../../Penn-Treebank/Turkish-Phrase/"), ".train");
         corpus.exportUniversalDependencyFormat("tr_penn-ud-train.conllu", "15-");
@@ -98,14 +111,11 @@ public class AnnotatedSentenceTest {
         }
     }
 
-    public void testConvert1(){
-        AnnotatedCorpus corpus = new AnnotatedCorpus(new File("../../Penn-Treebank/Turkish-Phrase2/"));
-        corpus.exportUniversalDependencyFormat("uv2.txt");
-    }
-
-    public void testConvert2(){
-        AnnotatedCorpus corpus = new AnnotatedCorpus(new File("../../Penn-Treebank-20/Turkish-Phrase/"));
-        corpus.exportUniversalDependencyFormat("uv3.txt");
+    @Test
+    public void testParserEvaluation() {
+        assertEquals(1.0, sentence0.compareParses(sentence0).getUAS(), 0.0);
+        assertEquals(1.0, sentence0.compareParses(sentence0).getLAS(), 0.0);
+        assertEquals(1.0, sentence0.compareParses(sentence0).getLS(), 0.0);
     }
 
     @Test

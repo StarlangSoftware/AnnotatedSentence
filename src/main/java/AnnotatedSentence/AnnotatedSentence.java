@@ -3,6 +3,8 @@ package AnnotatedSentence;
 import AnnotatedSentence.DependencyError.DependencyError;
 import AnnotatedSentence.DependencyError.DependencyErrorType;
 import Corpus.Sentence;
+import DependencyParser.ParserEvaluationScore;
+import DependencyParser.Universal.UniversalDependencyRelation;
 import Dictionary.Word;
 import FrameNet.FrameNet;
 import MorphologicalAnalysis.FsmMorphologicalAnalyzer;
@@ -361,6 +363,18 @@ public class AnnotatedSentence extends Sentence{
             }
         }
         return sentenceString;
+    }
+
+    public ParserEvaluationScore compareParses(AnnotatedSentence sentence){
+        ParserEvaluationScore score = new ParserEvaluationScore();
+        for (int i = 0; i < wordCount(); i++){
+            UniversalDependencyRelation relation1 = ((AnnotatedWord) words.get(i)).getUniversalDependency();
+            UniversalDependencyRelation relation2 = ((AnnotatedWord) sentence.getWord(i)).getUniversalDependency();
+            if (relation1 != null && relation2 != null){
+                score.add(relation1.compareRelations(relation2));
+            }
+        }
+        return score;
     }
 
     /**
