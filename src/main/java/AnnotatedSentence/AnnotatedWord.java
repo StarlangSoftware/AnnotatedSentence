@@ -684,7 +684,6 @@ public class AnnotatedWord extends Word implements Serializable{
                         featureList.add("PronType=Int,Rel");
                         break;
                     case "RP":
-                        featureList.add("PartType=Vbp");
                         break;
                     case "FW":
                         featureList.add("Foreign=Yes");
@@ -693,7 +692,6 @@ public class AnnotatedWord extends Word implements Serializable{
                         featureList.add("NumType=Ord");
                         break;
                     case "MD":
-                        featureList.add("VerbType=Mod");
                         break;
                     case "VB":
                     case "AUX:VB":
@@ -706,13 +704,11 @@ public class AnnotatedWord extends Word implements Serializable{
                         break;
                     case "VBG":
                     case "AUX:VBG":
-                        featureList.add("Aspect=Prog");
                         featureList.add("Tense=Pres");
                         featureList.add("VerbForm=Part");
                         break;
                     case "VBN":
                     case "AUX:VBN":
-                        featureList.add("Aspect=Perf");
                         featureList.add("Tense=Past");
                         featureList.add("VerbForm=Part");
                         break;
@@ -740,11 +736,8 @@ public class AnnotatedWord extends Word implements Serializable{
                         featureList.add("Poss=Yes");
                         break;
                     case "TO":
-                        featureList.add("PartType=Inf");
-                        featureList.add("VerbForm=Inf");
                         break;
                     case "EX":
-                        featureList.add("AdvType=Ex");
                         break;
                     case "PRP":
                         featureList.add("PronType=Prs");
@@ -757,8 +750,21 @@ public class AnnotatedWord extends Word implements Serializable{
 
     public String getUniversalDependencyFormat(int sentenceLength){
         String uPos = getUniversalDependencyPos();
+        String result;
         if (uPos != null){
-            String result = name + "\t" + parse.getWord().getName() + "\t" + uPos + "\t_\t";
+            switch (language){
+                case TURKISH:
+                default:
+                    result = name + "\t" + parse.getWord().getName() + "\t" + uPos + "\t_\t";
+                    break;
+                case ENGLISH:
+                    if (metamorphicParse != null){
+                        result = name + "\t" + metamorphicParse.getWord().getName() + "\t" + uPos + "\t_\t";
+                    } else {
+                        result = name + "\t" + name + "\t" + uPos + "\t_\t";
+                    }
+                    break;
+            }
             ArrayList<String> features = getUniversalDependencyFeatures();
             if (features.size() == 0){
                 result = result + "_";

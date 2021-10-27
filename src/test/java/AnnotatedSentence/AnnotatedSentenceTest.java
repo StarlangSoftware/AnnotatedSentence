@@ -1,10 +1,15 @@
 package AnnotatedSentence;
 
 import PropBank.FramesetList;
+import WordNet.WordNet;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Scanner;
 
 import static org.junit.Assert.*;
 
