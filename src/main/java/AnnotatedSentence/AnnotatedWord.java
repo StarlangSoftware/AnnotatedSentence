@@ -667,6 +667,9 @@ public class AnnotatedWord extends Word implements Serializable{
                     case "CD":
                         featureList.add("NumType=Card");
                         break;
+                    case "DT":
+                        featureList.add("PronType=Art");
+                        break;
                     case "PDT":
                         featureList.add("AdjType=Pdt");
                         break;
@@ -699,6 +702,7 @@ public class AnnotatedWord extends Word implements Serializable{
                         break;
                     case "VBD":
                     case "AUX:VBD":
+                        featureList.add("Mood=Ind");
                         featureList.add("Tense=Past");
                         featureList.add("VerbForm=Fin");
                         break;
@@ -714,11 +718,13 @@ public class AnnotatedWord extends Word implements Serializable{
                         break;
                     case "VBP":
                     case "AUX:VBP":
+                        featureList.add("Mood=Ind");
                         featureList.add("Tense=Pres");
                         featureList.add("VerbForm=Fin");
                         break;
                     case "VBZ":
                     case "AUX:VBZ":
+                        featureList.add("Mood=Ind");
                         featureList.add("Number=Sing");
                         featureList.add("Person=3");
                         featureList.add("Tense=Pres");
@@ -733,11 +739,11 @@ public class AnnotatedWord extends Word implements Serializable{
                         featureList.add("Number=Plur");
                         break;
                     case "POS":
-                        featureList.add("Poss=Yes");
                         break;
                     case "TO":
                         break;
                     case "EX":
+                        featureList.add("PronType=Dem");
                         break;
                     case "PRP":
                         featureList.add("PronType=Prs");
