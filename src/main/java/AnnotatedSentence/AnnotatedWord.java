@@ -1,5 +1,6 @@
 package AnnotatedSentence;
 
+import AnnotatedSentence.GrammaticaError.GrammaticalError;
 import Corpus.WordFormat;
 import DependencyParser.Universal.UniversalDependencyRelation;
 import Dictionary.Word;
@@ -42,6 +43,7 @@ public class AnnotatedWord extends Word implements Serializable{
     private PolarityType polarity;
     private Slot slot;
     private String ccg;
+    private GrammaticalError grammaticalError;
     private String posTag;
     private Rectangle area;
     private Language language = Language.TURKISH;
@@ -104,6 +106,10 @@ public class AnnotatedWord extends Word implements Serializable{
                                                         } else {
                                                             if (layerType.equalsIgnoreCase("posTag")){
                                                                 posTag = layerValue;
+                                                            }  else {
+                                                                if (layerType.equalsIgnoreCase("grammaticalError")){
+                                                                    grammaticalError = new GrammaticalError(layerValue);
+                                                                }
                                                             }
                                                         }
                                                     }
@@ -175,6 +181,9 @@ public class AnnotatedWord extends Word implements Serializable{
         if (posTag != null) {
             result = result + "{posTag=" + posTag + "}";
         }
+        if (grammaticalError != null){
+            result = result + "{grammaticalError=" + grammaticalError.toString() + "}";
+        }
         return result;
     }
 
@@ -197,6 +206,7 @@ public class AnnotatedWord extends Word implements Serializable{
         polarity = null;
         ccg = null;
         posTag = null;
+        grammaticalError = null;
     }
 
     /**
@@ -218,6 +228,7 @@ public class AnnotatedWord extends Word implements Serializable{
         polarity = null;
         ccg = null;
         posTag = null;
+        grammaticalError = null;
     }
 
     /**
@@ -239,6 +250,7 @@ public class AnnotatedWord extends Word implements Serializable{
         polarity = null;
         ccg = null;
         posTag = null;
+        grammaticalError = null;
     }
 
     /**
@@ -302,6 +314,11 @@ public class AnnotatedWord extends Word implements Serializable{
             case POS_TAG:
                 if (posTag != null) {
                     return posTag;
+                }
+                break;
+            case GRAMMATICAL_ERROR:
+                if (grammaticalError != null){
+                    return grammaticalError.toString();
                 }
                 break;
         }
@@ -805,6 +822,22 @@ public class AnnotatedWord extends Word implements Serializable{
             default:
                 return name;
         }
+    }
+
+    /**
+     * Returns the GRAMMATICAL_ERROR layer of the word.
+     * @return GRAMMATICAL_ERROR string of the word.
+     */
+    public GrammaticalError getGrammaticalError() {
+        return grammaticalError;
+    }
+
+    /**
+     * Sets the GRAMMATICAL_ERROR layer of the word.
+     * @param newValue New value of the grammatical error
+     */
+    public void setGrammaticalError(String newValue) {
+        this.grammaticalError = new GrammaticalError(newValue);
     }
 
     /**

@@ -41,7 +41,6 @@ public class AnnotatedSentenceTest {
         System.out.println(totalAnnotated / (totalWord + 0.0));
     }
 
-    @Test
     public void testConvertAtisEnglish() {
         AnnotatedCorpus corpus = new AnnotatedCorpus(new File("../../Atis/English-Phrase/"), ".train");
         corpus.exportUniversalDependencyFormat("en_atis-ud-train.conllu");
