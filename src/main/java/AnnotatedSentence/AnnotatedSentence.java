@@ -19,6 +19,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Scanner;
 
+import static AnnotatedSentence.Language.*;
+
 public class AnnotatedSentence extends Sentence{
     private File file;
 
@@ -158,6 +160,24 @@ public class AnnotatedSentence extends Sentence{
             }
         }
         return candidateList;
+    }
+
+    public void insertWord(String text, AnnotatedWord word, int wordIndex){
+        String[] words = text.split(" ");
+        for (int i = words.length - 1; i >= 1; i--){
+            switch (word.getLanguage()){
+                case ENGLISH:
+                    insertWord(wordIndex + 1, new AnnotatedWord("{english=" + words[i] + "}"));
+                    break;
+                case TURKISH:
+                    insertWord(wordIndex + 1, new AnnotatedWord("{turkish=" + words[i] + "}"));
+                    break;
+                case PERSIAN:
+                    insertWord(wordIndex + 1, new AnnotatedWord("{persian=" + words[i] + "}"));
+                    break;
+            }
+        }
+        word.setName(words[0]);
     }
 
     /**
