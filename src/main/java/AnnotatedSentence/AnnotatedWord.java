@@ -889,6 +889,17 @@ public class AnnotatedWord extends Word implements Serializable{
     }
 
     /**
+     * Mutator method for the area attribute.
+     * @param x x coordinate of the upper-left point.
+     * @param y y coordinate of the upper-left point.
+     * @param width Width of the rectangle
+     * @param height Height of the rectangle
+     */
+    public void setArea(int x, int y, int width, int height){
+        this.area = new Rectangle(x, y, width, height);
+    }
+
+    /**
      * Accessor method for the selected attribute.
      * @return Selected attribute value.
      */
