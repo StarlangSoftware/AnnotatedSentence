@@ -888,6 +888,10 @@ public class AnnotatedWord extends Word implements Serializable{
         this.area = area;
     }
 
+    public boolean contains(int x, int y){
+        return this.area.contains(x, y);
+    }
+
     /**
      * Mutator method for the area attribute.
      * @param x x coordinate of the upper-left point.
