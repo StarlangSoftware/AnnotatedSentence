@@ -14,8 +14,8 @@ import NamedEntityRecognition.NamedEntityType;
 import NamedEntityRecognition.Slot;
 import PropBank.Argument;
 import SentiNet.PolarityType;
+import Util.RectAngle;
 
-import java.awt.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Locale;
@@ -45,7 +45,7 @@ public class AnnotatedWord extends Word implements Serializable{
     private String ccg;
     private GrammaticalError grammaticalError;
     private String posTag;
-    private Rectangle area;
+    private RectAngle area;
     private Language language = Language.TURKISH;
     private boolean selected = false;
 
@@ -876,7 +876,7 @@ public class AnnotatedWord extends Word implements Serializable{
      * Accessor method for the area attribute.
      * @return Area attribute.
      */
-    public Rectangle getArea(){
+    public RectAngle getArea(){
         return area;
     }
 
@@ -884,7 +884,7 @@ public class AnnotatedWord extends Word implements Serializable{
      * Mutator method for the area attribute.
      * @param area New area attribute.
      */
-    public void setArea(Rectangle area){
+    public void setArea(RectAngle area){
         this.area = area;
     }
 
@@ -900,7 +900,7 @@ public class AnnotatedWord extends Word implements Serializable{
      * @param height Height of the rectangle
      */
     public void setArea(int x, int y, int width, int height){
-        this.area = new Rectangle(x, y, width, height);
+        this.area = new RectAngle(x, y, width, height);
     }
 
     /**
