@@ -7,9 +7,12 @@ import DependencyParser.ParserEvaluationScore;
 import DependencyParser.Universal.UniversalDependencyRelation;
 import Dictionary.Word;
 import FrameNet.FrameNet;
+import FrameNet.Frame;
+import FrameNet.DisplayedFrame;
 import MorphologicalAnalysis.FsmMorphologicalAnalyzer;
 import MorphologicalAnalysis.MetamorphicParse;
 import MorphologicalAnalysis.MorphologicalParse;
+import PropBank.Frameset;
 import PropBank.FramesetList;
 import WordNet.*;
 
@@ -17,6 +20,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Scanner;
 
 public class AnnotatedSentence extends Sentence{
@@ -204,6 +208,50 @@ public class AnnotatedSentence extends Sentence{
             }
         }
         return candidateList;
+    }
+
+    /**
+     * Returns the framesets of all predicate verbs in the sentence.
+     * @param wordNet Wordnet for checking the predicate verb id's.
+     * @param framesetList Used to get the framesets for the predicates
+     * @return Framesets of all predicate verbs in the sentence.
+     */
+    private HashSet<Frameset> getPredicateSynSets(WordNet wordNet, FramesetList framesetList){
+        HashSet<Frameset> synSets = new HashSet<>();
+        for (int i = 0; i < wordCount(); i++){
+            AnnotatedWord word = (AnnotatedWord) getWord(i);
+            if (word.getArgument() != null && word.getArgument().getArgumentType().equals("PREDICATE") && word.getSemantic() != null){
+                SynSet synSet = wordNet.getSynSetWithId(word.getSemantic());
+                if (synSet != null && framesetList.frameExists(synSet.getId())){
+                    synSets.add(framesetList.getFrameSet(synSet.getId()));
+                }
+            }
+        }
+        return synSets;
+    }
+
+    /**
+     * Returns the frames of all predicate verbs in the sentence.
+     * @param wordNet Wordnet for checking the predicate verb id's.
+     * @param frameNet Used to get the frames for the predicates.
+     * @return Frames of all predicate verbs in the sentence.
+     */
+    private ArrayList<DisplayedFrame> getFrames(WordNet wordNet, FrameNet frameNet){
+        ArrayList<DisplayedFrame> currentFrames = new ArrayList<>();
+        for (int i = 0; i < wordCount(); i++){
+            AnnotatedWord word = (AnnotatedWord) getWord(i);
+            if (word.getFrameElement() != null && word.getFrameElement().getFrameElementType().equals("PREDICATE") && word.getSemantic() != null){
+                SynSet synSet = wordNet.getSynSetWithId(word.getSemantic());
+                if (synSet != null && frameNet.lexicalUnitExists(synSet.getId())){
+                    for (Frame frame : frameNet.getFrames(synSet.getId())){
+                        if (!currentFrames.contains(new DisplayedFrame(frame, synSet.getId()))){
+                            currentFrames.add(new DisplayedFrame(frame, synSet.getId()));
+                        }
+                    }
+                }
+            }
+        }
+        return currentFrames;
     }
 
     /**
