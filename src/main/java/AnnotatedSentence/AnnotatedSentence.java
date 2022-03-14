@@ -216,7 +216,7 @@ public class AnnotatedSentence extends Sentence{
      * @param framesetList Used to get the framesets for the predicates
      * @return Framesets of all predicate verbs in the sentence.
      */
-    private HashSet<Frameset> getPredicateSynSets(WordNet wordNet, FramesetList framesetList){
+    public HashSet<Frameset> getPredicateSynSets(WordNet wordNet, FramesetList framesetList){
         HashSet<Frameset> synSets = new HashSet<>();
         for (int i = 0; i < wordCount(); i++){
             AnnotatedWord word = (AnnotatedWord) getWord(i);
@@ -236,7 +236,7 @@ public class AnnotatedSentence extends Sentence{
      * @param frameNet Used to get the frames for the predicates.
      * @return Frames of all predicate verbs in the sentence.
      */
-    private ArrayList<DisplayedFrame> getFrames(WordNet wordNet, FrameNet frameNet){
+    public ArrayList<DisplayedFrame> getFrames(WordNet wordNet, FrameNet frameNet){
         ArrayList<DisplayedFrame> currentFrames = new ArrayList<>();
         for (int i = 0; i < wordCount(); i++){
             AnnotatedWord word = (AnnotatedWord) getWord(i);
