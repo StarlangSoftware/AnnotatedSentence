@@ -212,18 +212,16 @@ public class AnnotatedSentence extends Sentence{
 
     /**
      * Returns the framesets of all predicate verbs in the sentence.
-     * @param wordNet Wordnet for checking the predicate verb id's.
      * @param framesetList Used to get the framesets for the predicates
      * @return Framesets of all predicate verbs in the sentence.
      */
-    public HashSet<Frameset> getPredicateSynSets(WordNet wordNet, FramesetList framesetList){
+    public HashSet<Frameset> getPredicateSynSets(FramesetList framesetList){
         HashSet<Frameset> synSets = new HashSet<>();
         for (int i = 0; i < wordCount(); i++){
             AnnotatedWord word = (AnnotatedWord) getWord(i);
-            if (word.getArgument() != null && word.getArgument().getArgumentType().equals("PREDICATE") && word.getSemantic() != null){
-                SynSet synSet = wordNet.getSynSetWithId(word.getSemantic());
-                if (synSet != null && framesetList.frameExists(synSet.getId())){
-                    synSets.add(framesetList.getFrameSet(synSet.getId()));
+            if (word.getArgument() != null && word.getArgument().getArgumentType().equals("PREDICATE") && word.getSemantic() != null) {
+                if (framesetList.frameExists(word.getSemantic())) {
+                    synSets.add(framesetList.getFrameSet(word.getSemantic()));
                 }
             }
         }
@@ -232,20 +230,18 @@ public class AnnotatedSentence extends Sentence{
 
     /**
      * Returns the frames of all predicate verbs in the sentence.
-     * @param wordNet Wordnet for checking the predicate verb id's.
      * @param frameNet Used to get the frames for the predicates.
      * @return Frames of all predicate verbs in the sentence.
      */
-    public ArrayList<DisplayedFrame> getFrames(WordNet wordNet, FrameNet frameNet){
+    public ArrayList<DisplayedFrame> getFrames(FrameNet frameNet){
         ArrayList<DisplayedFrame> currentFrames = new ArrayList<>();
         for (int i = 0; i < wordCount(); i++){
             AnnotatedWord word = (AnnotatedWord) getWord(i);
             if (word.getFrameElement() != null && word.getFrameElement().getFrameElementType().equals("PREDICATE") && word.getSemantic() != null){
-                SynSet synSet = wordNet.getSynSetWithId(word.getSemantic());
-                if (synSet != null && frameNet.lexicalUnitExists(synSet.getId())){
-                    for (Frame frame : frameNet.getFrames(synSet.getId())){
-                        if (!currentFrames.contains(new DisplayedFrame(frame, synSet.getId()))){
-                            currentFrames.add(new DisplayedFrame(frame, synSet.getId()));
+                if (frameNet.lexicalUnitExists(word.getSemantic())){
+                    for (Frame frame : frameNet.getFrames(word.getSemantic())){
+                        if (!currentFrames.contains(new DisplayedFrame(frame, word.getSemantic()))){
+                            currentFrames.add(new DisplayedFrame(frame, word.getSemantic()));
                         }
                     }
                 }
