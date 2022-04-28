@@ -771,25 +771,41 @@ public class AnnotatedWord extends Word implements Serializable{
         return featureList;
     }
 
-    public String getUniversalDependencyFormat(int sentenceLength){
-        String uPos = getUniversalDependencyPos();
+    public boolean goesWithCase(){
+        return getUniversalDependency().toString().equals("GOESWITH");
+    }
+
+    public String getUniversalDependencyFormat(int sentenceLength, boolean goesWithHead){
         String result;
+        String uPos;
+        if (goesWithCase()){
+            uPos = "X";
+        } else {
+            uPos = getUniversalDependencyPos();
+        }
         if (uPos != null){
-            switch (language){
-                case TURKISH:
-                default:
-                    result = name + "\t" + parse.getWord().getName() + "\t" + uPos + "\t_\t";
-                    break;
-                case ENGLISH:
-                    if (metamorphicParse != null){
-                        result = name + "\t" + metamorphicParse.getWord().getName() + "\t" + uPos + "\t_\t";
-                    } else {
-                        result = name + "\t" + name + "\t" + uPos + "\t_\t";
-                    }
-                    break;
+            if (goesWithCase()){
+                result = name + "\t_\t" + uPos + "\t_\t";
+            } else {
+                switch (language){
+                    case TURKISH:
+                    default:
+                        result = name + "\t" + parse.getWord().getName() + "\t" + uPos + "\t_\t";
+                        break;
+                    case ENGLISH:
+                        if (metamorphicParse != null){
+                            result = name + "\t" + metamorphicParse.getWord().getName() + "\t" + uPos + "\t_\t";
+                        } else {
+                            result = name + "\t" + name + "\t" + uPos + "\t_\t";
+                        }
+                        break;
+                }
             }
             ArrayList<String> features = getUniversalDependencyFeatures();
-            if (features.size() == 0){
+            if (goesWithHead){
+                features.add("Typo=Yes");
+            }
+            if (features.size() == 0 || goesWithCase()){
                 result = result + "_";
             } else {
                 boolean first = true;

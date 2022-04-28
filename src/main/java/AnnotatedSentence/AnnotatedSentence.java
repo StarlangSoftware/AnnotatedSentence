@@ -628,24 +628,27 @@ public class AnnotatedSentence extends Sentence{
         return errorList;
     }
 
-    public String getUniversalDependencyFormat(String path){
-        String result = "# sent_id = " + path + getFileName() + "\n" + "# text = " + toWords() + "\n";
+    private String getUniversalDependencyFormatForSentence(String result){
         for (int i = 0; i < wordCount(); i++){
             AnnotatedWord word = (AnnotatedWord) getWord(i);
-            result += (i + 1) + "\t" + word.getUniversalDependencyFormat(wordCount()) + "\n";
+            boolean goesWithHead = false;
+            if (i < wordCount() - 1){
+                goesWithHead = ((AnnotatedWord) getWord(i + 1)).goesWithCase();
+            }
+            result += (i + 1) + "\t" + word.getUniversalDependencyFormat(wordCount(), goesWithHead) + "\n";
         }
         result += "\n";
         return result;
     }
 
+    public String getUniversalDependencyFormat(String path){
+        String result = "# sent_id = " + path + getFileName() + "\n" + "# text = " + toWords() + "\n";
+        return getUniversalDependencyFormatForSentence(result);
+    }
+
     public String getUniversalDependencyFormat(){
         String result = "# sent_id = " + getFileName() + "\n" + "# text = " + toWords() + "\n";
-        for (int i = 0; i < wordCount(); i++){
-            AnnotatedWord word = (AnnotatedWord) getWord(i);
-            result += (i + 1) + "\t" + word.getUniversalDependencyFormat(wordCount()) + "\n";
-        }
-        result += "\n";
-        return result;
+        return getUniversalDependencyFormatForSentence(result);
     }
 
     /**
