@@ -15,6 +15,11 @@ The structure of a sample annotated word is as follows:
 
 As is self-explanatory, 'turkish' tag shows the original Turkish word; 'morphologicalAnalysis' tag shows the correct morphological parse of that word; 'semantics' tag shows the ID of the correct sense of that word; 'namedEntity' tag shows the named entity tag of that word; 'shallowParse' tag shows the semantic role of that word; 'universalDependency' tag shows the index of the head word and the universal dependency for this word; 'propbank' tag shows the semantic role of that word for the verb synset id (frame id in the frame file) which is also given in that tag.
 
+Video Lectures
+============
+
+[<img src=video1.jpg width="50%">](https://youtu.be/FtoCdIELkG8)[<img src=video2.jpg width="50%">](https://youtu.be/jHxZ2aMimoQ)
+
 For Developers
 ============
 
