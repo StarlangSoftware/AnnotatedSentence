@@ -672,6 +672,12 @@ public class AnnotatedWord extends Word implements Serializable{
                     case "JJ":
                     case "RB":
                         featureList.add("Degree=Pos");
+                        if (name.equalsIgnoreCase("first") || name.equalsIgnoreCase("second") || name.equalsIgnoreCase("third")
+                        || name.equalsIgnoreCase("fourth") || name.equalsIgnoreCase("fifth") || name.equalsIgnoreCase("sixth")
+                        || name.equalsIgnoreCase("seventh") || name.equalsIgnoreCase("eighth") || name.equalsIgnoreCase("ninth")
+                        || name.equalsIgnoreCase("tenth")){
+                            featureList.add("NumType=Ord");
+                        }
                         break;
                     case "JJR":
                     case "RBR":
@@ -691,6 +697,36 @@ public class AnnotatedWord extends Word implements Serializable{
                         featureList.add("AdjType=Pdt");
                         break;
                     case "PRP$":
+                        switch (name.toLowerCase()) {
+                            case "her":
+                                featureList.add("Gender=Fem");
+                                break;
+                            case "his":
+                                featureList.add("Gender=Masc");
+                                break;
+                            case "its":
+                                featureList.add("Gender=Neut");
+                                break;
+                        }
+                        switch (name.toLowerCase()){
+                            case "my":
+                                featureList.add("Number=Sing");
+                                break;
+                            case "your":
+                                featureList.add("Number=Sing");
+                                break;
+                            case "his":
+                            case "her":
+                            case "its":
+                                featureList.add("Number=Sing");
+                                break;
+                            case "our":
+                                featureList.add("Number=Plur");
+                                break;
+                            case "their":
+                                featureList.add("Number=Plur");
+                                break;
+                        }
                         featureList.add("Poss=Yes");
                         featureList.add("PronType=Prs");
                         break;
@@ -763,7 +799,88 @@ public class AnnotatedWord extends Word implements Serializable{
                         featureList.add("PronType=Dem");
                         break;
                     case "PRP":
+                        switch (name.toLowerCase()) {
+                            case "i":
+                            case "myself":
+                            case "he":
+                            case "she":
+                            case "it":
+                            case "you":
+                            case "we":
+                                featureList.add("Case=Nom");
+                                break;
+                            case "me":
+                            case "yourself":
+                            case "him":
+                            case "us":
+                            case "them":
+                            case "theirs":
+                                featureList.add("Case=Acc");
+                                break;
+                        }
+                        switch (name.toLowerCase()) {
+                            case "she":
+                                featureList.add("Gender=Fem");
+                                break;
+                            case "he":
+                            case "him":
+                                featureList.add("Gender=Masc");
+                                break;
+                            case "it":
+                                featureList.add("Gender=Neut");
+                                break;
+                        }
+                        switch (name.toLowerCase()){
+                            case "i":
+                            case "me":
+                            case "myself":
+                                featureList.add("Number=Sing");
+                                featureList.add("Person=1");
+                                break;
+                            case "you":
+                            case "yourself":
+                                featureList.add("Number=Sing");
+                                featureList.add("Person=2");
+                                break;
+                            case "he":
+                            case "she":
+                            case "it":
+                            case "him":
+                            case "himself":
+                            case "herself":
+                            case "itself":
+                            case "oneself":
+                                featureList.add("Number=Sing");
+                                featureList.add("Person=3");
+                                break;
+                            case "ours":
+                            case "ourselves":
+                            case "we":
+                            case "us":
+                                featureList.add("Number=Plur");
+                                featureList.add("Person=1");
+                                break;
+                            case "they":
+                            case "them":
+                            case "themselves":
+                            case "theirs":
+                                featureList.add("Number=Plur");
+                                featureList.add("Person=3");
+                                break;
+                        }
                         featureList.add("PronType=Prs");
+                        switch (name.toLowerCase()){
+                            case "myself":
+                            case "yourself":
+                            case "himself":
+                            case "herself":
+                            case "itself":
+                            case "oneself":
+                            case "ourselves":
+                            case "themselves":
+                                featureList.add("Reflex=Yes");
+                                break;
+                        }
                         break;
                 }
             }
