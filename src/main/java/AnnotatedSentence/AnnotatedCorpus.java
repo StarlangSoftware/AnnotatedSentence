@@ -99,6 +99,21 @@ public class AnnotatedCorpus extends Corpus{
         return result;
     }
 
+    public void exportSequenceDataSet(String outputFileName, ViewLayerType layerType){
+        try {
+            PrintWriter output = new PrintWriter(new FileWriter(outputFileName, true));
+            for (int i = 0; i < sentenceCount(); i++){
+                AnnotatedSentence sentence = (AnnotatedSentence) getSentence(i);
+                if (sentence.wordCount() > 0){
+                    output.append(sentence.exportSequenceDataSet(layerType));
+                }
+            }
+            output.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void exportUniversalDependencyFormat(String outputFileName, String path){
         try {
             PrintWriter output = new PrintWriter(new FileWriter(outputFileName, true));

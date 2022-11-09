@@ -8,12 +8,17 @@ import DependencyParser.Universal.UniversalDependencyRelation;
 import Dictionary.Word;
 import FrameNet.FrameNet;
 import FrameNet.Frame;
+import FrameNet.FrameElement;
 import FrameNet.DisplayedFrame;
 import MorphologicalAnalysis.FsmMorphologicalAnalyzer;
 import MorphologicalAnalysis.MetamorphicParse;
 import MorphologicalAnalysis.MorphologicalParse;
+import NamedEntityRecognition.NamedEntityType;
+import NamedEntityRecognition.Slot;
+import PropBank.Argument;
 import PropBank.Frameset;
 import PropBank.FramesetList;
+import SentiNet.PolarityType;
 import WordNet.*;
 
 import java.io.File;
@@ -639,6 +644,117 @@ public class AnnotatedSentence extends Sentence{
         }
         result += "\n";
         return result;
+    }
+
+    public String exportSequenceDataSet(ViewLayerType layerType){
+        String result = "<S>";
+        if (layerType == ViewLayerType.POLARITY){
+            boolean positive = false, negative = false;
+            for (int i = 0; i < wordCount(); i++) {
+                AnnotatedWord word = (AnnotatedWord) getWord(i);
+                if (word.getPolarity() != null){
+                    if (word.getPolarity().equals(PolarityType.POSITIVE)){
+                        positive = true;
+                    } else {
+                        if (word.getPolarity().equals(PolarityType.NEGATIVE)){
+                            negative = true;
+                        }
+                    }
+                }
+            }
+            if (positive){
+                result += "POSITIVE\n";
+            } else {
+                if (negative){
+                    result += "NEGATIVE\n";
+                } else {
+                    result += "NEUTRAL\n";
+                }
+            }
+        } else {
+            result += "\n";
+        }
+        for (int i = 0; i < wordCount(); i++){
+            AnnotatedWord word = (AnnotatedWord) getWord(i);
+            result += word.getName() + " ";
+            switch (layerType){
+                case INFLECTIONAL_GROUP:
+                case PART_OF_SPEECH:
+                    MorphologicalParse parse = word.getParse();
+                    if (parse != null){
+                        result += parse.toString();
+                    } else {
+                        result += "NONE";
+                    }
+                    break;
+                case NER:
+                    NamedEntityType namedEntityType = word.getNamedEntityType();
+                    if (namedEntityType != null){
+                        result += namedEntityType.toString();
+                    } else {
+                        result += "NONE";
+                    }
+                    break;
+                case SEMANTICS:
+                    String semantic = word.getSemantic();
+                    if (semantic != null){
+                        result += semantic;
+                    } else {
+                        result += "NONE";
+                    }
+                    break;
+                case SLOT:
+                    Slot slot = word.getSlot();
+                    if (slot != null){
+                        result += slot.toString();
+                    } else {
+                        result += "O";
+                    }
+                    break;
+                case FRAMENET:
+                    FrameElement frameElement = word.getFrameElement();
+                    if (frameElement != null){
+                        result += frameElement.toString();
+                    } else {
+                        result += "NONE";
+                    }
+                    break;
+                case PROPBANK:
+                    Argument argument = word.getArgument();
+                    if (argument != null){
+                        result += argument.toString();
+                    } else {
+                        result += "NONE";
+                    }
+                    break;
+                case SHALLOW_PARSE:
+                    String shallowParse = word.getShallowParse();
+                    if (shallowParse != null){
+                        result += shallowParse;
+                    } else {
+                        result += "NONE";
+                    }
+                    break;
+                case META_MORPHEME:
+                    MetamorphicParse metamorphicParse = word.getMetamorphicParse();
+                    if (metamorphicParse != null){
+                        result += metamorphicParse.toString();
+                    } else {
+                        result += "NONE";
+                    }
+                    break;
+                case POS_TAG:
+                    String posTag = word.getUniversalDependencyPos();
+                    if (posTag != null){
+                        result += posTag;
+                    } else {
+                        result += "NONE";
+                    }
+                    break;
+            }
+            result += "\n";
+        }
+        return result + "</S>\n";
     }
 
     public String getUniversalDependencyFormat(String path){

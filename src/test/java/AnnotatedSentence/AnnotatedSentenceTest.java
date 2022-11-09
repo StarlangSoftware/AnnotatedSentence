@@ -111,6 +111,65 @@ public class AnnotatedSentenceTest {
         }
     }
 
+    public void testAtisEnglish() {
+        AnnotatedCorpus corpus = new AnnotatedCorpus(new File("../../Atis/English-Phrase/"));
+        corpus.exportSequenceDataSet("slot-atis-en.txt", ViewLayerType.SLOT);
+        corpus.exportSequenceDataSet("postag-atis-en.txt", ViewLayerType.POS_TAG);
+    }
+
+    public void testAtisTurkish() {
+        AnnotatedCorpus corpus = new AnnotatedCorpus(new File("../../Atis/Turkish-Phrase/"));
+        corpus.exportSequenceDataSet("slot-atis-tr.txt", ViewLayerType.SLOT);
+        corpus.exportSequenceDataSet("disambiguation-atis.txt", ViewLayerType.INFLECTIONAL_GROUP);
+        corpus.exportSequenceDataSet("metamorpheme-atis.txt", ViewLayerType.META_MORPHEME);
+        corpus.exportSequenceDataSet("postag-atis-tr.txt", ViewLayerType.POS_TAG);
+    }
+
+    public void testPenn(){
+        AnnotatedCorpus corpus = new AnnotatedCorpus(new File("../../Penn-Treebank/Turkish-Phrase/"));
+        corpus.exportSequenceDataSet("disambiguation-penn.txt", ViewLayerType.INFLECTIONAL_GROUP);
+        corpus.exportSequenceDataSet("metamorpheme-penn.txt", ViewLayerType.META_MORPHEME);
+        corpus.exportSequenceDataSet("postag-penn.txt", ViewLayerType.POS_TAG);
+        corpus.exportSequenceDataSet("ner-penn.txt", ViewLayerType.NER);
+        corpus.exportSequenceDataSet("semantics-penn.txt", ViewLayerType.SEMANTICS);
+        corpus.exportSequenceDataSet("propbank-penn.txt", ViewLayerType.PROPBANK);
+        corpus.exportSequenceDataSet("shallowparse-penn.txt", ViewLayerType.SHALLOW_PARSE);
+        corpus = new AnnotatedCorpus(new File("../../Penn-Treebank-20/Turkish-Phrase/"));
+        corpus.exportSequenceDataSet("disambiguation-penn.txt", ViewLayerType.INFLECTIONAL_GROUP);
+        corpus.exportSequenceDataSet("metamorpheme-penn.txt", ViewLayerType.META_MORPHEME);
+        corpus.exportSequenceDataSet("postag-penn.txt", ViewLayerType.POS_TAG);
+    }
+
+    public void testTourism(){
+        AnnotatedCorpus corpus = new AnnotatedCorpus(new File("../../Etstur/Turkish-Phrase/"));
+        corpus.exportSequenceDataSet("disambiguation-tourism.txt", ViewLayerType.INFLECTIONAL_GROUP);
+        corpus.exportSequenceDataSet("metamorpheme-tourism.txt", ViewLayerType.META_MORPHEME);
+        corpus.exportSequenceDataSet("postag-tourism.txt", ViewLayerType.POS_TAG);
+        corpus.exportSequenceDataSet("semantics-tourism.txt", ViewLayerType.SEMANTICS);
+        corpus.exportSequenceDataSet("shallowparse-tourism.txt", ViewLayerType.SHALLOW_PARSE);
+    }
+
+    public void testKeNet(){
+        AnnotatedCorpus corpus = new AnnotatedCorpus(new File("../../Kenet-Examples/Turkish-Phrase/"));
+        corpus.exportSequenceDataSet("disambiguation-kenet.txt", ViewLayerType.INFLECTIONAL_GROUP);
+        corpus.exportSequenceDataSet("metamorpheme-kenet.txt", ViewLayerType.META_MORPHEME);
+        corpus.exportSequenceDataSet("postag-kenet.txt", ViewLayerType.POS_TAG);
+    }
+
+    public void testFramenet(){
+        File[] listOfFiles = new File("../../FrameNet-Examples/Turkish-Phrase/").listFiles();
+        for (File file:listOfFiles) {
+            if (file.isDirectory()){
+                String fileName = file.getName();
+                AnnotatedCorpus corpus = new AnnotatedCorpus(new File("../../FrameNet-Examples/Turkish-Phrase/" + fileName));
+                corpus.exportSequenceDataSet("disambiguation-framenet.txt", ViewLayerType.INFLECTIONAL_GROUP);
+                corpus.exportSequenceDataSet("metamorpheme-framenet.txt", ViewLayerType.META_MORPHEME);
+                corpus.exportSequenceDataSet("postag-framenet.txt", ViewLayerType.POS_TAG);
+                corpus.exportSequenceDataSet("semanticrolelabeling-framenet.txt", ViewLayerType.FRAMENET);
+            }
+        }
+    }
+
     @Test
     public void testParserEvaluation() {
         assertEquals(1.0, sentence0.compareParses(sentence0).getUAS(), 0.0);
