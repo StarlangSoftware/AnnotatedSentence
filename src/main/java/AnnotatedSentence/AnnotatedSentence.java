@@ -663,12 +663,12 @@ public class AnnotatedSentence extends Sentence{
                 }
             }
             if (positive){
-                result += "POSITIVE\n";
+                result += " POSITIVE\n";
             } else {
                 if (negative){
-                    result += "NEGATIVE\n";
+                    result += " NEGATIVE\n";
                 } else {
-                    result += "NEUTRAL\n";
+                    result += " NEUTRAL\n";
                 }
             }
         } else {

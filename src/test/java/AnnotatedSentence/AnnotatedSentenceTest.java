@@ -147,6 +147,7 @@ public class AnnotatedSentenceTest {
         corpus.exportSequenceDataSet("postag-tourism.txt", ViewLayerType.POS_TAG);
         corpus.exportSequenceDataSet("semantics-tourism.txt", ViewLayerType.SEMANTICS);
         corpus.exportSequenceDataSet("shallowparse-tourism.txt", ViewLayerType.SHALLOW_PARSE);
+        corpus.exportSequenceDataSet("sentiment-tourism.txt", ViewLayerType.POLARITY);
     }
 
     public void testKeNet(){
