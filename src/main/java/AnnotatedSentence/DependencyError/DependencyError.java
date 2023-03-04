@@ -1,15 +1,20 @@
 package AnnotatedSentence.DependencyError;
 
+import AnnotatedSentence.AnnotatedWord;
+
 public class DependencyError {
 
     private DependencyErrorType dependencyErrorType;
     private int node;
+
+    private AnnotatedWord word;
     private String relation;
     private String morphologicalTag;
 
-    public DependencyError(DependencyErrorType dependencyErrorType, int node, String relation, String morphologicalTag){
+    public DependencyError(DependencyErrorType dependencyErrorType, int node, AnnotatedWord word, String relation, String morphologicalTag){
         this.dependencyErrorType = dependencyErrorType;
         this.node = node;
+        this.word = word;
         this.relation = relation;
         this.morphologicalTag = morphologicalTag;
     }
@@ -32,12 +37,12 @@ public class DependencyError {
 
     public String toString(){
         if (relation.isEmpty()){
-            return "Node " + node + ":" + dependencyErrorType.toString();
+            return "Node (" + word.getName() + "):" + dependencyErrorType.toString();
         } else {
             if (morphologicalTag.isEmpty()){
-                return "Node " + node + ":" + dependencyErrorType.toString() + " <---> " + relation;
+                return "Node (" + word.getName() + "):" + dependencyErrorType.toString() + " <---> " + relation;
             } else {
-                return "Node " + node + ":" + dependencyErrorType.toString() + " <---> " + relation + " should not be " + morphologicalTag;
+                return "Node (" + word.getName() + "):" + dependencyErrorType.toString() + " <---> " + relation + " should not be " + morphologicalTag;
             }
         }
     }

@@ -579,37 +579,69 @@ public class AnnotatedSentence extends Sentence{
     public ArrayList<DependencyError> getDependencyErrors(){
         ArrayList<DependencyError> errorList = new ArrayList<>();
         if (!checkMultipleRoots()){
-            errorList.add(new DependencyError(DependencyErrorType.MULTIPLE_ROOT, 0, "", ""));
+            errorList.add(new DependencyError(DependencyErrorType.MULTIPLE_ROOT,
+                    0,
+                    (AnnotatedWord) getWord(0),
+                    "",
+                    ""));
         }
         if (!checkMultipleSubjects()){
-            errorList.add(new DependencyError(DependencyErrorType.MULTIPLE_SUBJECTS, 0, "", ""));
+            errorList.add(new DependencyError(DependencyErrorType.MULTIPLE_SUBJECTS,
+                    0,
+                    (AnnotatedWord) getWord(0),
+                    "",
+                    ""));
         }
         for (int i = 0; i < wordCount(); i++){
             AnnotatedWord word = (AnnotatedWord) getWord(i);
             if (word.getUniversalDependencyPos() == null){
-                errorList.add(new DependencyError(DependencyErrorType.NO_MORPHOLOGICAL_ANALYSIS, i + 1, "", ""));
+                errorList.add(new DependencyError(DependencyErrorType.NO_MORPHOLOGICAL_ANALYSIS,
+                        i + 1,
+                        (AnnotatedWord) getWord(i),
+                        "",
+                        ""));
             }
             if (word.getUniversalDependency() != null){
                 int to = word.getUniversalDependency().to();
                 int from = i + 1;
                 String dependency = word.getUniversalDependency().toString();
                 if (from == to){
-                    errorList.add(new DependencyError(DependencyErrorType.HEAD_EQUALS_ID, from, "", ""));
+                    errorList.add(new DependencyError(DependencyErrorType.HEAD_EQUALS_ID,
+                            from,
+                            (AnnotatedWord) getWord(from - 1),
+                            "",
+                            ""));
                 }
                 if (dependency.equals("PUNCT") && !checkForNonProjectivityOfPunctuation(from, to)){
-                    errorList.add(new DependencyError(DependencyErrorType.PUNCTUATION_NOT_PROJECTIVE, from, "", ""));
+                    errorList.add(new DependencyError(DependencyErrorType.PUNCTUATION_NOT_PROJECTIVE,
+                            from,
+                            (AnnotatedWord) getWord(from - 1),
+                            "",
+                            ""));
                 }
                 if (to > from && (dependency.equals("CONJ") || dependency.equals("GOESWITH") ||
                         dependency.equals("FIXED") || dependency.equals("FLAT") || dependency.equals("APPOS"))){
-                    errorList.add(new DependencyError(DependencyErrorType.GO_LEFT_TO_RIGHT, from, dependency, ""));
+                    errorList.add(new DependencyError(DependencyErrorType.GO_LEFT_TO_RIGHT,
+                            from,
+                            (AnnotatedWord) getWord(from - 1),
+                            dependency,
+                            ""));
                 }
                 if (from > to && from > to + 1 && dependency.equals("GOESWITH")){
-                    errorList.add(new DependencyError(DependencyErrorType.GAPS_IN_GOESWITH, from, "", ""));
+                    errorList.add(new DependencyError(DependencyErrorType.GAPS_IN_GOESWITH,
+                            from,
+                            (AnnotatedWord) getWord(from - 1),
+                            "",
+                            ""));
                 }
                 if (word.getUniversalDependencyPos() != null){
                     String universalPos = word.getUniversalDependencyPos();
                     if (!checkDependencyWithUniversalPosTag(dependency, universalPos)){
-                        errorList.add(new DependencyError(DependencyErrorType.SHOULDNT_BE_OF_POS, from, dependency, universalPos));
+                        errorList.add(new DependencyError(DependencyErrorType.SHOULDNT_BE_OF_POS,
+                                from,
+                                (AnnotatedWord) getWord(from - 1),
+                                dependency,
+                                universalPos));
                     }
                 }
                 if (to > 0 && to <= wordCount()){
@@ -619,15 +651,27 @@ public class AnnotatedSentence extends Sentence{
                         if (toDependency.equals("AUX") || toDependency.equals("COP") || toDependency.equals("CC") ||
                                 toDependency.equals("FIXED") || toDependency.equals("GOESWITH") || toDependency.equals("CASE") ||
                                 toDependency.equals("MARK") || toDependency.equals("PUNCT")){
-                            errorList.add(new DependencyError(DependencyErrorType.NOT_EXPECTED_TO_HAVE_CHILDREN, from, toDependency, ""));
+                            errorList.add(new DependencyError(DependencyErrorType.NOT_EXPECTED_TO_HAVE_CHILDREN,
+                                    from,
+                                    (AnnotatedWord) getWord(from - 1),
+                                    toDependency,
+                                    ""));
                         }
                         if (dependency.equals("ORPHAN") && !toDependency.equals("CONJ")){
-                            errorList.add(new DependencyError(DependencyErrorType.PARENT_ORPHAN_SHOULD_BE_CONJ, from, toDependency, ""));
+                            errorList.add(new DependencyError(DependencyErrorType.PARENT_ORPHAN_SHOULD_BE_CONJ,
+                                    from,
+                                    (AnnotatedWord) getWord(from - 1),
+                                    toDependency,
+                                    ""));
                         }
                     }
                 }
             } else {
-                errorList.add(new DependencyError(DependencyErrorType.NO_DEPENDENCY, i + 1, "", ""));
+                errorList.add(new DependencyError(DependencyErrorType.NO_DEPENDENCY,
+                        i + 1,
+                        (AnnotatedWord) getWord(i),
+                        "",
+                        ""));
             }
         }
         return errorList;
