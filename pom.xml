@@ -6,7 +6,7 @@
 
     <groupId>io.github.starlangsoftware</groupId>
     <artifactId>AnnotatedSentence</artifactId>
-    <version>1.0.62</version>
+    <version>1.0.63</version>
     <packaging>jar</packaging>
 
     <name>NlpToolkit.AnnotatedSentence</name>
@@ -75,7 +75,7 @@
         <dependency>
             <groupId>io.github.starlangsoftware</groupId>
             <artifactId>DependencyParser</artifactId>
-            <version>1.0.26</version>
+            <version>1.0.27</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
