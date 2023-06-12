@@ -889,7 +889,10 @@ public class AnnotatedWord extends Word implements Serializable{
     }
 
     public boolean goesWithCase(){
-        return getUniversalDependency().toString().equals("GOESWITH");
+        if (getUniversalDependency() != null){
+            return getUniversalDependency().toString().equals("GOESWITH");
+        }
+        return false;
     }
 
     public String getUniversalDependencyFormat(int sentenceLength, boolean goesWithHead){

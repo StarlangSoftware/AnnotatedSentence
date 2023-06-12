@@ -677,7 +677,7 @@ public class AnnotatedSentence extends Sentence{
         return errorList;
     }
 
-    private String getUniversalDependencyFormatForSentence(String result){
+    public String getUniversalDependencyFormatForSentence(String result){
         for (int i = 0; i < wordCount(); i++){
             AnnotatedWord word = (AnnotatedWord) getWord(i);
             boolean goesWithHead = false;
