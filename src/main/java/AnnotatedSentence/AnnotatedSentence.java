@@ -301,6 +301,14 @@ public class AnnotatedSentence extends Sentence{
     }
 
     /**
+     * Returns file of the sentence
+     * @return File of the sentence
+     */
+    public File getFile(){
+        return file;
+    }
+
+    /**
      * Removes the i'th word from the sentence
      * @param index Word index
      */
