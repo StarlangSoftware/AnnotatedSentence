@@ -1,6 +1,7 @@
 package AnnotatedSentence;
 
 import Corpus.Corpus;
+import DataStructure.CounterHashMap;
 import DependencyParser.ParserEvaluationScore;
 import Dictionary.*;
 import MorphologicalAnalysis.*;
@@ -8,6 +9,8 @@ import MorphologicalAnalysis.*;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
 public class AnnotatedCorpus extends Corpus{
 
@@ -264,6 +267,73 @@ public class AnnotatedCorpus extends Corpus{
             }
         }
         return dictionary;
+    }
+
+    public List<Map.Entry<String, Integer>> topDependencyAnnotations(){
+        CounterHashMap<String> dependencies = new CounterHashMap<>();
+        for (int i = 0; i < sentenceCount(); i++){
+            AnnotatedSentence sentence = (AnnotatedSentence) getSentence(i);
+            for (int j = 0; j < sentence.wordCount(); j++){
+                if (((AnnotatedWord)sentence.getWord(j)).getUniversalDependency() != null){
+                    dependencies.put(((AnnotatedWord)sentence.getWord(j)).getUniversalDependency().toString());
+                }
+            }
+        }
+        return dependencies.topN(dependencies.size());
+    }
+
+    public int uniqueSurfaceForms(){
+        CounterHashMap<String> surfaceForms = new CounterHashMap<>();
+        int count = 0;
+        for (int i = 0; i < sentenceCount(); i++){
+            AnnotatedSentence sentence = (AnnotatedSentence) getSentence(i);
+            for (int j = 0; j < sentence.wordCount(); j++){
+                if (sentence.getWord(j).getName() != null){
+                    surfaceForms.put(sentence.getWord(j).getName());
+                    count++;
+                }
+            }
+        }
+        return surfaceForms.keySet().size();
+    }
+
+    public List<Map.Entry<String, Integer>> topSurfaceForms(int N){
+        CounterHashMap<String> surfaceForms = new CounterHashMap<>();
+        for (int i = 0; i < sentenceCount(); i++){
+            AnnotatedSentence sentence = (AnnotatedSentence) getSentence(i);
+            for (int j = 0; j < sentence.wordCount(); j++){
+                if (sentence.getWord(j).getName() != null){
+                    surfaceForms.put(sentence.getWord(j).getName());
+                }
+            }
+        }
+        return surfaceForms.topN(N);
+    }
+
+    public List<Map.Entry<String, Integer>> topRootForms(int N){
+        CounterHashMap<String> rootForms = new CounterHashMap<>();
+        for (int i = 0; i < sentenceCount(); i++){
+            AnnotatedSentence sentence = (AnnotatedSentence) getSentence(i);
+            for (int j = 0; j < sentence.wordCount(); j++){
+                if (((AnnotatedWord)sentence.getWord(j)).getParse() != null){
+                    rootForms.put(((AnnotatedWord)sentence.getWord(j)).getParse().getWord().getName());
+                }
+            }
+        }
+        return rootForms.topN(N);
+    }
+
+    public List<Map.Entry<String, Integer>> rootPosTags(){
+        CounterHashMap<String> rootPos = new CounterHashMap<>();
+        for (int i = 0; i < sentenceCount(); i++){
+            AnnotatedSentence sentence = (AnnotatedSentence) getSentence(i);
+            for (int j = 0; j < sentence.wordCount(); j++){
+                if (((AnnotatedWord)sentence.getWord(j)).getParse() != null && ((AnnotatedWord)sentence.getWord(j)).getUniversalDependency() != null && ((AnnotatedWord)sentence.getWord(j)).getUniversalDependency().toString().equals("ROOT")){
+                    rootPos.put(((AnnotatedWord)sentence.getWord(j)).getParse().getRootPos());
+                }
+            }
+        }
+        return rootPos.topN(rootPos.size());
     }
 
 }
