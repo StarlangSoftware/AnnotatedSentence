@@ -297,6 +297,19 @@ public class AnnotatedCorpus extends Corpus{
         return surfaceForms.keySet().size();
     }
 
+    public int tokenCountExceptPunctuations(){
+        int count = 0;
+        for (int i = 0; i < sentenceCount(); i++){
+            AnnotatedSentence sentence = (AnnotatedSentence) getSentence(i);
+            for (int j = 0; j < sentence.wordCount(); j++){
+                if (((AnnotatedWord)sentence.getWord(j)).getParse() != null && !((AnnotatedWord)sentence.getWord(j)).getParse().isPunctuation()){
+                    count++;
+                }
+            }
+        }
+        return count;
+    }
+
     public List<Map.Entry<String, Integer>> topSurfaceForms(int N){
         CounterHashMap<String> surfaceForms = new CounterHashMap<>();
         for (int i = 0; i < sentenceCount(); i++){
