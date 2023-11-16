@@ -23,7 +23,7 @@ Video Lectures
 For Developers
 ============
 
-You can also see [Python](https://github.com/starlangsoftware/AnnotatedSentence-Py), [Cython](https://github.com/starlangsoftware/AnnotatedSentence-Cy), [C++](https://github.com/starlangsoftware/AnnotatedSentence-CPP), [Swift](https://github.com/starlangsoftware/AnnotatedSentence-Swift), [Js](https://github.com/starlangsoftware/AnnotatedSentence-Js), or [C#](https://github.com/starlangsoftware/AnnotatedSentence-CS) repository.
+You can also see [Python](https://github.com/starlangsoftware/AnnotatedSentence-Py), [Cython](https://github.com/starlangsoftware/AnnotatedSentence-Cy), [C++](https://github.com/starlangsoftware/AnnotatedSentence-CPP), [C](https://github.com/starlangsoftware/AnnotatedSentence-C), [Swift](https://github.com/starlangsoftware/AnnotatedSentence-Swift), [Js](https://github.com/starlangsoftware/AnnotatedSentence-Js), or [C#](https://github.com/starlangsoftware/AnnotatedSentence-CS) repository.
 
 ## Requirements
 
