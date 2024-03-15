@@ -4,12 +4,12 @@ import AnnotatedSentence.AnnotatedWord;
 
 public class DependencyError {
 
-    private DependencyErrorType dependencyErrorType;
-    private int node;
+    private final DependencyErrorType dependencyErrorType;
+    private final int node;
 
-    private AnnotatedWord word;
-    private String relation;
-    private String morphologicalTag;
+    private final AnnotatedWord word;
+    private final String relation;
+    private final String morphologicalTag;
 
     public DependencyError(DependencyErrorType dependencyErrorType, int node, AnnotatedWord word, String relation, String morphologicalTag){
         this.dependencyErrorType = dependencyErrorType;

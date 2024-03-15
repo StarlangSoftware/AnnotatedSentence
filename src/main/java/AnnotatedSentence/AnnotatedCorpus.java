@@ -28,20 +28,22 @@ public class AnnotatedCorpus extends Corpus{
      * @param pattern File pattern such as "." ".train" ".test".
      */
     public AnnotatedCorpus(File folder, String pattern){
-        sentences = new ArrayList();
+        sentences = new ArrayList<>();
         File[] listOfFiles = folder.listFiles();
-        Arrays.sort(listOfFiles);
-        for (File file:listOfFiles){
-            String fileName = file.getName();
-            if (!fileName.contains(pattern))
-                continue;
-            AnnotatedSentence sentence = new AnnotatedSentence(file);
-            sentences.add(sentence);
+        if (listOfFiles != null){
+            Arrays.sort(listOfFiles);
+            for (File file:listOfFiles){
+                String fileName = file.getName();
+                if (!fileName.contains(pattern))
+                    continue;
+                AnnotatedSentence sentence = new AnnotatedSentence(file);
+                sentences.add(sentence);
+            }
         }
     }
 
     public AnnotatedCorpus(File folder, String pattern, int from, int to){
-        sentences = new ArrayList();
+        sentences = new ArrayList<>();
         for (int i = from; i <= to; i++){
             sentences.add(new AnnotatedSentence(new File(folder.getAbsolutePath() + "/" + String.format("%04d", i) + pattern)));
         }
@@ -54,13 +56,15 @@ public class AnnotatedCorpus extends Corpus{
      * @param folder Folder to load annotated courpus
      */
     public AnnotatedCorpus(File folder){
-        sentences = new ArrayList();
+        sentences = new ArrayList<>();
         File[] listOfFiles = folder.listFiles();
-        Arrays.sort(listOfFiles);
-        for (File file:listOfFiles){
-            if (!file.isHidden()){
-                AnnotatedSentence sentence = new AnnotatedSentence(file);
-                sentences.add(sentence);
+        if (listOfFiles != null){
+            Arrays.sort(listOfFiles);
+            for (File file:listOfFiles){
+                if (!file.isHidden()){
+                    AnnotatedSentence sentence = new AnnotatedSentence(file);
+                    sentences.add(sentence);
+                }
             }
         }
     }
@@ -87,8 +91,7 @@ public class AnnotatedCorpus extends Corpus{
                     System.out.println("Read " + i + " sentences");
                 }
             }
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException ignored) {
         }
     }
 
@@ -112,8 +115,7 @@ public class AnnotatedCorpus extends Corpus{
                 }
             }
             output.close();
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException ignored) {
         }
     }
 
@@ -127,8 +129,7 @@ public class AnnotatedCorpus extends Corpus{
                 }
             }
             output.close();
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException ignored) {
         }
     }
 
@@ -142,8 +143,7 @@ public class AnnotatedCorpus extends Corpus{
                 }
             }
             output.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
+        } catch (FileNotFoundException ignored) {
         }
     }
 
@@ -155,7 +155,7 @@ public class AnnotatedCorpus extends Corpus{
             AnnotatedSentence sentence = (AnnotatedSentence) getSentence(i);
             boolean changed = false;
             for (int j = 0; j < sentence.wordCount(); j++){
-                if (sentence.getWord(j).getName() == null || sentence.getWord(j).getName().length() == 0){
+                if (sentence.getWord(j).getName() == null || sentence.getWord(j).getName().isEmpty()){
                     sentence.removeWord(j);
                     j--;
                     changed = true;

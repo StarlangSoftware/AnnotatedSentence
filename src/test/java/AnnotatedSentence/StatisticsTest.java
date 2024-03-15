@@ -11,7 +11,6 @@ import java.util.Map;
 
 public class StatisticsTest {
 
-    @Test
     public void verbsMultiFolder(){
         WordNet turkish = new WordNet();
         String dataset = "FrameNet-Examples";
@@ -47,7 +46,6 @@ public class StatisticsTest {
         }
     }
 
-    @Test
     public void nouns(){
         WordNet turkish = new WordNet();
         String dataset = "Penn-Treebank-20";

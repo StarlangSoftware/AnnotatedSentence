@@ -14,7 +14,7 @@ public class LayerStatistics {
      */
     public void printTopN(int N){
         for (Map.Entry<String, Integer> entry: counts.topN(N)){
-            System.out.println(String.format("%20s\t%10d", entry.getKey(), entry.getValue()));
+            System.out.printf("%20s\t%10d%n", entry.getKey(), entry.getValue());
         }
     }
 
@@ -24,21 +24,21 @@ public class LayerStatistics {
     public void printStatistics(){
         double sum = counts.sumOfCounts();
         for (String key : counts.keySet()){
-            System.out.println(String.format("%20s\t%10d\t%3.2f", key, counts.get(key), 100 * counts.get(key) / sum));
+            System.out.printf("%20s\t%10d\t%3.2f%n", key, counts.get(key), 100 * counts.get(key) / sum);
         }
-        System.out.println(String.format("%20s\t%10d\t%3.2f", "TOTAL", counts.sumOfCounts(), 100.0));
+        System.out.printf("%20s\t%10d\t%3.2f%n", "TOTAL", counts.sumOfCounts(), 100.0);
     }
 
     public void printStatistics(WordNet wordNet){
         double sum = counts.sumOfCounts();
         for (String key : counts.keySet()){
             if (wordNet.getSynSetWithId(key) != null){
-                System.out.println(String.format("%20s\t%s\t%10d\t%3.2f", key, wordNet.getSynSetWithId(key).getSynonym(), counts.get(key), 100 * counts.get(key) / sum));
+                System.out.printf("%20s\t%s\t%10d\t%3.2f%n", key, wordNet.getSynSetWithId(key).getSynonym(), counts.get(key), 100 * counts.get(key) / sum);
             } else {
-                System.out.println(String.format("%20s\t%10d\t%3.2f", key, counts.get(key), 100 * counts.get(key) / sum));
+                System.out.printf("%20s\t%10d\t%3.2f%n", key, counts.get(key), 100 * counts.get(key) / sum);
             }
         }
-        System.out.println(String.format("%20s\t%10d\t%3.2f", "TOTAL", counts.sumOfCounts(), 100.0));
+        System.out.printf("%20s\t%10d\t%3.2f%n", "TOTAL", counts.sumOfCounts(), 100.0);
     }
 
 }

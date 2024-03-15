@@ -3,8 +3,8 @@ package AnnotatedSentence;
 import Corpus.Sentence;
 
 public class AnnotatedPhrase extends Sentence {
-    private int wordIndex;
-    private String tag;
+    private final int wordIndex;
+    private final String tag;
 
     /**
      * Constructor for AnnotatedPhrase. AnnotatedPhrase stores information about phrases such as

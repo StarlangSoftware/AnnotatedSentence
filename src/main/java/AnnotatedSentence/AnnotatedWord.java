@@ -55,7 +55,7 @@ public class AnnotatedWord extends Word implements Serializable{
      * @param word Input word with annotation layers
      */
     public AnnotatedWord(String word){
-        String[] splitLayers = word.split("[\\{\\}]");
+        String[] splitLayers = word.split("[{}]");
         for (String layer:splitLayers){
             if (layer.isEmpty())
                 continue;
@@ -146,22 +146,22 @@ public class AnnotatedWord extends Word implements Serializable{
                 break;
         }
         if (parse != null){
-            result = result + "{morphologicalAnalysis=" + parse.toString() + "}";
+            result = result + "{morphologicalAnalysis=" + parse + "}";
         }
         if (metamorphicParse != null){
-            result = result + "{metaMorphemes=" + metamorphicParse.toString() + "}";
+            result = result + "{metaMorphemes=" + metamorphicParse + "}";
         }
         if (semantic != null){
             result = result + "{semantics=" + semantic + "}";
         }
         if (namedEntityType != null){
-            result = result + "{namedEntity=" + namedEntityType.toString() + "}";
+            result = result + "{namedEntity=" + namedEntityType + "}";
         }
         if (argument != null){
-            result = result + "{propbank=" + argument.toString() + "}";
+            result = result + "{propbank=" + argument + "}";
         }
         if (frameElement != null){
-            result = result + "{framenet=" + frameElement.toString() + "}";
+            result = result + "{framenet=" + frameElement + "}";
         }
         if (shallowParse != null){
             result = result + "{shallowParse=" + shallowParse + "}";
@@ -170,7 +170,7 @@ public class AnnotatedWord extends Word implements Serializable{
             result = result + "{universalDependency=" + universalDependency.to() + "$" + universalDependency.toString() + "}";
         }
         if (slot != null){
-            result = result + "{slot=" + slot.toString() + "}";
+            result = result + "{slot=" + slot + "}";
         }
         if (polarity != null){
             result = result + "{polarity=" + getPolarityString() + "}";
@@ -182,7 +182,7 @@ public class AnnotatedWord extends Word implements Serializable{
             result = result + "{posTag=" + posTag + "}";
         }
         if (grammaticalError != null){
-            result = result + "{grammaticalError=" + grammaticalError.toString() + "}";
+            result = result + "{grammaticalError=" + grammaticalError + "}";
         }
         return result;
     }
@@ -475,8 +475,6 @@ public class AnnotatedWord extends Word implements Serializable{
                 return "positive";
             case NEGATIVE:
                 return "negative";
-            case NEUTRAL:
-                return "neutral";
             default:
                 return "neutral";
         }
@@ -710,19 +708,13 @@ public class AnnotatedWord extends Word implements Serializable{
                         }
                         switch (name.toLowerCase()){
                             case "my":
-                                featureList.add("Number=Sing");
-                                break;
                             case "your":
-                                featureList.add("Number=Sing");
-                                break;
                             case "his":
                             case "her":
                             case "its":
                                 featureList.add("Number=Sing");
                                 break;
                             case "our":
-                                featureList.add("Number=Plur");
-                                break;
                             case "their":
                                 featureList.add("Number=Plur");
                                 break;
@@ -740,14 +732,15 @@ public class AnnotatedWord extends Word implements Serializable{
                         featureList.add("PronType=Int,Rel");
                         break;
                     case "RP":
+                    case "MD":
+                    case "POS":
+                    case "TO":
                         break;
                     case "FW":
                         featureList.add("Foreign=Yes");
                         break;
                     case "LS":
                         featureList.add("NumType=Ord");
-                        break;
-                    case "MD":
                         break;
                     case "VB":
                     case "AUX:VB":
@@ -790,10 +783,6 @@ public class AnnotatedWord extends Word implements Serializable{
                     case "NNS":
                     case "NNPS":
                         featureList.add("Number=Plur");
-                        break;
-                    case "POS":
-                        break;
-                    case "TO":
                         break;
                     case "EX":
                         featureList.add("PronType=Dem");
@@ -925,18 +914,20 @@ public class AnnotatedWord extends Word implements Serializable{
             if (goesWithHead){
                 features.add("Typo=Yes");
             }
-            if (features.size() == 0 || goesWithCase()){
+            if (features.isEmpty() || goesWithCase()){
                 result = result + "_";
             } else {
                 boolean first = true;
+                StringBuilder resultBuilder = new StringBuilder(result);
                 for (String feature : features){
                     if (first){
                         first = false;
                     } else {
-                        result += "|";
+                        resultBuilder.append("|");
                     }
-                    result += feature;
+                    resultBuilder.append(feature);
                 }
+                result = resultBuilder.toString();
             }
             result += "\t";
             if (universalDependency != null && universalDependency.to() <= sentenceLength){
@@ -954,7 +945,6 @@ public class AnnotatedWord extends Word implements Serializable{
     public String getFormattedString(WordFormat format) throws LayerNotExistsException {
         switch (format){
             case SURFACE:
-                return name;
             default:
                 return name;
         }

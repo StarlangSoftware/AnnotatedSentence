@@ -8,7 +8,7 @@ import java.util.Locale;
 import java.util.function.Function;
 
 public class SentenceLayerStatistics extends LayerStatistics{
-    private AnnotatedCorpus corpus;
+    private final AnnotatedCorpus corpus;
 
     public SentenceLayerStatistics(AnnotatedCorpus corpus){
         this.corpus = corpus;

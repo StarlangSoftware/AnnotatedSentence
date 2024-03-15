@@ -43,15 +43,14 @@ public class AnnotatedSentence extends Sentence{
      */
     public AnnotatedSentence(File file){
         this.file = file;
-        words = new ArrayList<Word>();
+        words = new ArrayList<>();
         try {
             Scanner sc = new Scanner(file, "UTF8");
             while (sc.hasNext()){
                 words.add(new AnnotatedWord(sc.next()));
             }
             sc.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
+        } catch (FileNotFoundException ignored) {
         }
     }
 
@@ -258,7 +257,7 @@ public class AnnotatedSentence extends Sentence{
     /**
      * Returns the i'th predicate in the sentence.
      * @param index Predicate index
-     * @return The predicate with index index in the sentence.
+     * @return The predicate with index in the sentence.
      */
     public String getPredicate(int index){
         int count1  = 0, count2 = 0;
@@ -335,24 +334,24 @@ public class AnnotatedSentence extends Sentence{
      * @return String result which has all the stems of each item in words {@link ArrayList}.
      */
     public String toStems() {
-        String result;
+        StringBuilder result;
         AnnotatedWord annotatedWord;
-        if (words.size() > 0) {
+        if (!words.isEmpty()) {
             annotatedWord = (AnnotatedWord) words.get(0);
             if (annotatedWord.getParse() != null){
-                result = annotatedWord.getParse().getWord().getName();
+                result = new StringBuilder(annotatedWord.getParse().getWord().getName());
             } else {
-                result = annotatedWord.getName();
+                result = new StringBuilder(annotatedWord.getName());
             }
             for (int i = 1; i < words.size(); i++) {
                 annotatedWord = (AnnotatedWord) words.get(i);
                 if (annotatedWord.getParse() != null){
-                    result = result + " " + annotatedWord.getParse().getWord().getName();
+                    result.append(" ").append(annotatedWord.getParse().getWord().getName());
                 } else {
-                    result = result + " " + annotatedWord.getName();
+                    result.append(" ").append(annotatedWord.getName());
                 }
             }
-            return result;
+            return result.toString();
         } else {
             return "";
         }
@@ -366,20 +365,20 @@ public class AnnotatedSentence extends Sentence{
      * @return Html string.
      */
     public String toDependencyString(int wordIndex) {
-        String sentenceString = "";
+        StringBuilder sentenceString = new StringBuilder();
         AnnotatedWord word = (AnnotatedWord) getWord(wordIndex);
         for (int k = 0; k < words.size(); k++){
             if (wordIndex == k){
-                sentenceString += " <b><font color=\"red\">" + words.get(k).getName() + "</font></b>";
+                sentenceString.append(" <b><font color=\"red\">").append(words.get(k).getName()).append("</font></b>");
             } else {
                 if (k + 1 == word.getUniversalDependency().to()){
-                    sentenceString += " <b><font color=\"blue\">" + words.get(k).getName() + "</font></b>";
+                    sentenceString.append(" <b><font color=\"blue\">").append(words.get(k).getName()).append("</font></b>");
                 } else {
-                    sentenceString += " " + words.get(k).getName();
+                    sentenceString.append(" ").append(words.get(k).getName());
                 }
             }
         }
-        return sentenceString;
+        return sentenceString.toString();
     }
 
     /**
@@ -389,7 +388,7 @@ public class AnnotatedSentence extends Sentence{
      * @return Html string.
      */
     public String toShallowParseString(int wordIndex){
-        String sentenceString = "";
+        StringBuilder sentenceString = new StringBuilder();
         AnnotatedWord word = (AnnotatedWord) getWord(wordIndex);
         int startIndex = wordIndex - 1;
         while (startIndex >= 0 && ((AnnotatedWord) words.get(startIndex)).getShallowParse() != null && ((AnnotatedWord) words.get(startIndex)).getShallowParse().equals(word.getShallowParse())){
@@ -403,12 +402,12 @@ public class AnnotatedSentence extends Sentence{
         endIndex--;
         for (int k = 0; k < words.size(); k++){
             if (k >= startIndex && k <= endIndex){
-                sentenceString += " <b><font color=\"blue\">" + words.get(k).getName() + "</font></b>";
+                sentenceString.append(" <b><font color=\"blue\">").append(words.get(k).getName()).append("</font></b>");
             } else {
-                sentenceString += " " + words.get(k).getName();
+                sentenceString.append(" ").append(words.get(k).getName());
             }
         }
-        return sentenceString;
+        return sentenceString.toString();
     }
 
     /**
@@ -418,7 +417,7 @@ public class AnnotatedSentence extends Sentence{
      * @return Html string.
      */
     public String toNamedEntityString(int wordIndex){
-        String sentenceString = "";
+        StringBuilder sentenceString = new StringBuilder();
         AnnotatedWord word = (AnnotatedWord) getWord(wordIndex);
         int startIndex = wordIndex - 1;
         while (startIndex >= 0 && ((AnnotatedWord) words.get(startIndex)).getNamedEntityType() != null && ((AnnotatedWord) words.get(startIndex)).getNamedEntityType().equals(word.getNamedEntityType())){
@@ -432,12 +431,12 @@ public class AnnotatedSentence extends Sentence{
         endIndex--;
         for (int k = 0; k < words.size(); k++){
             if (k >= startIndex && k <= endIndex){
-                sentenceString += " <b><font color=\"blue\">" + words.get(k).getName() + "</font></b>";
+                sentenceString.append(" <b><font color=\"blue\">").append(words.get(k).getName()).append("</font></b>");
             } else {
-                sentenceString += " " + words.get(k).getName();
+                sentenceString.append(" ").append(words.get(k).getName());
             }
         }
-        return sentenceString;
+        return sentenceString.toString();
     }
 
     public ParserEvaluationScore compareParses(AnnotatedSentence sentence){
@@ -515,10 +514,7 @@ public class AnnotatedSentence extends Sentence{
         if (!dependency.equals("PUNCT") && universalPos.equals("PUNCT")){
             return false;
         }
-        if (dependency.equals("COMPOUND") && universalPos.equals("AUX")){
-            return false;
-        }
-        return true;
+        return !dependency.equals("COMPOUND") || !universalPos.equals("AUX");
     }
 
     /**
@@ -686,20 +682,22 @@ public class AnnotatedSentence extends Sentence{
     }
 
     public String getUniversalDependencyFormatForSentence(String result){
+        StringBuilder resultBuilder = new StringBuilder(result);
         for (int i = 0; i < wordCount(); i++){
             AnnotatedWord word = (AnnotatedWord) getWord(i);
             boolean goesWithHead = false;
             if (i < wordCount() - 1){
                 goesWithHead = ((AnnotatedWord) getWord(i + 1)).goesWithCase();
             }
-            result += (i + 1) + "\t" + word.getUniversalDependencyFormat(wordCount(), goesWithHead) + "\n";
+            resultBuilder.append((i + 1)).append("\t").append(word.getUniversalDependencyFormat(wordCount(), goesWithHead)).append("\n");
         }
+        result = resultBuilder.toString();
         result += "\n";
         return result;
     }
 
     public String exportSequenceDataSet(ViewLayerType layerType){
-        String result = "<S>";
+        StringBuilder result = new StringBuilder("<S>");
         if (layerType == ViewLayerType.POLARITY){
             boolean positive = false, negative = false;
             for (int i = 0; i < wordCount(); i++) {
@@ -715,96 +713,96 @@ public class AnnotatedSentence extends Sentence{
                 }
             }
             if (positive){
-                result += " POSITIVE\n";
+                result.append(" POSITIVE\n");
             } else {
                 if (negative){
-                    result += " NEGATIVE\n";
+                    result.append(" NEGATIVE\n");
                 } else {
-                    result += " NEUTRAL\n";
+                    result.append(" NEUTRAL\n");
                 }
             }
         } else {
-            result += "\n";
+            result.append("\n");
         }
         for (int i = 0; i < wordCount(); i++){
             AnnotatedWord word = (AnnotatedWord) getWord(i);
-            result += word.getName() + " ";
+            result.append(word.getName()).append(" ");
             switch (layerType){
                 case INFLECTIONAL_GROUP:
                 case PART_OF_SPEECH:
                     MorphologicalParse parse = word.getParse();
                     if (parse != null){
-                        result += parse.toString();
+                        result.append(parse);
                     } else {
-                        result += "NONE";
+                        result.append("NONE");
                     }
                     break;
                 case NER:
                     NamedEntityType namedEntityType = word.getNamedEntityType();
                     if (namedEntityType != null){
-                        result += namedEntityType.toString();
+                        result.append(namedEntityType);
                     } else {
-                        result += "NONE";
+                        result.append("NONE");
                     }
                     break;
                 case SEMANTICS:
                     String semantic = word.getSemantic();
                     if (semantic != null){
-                        result += semantic;
+                        result.append(semantic);
                     } else {
-                        result += "NONE";
+                        result.append("NONE");
                     }
                     break;
                 case SLOT:
                     Slot slot = word.getSlot();
                     if (slot != null){
-                        result += slot.toString();
+                        result.append(slot);
                     } else {
-                        result += "O";
+                        result.append("O");
                     }
                     break;
                 case FRAMENET:
                     FrameElement frameElement = word.getFrameElement();
                     if (frameElement != null){
-                        result += frameElement.toString();
+                        result.append(frameElement);
                     } else {
-                        result += "NONE";
+                        result.append("NONE");
                     }
                     break;
                 case PROPBANK:
                     Argument argument = word.getArgument();
                     if (argument != null){
-                        result += argument.toString();
+                        result.append(argument);
                     } else {
-                        result += "NONE";
+                        result.append("NONE");
                     }
                     break;
                 case SHALLOW_PARSE:
                     String shallowParse = word.getShallowParse();
                     if (shallowParse != null){
-                        result += shallowParse;
+                        result.append(shallowParse);
                     } else {
-                        result += "NONE";
+                        result.append("NONE");
                     }
                     break;
                 case META_MORPHEME:
                     MetamorphicParse metamorphicParse = word.getMetamorphicParse();
                     if (metamorphicParse != null){
-                        result += metamorphicParse.toString();
+                        result.append(metamorphicParse);
                     } else {
-                        result += "NONE";
+                        result.append("NONE");
                     }
                     break;
                 case POS_TAG:
                     String posTag = word.getUniversalDependencyPos();
                     if (posTag != null){
-                        result += posTag;
+                        result.append(posTag);
                     } else {
-                        result += "NONE";
+                        result.append("NONE");
                     }
                     break;
             }
-            result += "\n";
+            result.append("\n");
         }
         return result + "</S>\n";
     }
@@ -831,10 +829,9 @@ public class AnnotatedSentence extends Sentence{
      */
     public ArrayList<Literal> constructLiterals(WordNet wordNet, FsmMorphologicalAnalyzer fsm, int wordIndex){
         AnnotatedWord word = (AnnotatedWord) getWord(wordIndex);
-        ArrayList<Literal> possibleLiterals = new ArrayList<>();
         MorphologicalParse morphologicalParse = word.getParse();
         MetamorphicParse metamorphicParse = word.getMetamorphicParse();
-        possibleLiterals.addAll(wordNet.constructLiterals(morphologicalParse.getWord().getName(), morphologicalParse, metamorphicParse, fsm));
+        ArrayList<Literal> possibleLiterals = new ArrayList<>(wordNet.constructLiterals(morphologicalParse.getWord().getName(), morphologicalParse, metamorphicParse, fsm));
         AnnotatedWord firstSucceedingWord = null;
         AnnotatedWord secondSucceedingWord = null;
         if (wordCount() > wordIndex + 1) {
@@ -849,7 +846,7 @@ public class AnnotatedSentence extends Sentence{
             }
             possibleLiterals.addAll(wordNet.constructIdiomLiterals(word.getParse(), firstSucceedingWord.getParse(), word.getMetamorphicParse(), firstSucceedingWord.getMetamorphicParse(), fsm));
         }
-        Collections.sort(possibleLiterals, new LiteralWithSenseComparator());
+        possibleLiterals.sort(new LiteralWithSenseComparator());
         return possibleLiterals;
     }
 
@@ -862,17 +859,16 @@ public class AnnotatedSentence extends Sentence{
      * @param fsm Turkish morphological analyzer
      * @param wordIndex Word index
      * @return List of synset candidates containing all possible root forms and multiword expressions.
-     * @throws ParseRequiredException When parse does not exists
+     * @throws ParseRequiredException When parse does not exist
      */
     public ArrayList<SynSet> constructSynSets(WordNet wordNet, FsmMorphologicalAnalyzer fsm, int wordIndex) throws ParseRequiredException {
         AnnotatedWord word = (AnnotatedWord) getWord(wordIndex);
-        ArrayList<SynSet> possibleSynSets = new ArrayList<>();
         MorphologicalParse morphologicalParse = word.getParse();
         if (morphologicalParse == null){
             throw new ParseRequiredException(word.getName());
         }
         MetamorphicParse metamorphicParse = word.getMetamorphicParse();
-        possibleSynSets.addAll(wordNet.constructSynSets(morphologicalParse.getWord().getName(), morphologicalParse, metamorphicParse, fsm));
+        ArrayList<SynSet> possibleSynSets = new ArrayList<>(wordNet.constructSynSets(morphologicalParse.getWord().getName(), morphologicalParse, metamorphicParse, fsm));
         AnnotatedWord firstPrecedingWord = null;
         AnnotatedWord secondPrecedingWord = null;
         AnnotatedWord firstSucceedingWord = null;
@@ -916,7 +912,7 @@ public class AnnotatedSentence extends Sentence{
             }
             possibleSynSets.addAll(wordNet.constructIdiomSynSets(word.getParse(), firstSucceedingWord.getParse(), word.getMetamorphicParse(), firstSucceedingWord.getMetamorphicParse(), fsm));
         }
-        Collections.sort(possibleSynSets, new SynSetComparator());
+        possibleSynSets.sort(new SynSetComparator());
         return possibleSynSets;
     }
 
