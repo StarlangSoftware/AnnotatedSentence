@@ -1,6 +1,4 @@
 package AnnotatedSentence;
-import org.junit.Before;
-import org.junit.Test;
 
 import Dictionary.Pos;
 import WordNet.*;
@@ -26,7 +24,7 @@ public class StatisticsTest {
                         AnnotatedWord word = (AnnotatedWord) sentence.getWord(j);
                         if (word.getSemantic() != null){
                             SynSet synSet = turkish.getSynSetWithId(word.getSemantic());
-                            if (synSet != null && synSet.getPos().equals(Pos.ADVERB)){
+                            if (synSet != null && synSet.getPos().equals(Pos.VERB)){
                                 verbs.add(word.getSemantic());
                             }
                         }
@@ -46,7 +44,7 @@ public class StatisticsTest {
         }
     }
 
-    public void nouns(){
+    public void verbs(){
         WordNet turkish = new WordNet();
         String dataset = "Penn-Treebank-20";
         AnnotatedCorpus corpus = new AnnotatedCorpus(new File("../../" + dataset + "/Turkish-Phrase/"));
@@ -57,7 +55,7 @@ public class StatisticsTest {
                 AnnotatedWord word = (AnnotatedWord) sentence.getWord(j);
                 if (word.getSemantic() != null){
                     SynSet synSet = turkish.getSynSetWithId(word.getSemantic());
-                    if (synSet != null && synSet.getPos().equals(Pos.ADVERB)){
+                    if (synSet != null && synSet.getPos().equals(Pos.VERB)){
                         verbs.add(word.getSemantic());
                     }
                 }
