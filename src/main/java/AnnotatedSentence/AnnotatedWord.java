@@ -291,6 +291,16 @@ public class AnnotatedWord extends Word implements Serializable{
                     return universalDependency.to() + "$" + universalDependency.toString();
                 }
                 break;
+            case DEPENDENCY_TO:
+                if (universalDependency != null){
+                    return "" + universalDependency.to();
+                }
+                break;
+            case DEPENDENCY_TYPE:
+                if (universalDependency != null){
+                    return universalDependency.toString();
+                }
+                break;
             case FRAMENET:
                 if (frameElement != null){
                     return frameElement.toString();

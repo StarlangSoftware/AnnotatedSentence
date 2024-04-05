@@ -105,6 +105,37 @@ public class AnnotatedCorpus extends Corpus{
         return result;
     }
 
+    public double percentAgreement(AnnotatedCorpus corpus, ViewLayerType layerType){
+        int i = 0, j = 0, agreeCount = 0, total = 0;
+        while (i < sentences.size() && j < corpus.sentences.size()){
+            AnnotatedSentence sentence1 = (AnnotatedSentence) sentences.get(i);
+            AnnotatedSentence sentence2 = (AnnotatedSentence) corpus.getSentence(j);
+            if (sentence1.getFileName().compareTo(sentence2.getFileName()) < 0){
+                i++;
+            } else {
+                if (sentence1.getFileName().compareTo(sentence2.getFileName()) > 0){
+                    j++;
+                } else {
+                    for (int k = 0; k < sentence1.wordCount(); k++){
+                        AnnotatedWord word1 = (AnnotatedWord) sentence1.getWord(k);
+                        AnnotatedWord word2 = (AnnotatedWord) sentence2.getWord(k);
+                        String layer1 = word1.getLayerInfo(layerType);
+                        String layer2 = word2.getLayerInfo(layerType);
+                        if (layer1 != null && layer2 != null){
+                            if (layer1.contains(layer2) || layer2.contains(layer1)){
+                                agreeCount++;
+                            }
+                            total++;
+                        }
+                    }
+                    i++;
+                    j++;
+                }
+            }
+        }
+        return agreeCount / (total + 0.0);
+    }
+
     public void exportSequenceDataSet(String outputFileName, ViewLayerType layerType){
         try {
             PrintWriter output = new PrintWriter(new FileWriter(outputFileName, true));
