@@ -887,6 +887,10 @@ public class AnnotatedWord extends Word implements Serializable{
         return featureList;
     }
 
+    /**
+     * Returns true if the dependency relation is GOESWITH, false otherwise.
+     * @return True if the dependency relation is GOESWITH, false otherwise.
+     */
     public boolean goesWithCase(){
         if (getUniversalDependency() != null){
             return getUniversalDependency().toString().equals("GOESWITH");
@@ -894,6 +898,13 @@ public class AnnotatedWord extends Word implements Serializable{
         return false;
     }
 
+    /**
+     * Returns the connlu format string for this word. Adds surface form, root, universal pos tag, features, and
+     * universal dependency information.
+     * @param sentenceLength Number of words in the sentence.
+     * @param goesWithHead If true, the word is a typo and typo feature is added.
+     * @return The connlu format string for this word.
+     */
     public String getUniversalDependencyFormat(int sentenceLength, boolean goesWithHead){
         String result;
         String uPos;
@@ -1024,6 +1035,12 @@ public class AnnotatedWord extends Word implements Serializable{
         this.area = area;
     }
 
+    /**
+     * Returns true if the area contains the point (x, y).
+     * @param x x coordinate of the point.
+     * @param y y coordinate of the point.
+     * @return True if the area contains the point (x, y), false otherwise.
+     */
     public boolean contains(int x, int y){
         return this.area.contains(x, y);
     }
@@ -1055,6 +1072,10 @@ public class AnnotatedWord extends Word implements Serializable{
         this.selected = selected;
     }
 
+    /**
+     * Checks the gazetteer and sets the named entity tag accordingly.
+     * @param gazetteer Gazetteer used to set named entity tag.
+     */
     public void checkGazetteer(Gazetteer gazetteer){
         String wordLowercase = name.toLowerCase(new Locale("tr"));
         if (gazetteer.contains(wordLowercase) && parse.containsTag(MorphologicalTag.PROPERNOUN)){

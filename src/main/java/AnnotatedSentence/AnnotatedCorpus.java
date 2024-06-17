@@ -42,6 +42,15 @@ public class AnnotatedCorpus extends Corpus{
         }
     }
 
+    /**
+     * A constructor of {@link AnnotatedCorpus} class which reads all {@link AnnotatedSentence} files with the file
+     * name satisfying the given pattern inside the given folder. For each file inside that folder, the constructor
+     * creates an AnnotatedSentence and puts in inside the list parseTrees.
+     * @param folder Folder where all sentences reside.
+     * @param pattern File pattern such as "." ".train" ".test".
+     * @param from Index (such as 23 or 100) from which the files are read.
+     * @param to Index (such as 23 or 100) to which the files are read.
+     */
     public AnnotatedCorpus(File folder, String pattern, int from, int to){
         sentences = new ArrayList<>();
         for (int i = from; i <= to; i++){
@@ -95,6 +104,12 @@ public class AnnotatedCorpus extends Corpus{
         }
     }
 
+    /**
+     * Compares the corpus with the given corpus and returns a parser evaluation score for this comparison. The result
+     * is calculated by summing up the parser evaluation scores of sentence by sentence dependency relation comparisons.
+     * @param corpus Corpus to be compared.
+     * @return A parser evaluation score object.
+     */
     public ParserEvaluationScore compareParses(AnnotatedCorpus corpus){
         ParserEvaluationScore result = new ParserEvaluationScore();
         for (int i = 0; i < sentences.size(); i++){
@@ -105,6 +120,14 @@ public class AnnotatedCorpus extends Corpus{
         return result;
     }
 
+    /**
+     * Calculates inter-annotator agreement between two sets of annotations in two distinct corpora. For each common
+     * file in the corpora, the annotation of words in the parallel sentences are compared, and the number of agreements
+     * and the total number of words are calculated. The ratio gives you the percent agreement.
+     * @param corpus Corpus with which annotator agreement will be calculated.
+     * @param layerType Annotation layer for which inter-annotator agreement will be calculated.
+     * @return Inter-annotator agreement in percent.
+     */
     public double percentAgreement(AnnotatedCorpus corpus, ViewLayerType layerType){
         int i = 0, j = 0, agreeCount = 0, total = 0;
         while (i < sentences.size() && j < corpus.sentences.size()){
@@ -136,6 +159,13 @@ public class AnnotatedCorpus extends Corpus{
         return agreeCount / (total + 0.0);
     }
 
+    /**
+     * Exports the annotated corpus as a sequence labeling dataset. The label type and labels are determined according
+     * to the viewLayerType in each word. Every sentence is processed and each word in the sentence is converted to a
+     * labeled instance.
+     * @param outputFileName Output file name for the sequence labeling dataset.
+     * @param layerType Annotation layer for which sequence labels are determined.
+     */
     public void exportSequenceDataSet(String outputFileName, ViewLayerType layerType){
         try {
             PrintWriter output = new PrintWriter(new FileWriter(outputFileName, true));
@@ -150,6 +180,13 @@ public class AnnotatedCorpus extends Corpus{
         }
     }
 
+    /**
+     * Exports the annotated corpus as a UD file in connlu format. Every sentence is converted into connlu format and
+     * appended to the output file. Multiple paths are possible in the annotated corpus. This method outputs the
+     * sentences in the given path.
+     * @param outputFileName Output file name in connlu format.
+     * @param path Current path for the part of the annotated corpus.
+     */
     public void exportUniversalDependencyFormat(String outputFileName, String path){
         try {
             PrintWriter output = new PrintWriter(new FileWriter(outputFileName, true));
@@ -164,6 +201,11 @@ public class AnnotatedCorpus extends Corpus{
         }
     }
 
+    /**
+     * Exports the annotated corpus as a UD file in connlu format. Every sentence is converted into connlu format and
+     * appended to the output file.
+     * @param outputFileName Output file name in connlu format.
+     */
     public void exportUniversalDependencyFormat(String outputFileName){
         try {
             PrintWriter output = new PrintWriter(outputFileName);
@@ -300,6 +342,11 @@ public class AnnotatedCorpus extends Corpus{
         return dictionary;
     }
 
+    /**
+     * Creates a list of distinct dependencies annotated in the corpus, then returns them with number of annotations
+     * per each.
+     * @return List of map entries, where each entry is a dependency and its number of annotations in the corpus.
+     */
     public List<Map.Entry<String, Integer>> topDependencyAnnotations(){
         CounterHashMap<String> dependencies = new CounterHashMap<>();
         for (int i = 0; i < sentenceCount(); i++){
@@ -313,21 +360,27 @@ public class AnnotatedCorpus extends Corpus{
         return dependencies.topN(dependencies.size());
     }
 
+    /**
+     * Returns number of distinct surface forms in the corpus.
+     * @return Number of distinct surface forms
+     */
     public int uniqueSurfaceForms(){
         CounterHashMap<String> surfaceForms = new CounterHashMap<>();
-        int count = 0;
         for (int i = 0; i < sentenceCount(); i++){
             AnnotatedSentence sentence = (AnnotatedSentence) getSentence(i);
             for (int j = 0; j < sentence.wordCount(); j++){
                 if (sentence.getWord(j).getName() != null){
                     surfaceForms.put(sentence.getWord(j).getName());
-                    count++;
                 }
             }
         }
         return surfaceForms.keySet().size();
     }
 
+    /**
+     * Returns number of words with morphological analysis except punctuations.
+     * @return Number of words with morphological analysis except punctuations.
+     */
     public int tokenCountExceptPunctuations(){
         int count = 0;
         for (int i = 0; i < sentenceCount(); i++){
@@ -341,6 +394,10 @@ public class AnnotatedCorpus extends Corpus{
         return count;
     }
 
+    /**
+     * Returns a list of N most frequent distinct surface forms with their counts.
+     * @return A list of N most frequent distinct surface forms with their counts.
+     */
     public List<Map.Entry<String, Integer>> topSurfaceForms(int N){
         CounterHashMap<String> surfaceForms = new CounterHashMap<>();
         for (int i = 0; i < sentenceCount(); i++){
@@ -354,6 +411,10 @@ public class AnnotatedCorpus extends Corpus{
         return surfaceForms.topN(N);
     }
 
+    /**
+     * Returns a list of N most frequent distinct root forms with their counts.
+     * @return A list of N most frequent distinct root forms with their counts.
+     */
     public List<Map.Entry<String, Integer>> topRootForms(int N){
         CounterHashMap<String> rootForms = new CounterHashMap<>();
         for (int i = 0; i < sentenceCount(); i++){
@@ -367,6 +428,11 @@ public class AnnotatedCorpus extends Corpus{
         return rootForms.topN(N);
     }
 
+    /**
+     * Creates a list of distinct pos tags annotated in the corpus, then returns them with number of annotations per
+     * each.
+     * @return List of map entries, where each entry is a pos tag and its number of annotations in the corpus.
+     */
     public List<Map.Entry<String, Integer>> rootPosTags(){
         CounterHashMap<String> rootPos = new CounterHashMap<>();
         for (int i = 0; i < sentenceCount(); i++){

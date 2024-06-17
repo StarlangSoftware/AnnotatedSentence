@@ -19,7 +19,7 @@ public class LayerStatistics {
     }
 
     /**
-     * Print all occurrence statistics
+     * Print statistics all occurrences
      */
     public void printStatistics(){
         double sum = counts.sumOfCounts();
@@ -29,6 +29,9 @@ public class LayerStatistics {
         System.out.printf("%20s\t%10d\t%3.2f%n", "TOTAL", counts.sumOfCounts(), 100.0);
     }
 
+    /**
+     * Print statistics all occurrences with literals (synonym words) added for each synset.
+     */
     public void printStatistics(WordNet wordNet){
         double sum = counts.sumOfCounts();
         for (String key : counts.keySet()){

@@ -24,7 +24,6 @@ import WordNet.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Scanner;
 
@@ -124,6 +123,13 @@ public class AnnotatedSentence extends Sentence{
         return false;
     }
 
+    /**
+     * Replaces id's of predicates, which have previousId as synset id, with currentId. Replaces also predicate id's of
+     * frame elements, which have predicate id's previousId, with currentId.
+     * @param previousId Previous id of the synset.
+     * @param currentId Replacement id.
+     * @return Returns true, if any replacement has been done; false otherwise.
+     */
     public boolean updateConnectedPredicate(String previousId, String currentId){
         boolean modified = false;
         for (Word word : words){
@@ -168,6 +174,14 @@ public class AnnotatedSentence extends Sentence{
         return candidateList;
     }
 
+    /**
+     * Given the new name of the word as text, the method splits the text w.r.t space and inserts all tokens into
+     * the position wordIndex in the sentence. For example, if the text is 'kaligrafi yaparak dinleniyorum', then the
+     * word will be replaced with 'kaligrafi', and 'yaparak' and 'dinleniyorum' will be inserted after word 'kaligrafi'.
+     * @param text New name of the word, possibly containing space.
+     * @param word Word whose name will be replaced.
+     * @param wordIndex Position where the new word(s) will be inserted.
+     */
     public void insertWord(String text, AnnotatedWord word, int wordIndex){
         String[] words = text.split(" ");
         for (int i = words.length - 1; i >= 1; i--){
@@ -439,6 +453,12 @@ public class AnnotatedSentence extends Sentence{
         return sentenceString.toString();
     }
 
+    /**
+     * Compares the sentence with the given sentence and returns a parser evaluation score for this comparison. The result
+     * is calculated by summing up the parser evaluation scores of word by word dpendency relation comparisons.
+     * @param sentence Sentence to be compared.
+     * @return A parser evaluation score object.
+     */
     public ParserEvaluationScore compareParses(AnnotatedSentence sentence){
         ParserEvaluationScore score = new ParserEvaluationScore();
         for (int i = 0; i < wordCount(); i++){
@@ -681,6 +701,11 @@ public class AnnotatedSentence extends Sentence{
         return errorList;
     }
 
+    /**
+     * Appends the Connlu format output of the current sentence to the given result string.
+     * @param result String after which new output string will be appended
+     * @return Result string appended with Connlu format output of the current sentence.
+     */
     public String getUniversalDependencyFormatForSentence(String result){
         StringBuilder resultBuilder = new StringBuilder(result);
         for (int i = 0; i < wordCount(); i++){
@@ -696,6 +721,20 @@ public class AnnotatedSentence extends Sentence{
         return result;
     }
 
+    /**
+     * Constructs sequence string consisting of word annotations between start sentence and end sentence tags. Word
+     * annotations are selected according to the layerType. If layertype is POLARITY, polarity of the word is appended
+     * to its name. IF layerType is PART_OF_SPEECH, morphological parse of the word is appended to its name. If
+     * layerType is NER, named entity tag of the word is appended to its name. If layerType is SEMANTICS, sense id
+     * of the word (taken from WordNet) is appended to its name. If layerType is SOT, slot tag of the word is appended
+     * to its name. If layerType is FRAMENET, frame element and possibly predicate of the word is appended to
+     * its name. If layerType is PROPBANK, propbank argument and possibly predicate of the word is appended to its name.
+     * If layerType is SHALLOW_PARSE, shallow parse tag of the word is appended to its name. If layerType is
+     * META_MORPHEME, metamorpheme of the word is appended to its name. If layerType is POS_TAG, pos tag of the word is
+     * appended to its name.
+     * @param layerType LayerType for the output.
+     * @return A sequence string consisting of word annotations between start sentence and end sentence tags.
+     */
     public String exportSequenceDataSet(ViewLayerType layerType){
         StringBuilder result = new StringBuilder("<S>");
         if (layerType == ViewLayerType.POLARITY){
@@ -807,11 +846,20 @@ public class AnnotatedSentence extends Sentence{
         return result + "</S>\n";
     }
 
+    /**
+     * Returns the connlu format of the sentence with appended prefix string based on the path.
+     * @param path Path of the sentence.
+     * @return The connlu format of the sentence with appended prefix string based on the path.
+     */
     public String getUniversalDependencyFormat(String path){
         String result = "# sent_id = " + path + getFileName() + "\n" + "# text = " + toWords() + "\n";
         return getUniversalDependencyFormatForSentence(result);
     }
 
+    /**
+     * Returns the connlu format of the sentence with appended prefix string.
+     * @return The connlu format of the sentence with appended prefix string.
+     */
     public String getUniversalDependencyFormat(){
         String result = "# sent_id = " + getFileName() + "\n" + "# text = " + toWords() + "\n";
         return getUniversalDependencyFormatForSentence(result);
