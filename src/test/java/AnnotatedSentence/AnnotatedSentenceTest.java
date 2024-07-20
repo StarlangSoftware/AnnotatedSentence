@@ -5,6 +5,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.File;
+import java.util.ArrayList;
 
 import static org.junit.Assert.*;
 
@@ -24,6 +25,14 @@ public class AnnotatedSentenceTest {
         sentence7 = new AnnotatedSentence(new File("sentences/0007.dev"));
         sentence8 = new AnnotatedSentence(new File("sentences/0008.dev"));
         sentence9 = new AnnotatedSentence(new File("sentences/0009.dev"));
+    }
+
+    @Test
+    public void testDependencyGroups() {
+        assertEquals(sentence0.getDependencyGroups(11).size(), 3);
+        assertEquals(sentence1.getDependencyGroups(13).size(), 5);
+        assertEquals(sentence8.getDependencyGroups(5).size(), 2);
+        assertEquals(sentence9.getDependencyGroups(12).size(), 3);
     }
 
     @Test
@@ -82,7 +91,7 @@ public class AnnotatedSentenceTest {
         assertEquals("bu kez , firma hazır .", sentence5.toStems());
         assertEquals("`` diyalog sür kesinlikle temel önem haiz .", sentence6.toStems());
         assertEquals("cuma gün bu üzerine düşün çok geç kal ol .", sentence7.toStems());
-        assertEquals("bu hakkında önceden düşün gerek . ''", sentence8.toStems());
+        assertEquals("bu hakkında önceden düşün gerek .", sentence8.toStems());
         assertEquals("isim göre çeşit göster birkaç kefaret fon reklam yap için devam et .", sentence9.toStems());
     }
 

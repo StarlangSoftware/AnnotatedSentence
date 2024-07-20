@@ -24,6 +24,7 @@ import WordNet.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Scanner;
 
@@ -66,6 +67,36 @@ public class AnnotatedSentence extends Sentence{
                 words.add(new AnnotatedWord(word));
             }
         }
+    }
+
+    /**
+     * Finds the subtrees (returned as phrases) directly connected to the word with the given word index.
+     * @param rootWordIndex Word index of the root word. The first word's index is 1.
+     * @return The subtrees (returned as phrases) directly connected to the word with the given word index.
+     */
+    public ArrayList<AnnotatedPhrase> getDependencyGroups(int rootWordIndex){
+        HashMap<Integer, AnnotatedPhrase> groups = new HashMap<>();
+        for (int i = 0; i < words.size(); i++) {
+            AnnotatedWord tmpWord = (AnnotatedWord) words.get(i);
+            int index = i + 1;
+            while (tmpWord.getUniversalDependency().to() != rootWordIndex && tmpWord.getUniversalDependency().to() != 0){
+                index = tmpWord.getUniversalDependency().to();
+                tmpWord = (AnnotatedWord) words.get(tmpWord.getUniversalDependency().to() - 1);
+            }
+            if (tmpWord.getUniversalDependency().to() != 0){
+                AnnotatedPhrase phrase;
+                if (groups.containsKey(index)){
+                    phrase = groups.get(index);
+                } else {
+                    phrase = new AnnotatedPhrase(i, tmpWord.getUniversalDependency().toString());
+                    groups.put(index, phrase);
+                }
+                phrase.addWord(words.get(i));
+            }
+        }
+        ArrayList<AnnotatedPhrase> dependencyGroups = new ArrayList<>();
+        dependencyGroups.addAll(groups.values());
+        return dependencyGroups;
     }
 
     /**
