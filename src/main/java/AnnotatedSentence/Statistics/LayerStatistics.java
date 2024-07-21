@@ -31,6 +31,7 @@ public class LayerStatistics {
 
     /**
      * Print statistics all occurrences with literals (synonym words) added for each synset.
+     * @param wordNet Turkish WordNet.
      */
     public void printStatistics(WordNet wordNet){
         double sum = counts.sumOfCounts();

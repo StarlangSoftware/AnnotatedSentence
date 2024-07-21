@@ -396,6 +396,7 @@ public class AnnotatedCorpus extends Corpus{
 
     /**
      * Returns a list of N most frequent distinct surface forms with their counts.
+     * @param N Number of most frequent distinct surface forms to be found.
      * @return A list of N most frequent distinct surface forms with their counts.
      */
     public List<Map.Entry<String, Integer>> topSurfaceForms(int N){
@@ -413,6 +414,7 @@ public class AnnotatedCorpus extends Corpus{
 
     /**
      * Returns a list of N most frequent distinct root forms with their counts.
+     * @param N Number of most frequent distinct root forms to be found.
      * @return A list of N most frequent distinct root forms with their counts.
      */
     public List<Map.Entry<String, Integer>> topRootForms(int N){
