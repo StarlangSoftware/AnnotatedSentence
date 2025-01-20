@@ -12,7 +12,7 @@ import MorphologicalAnalysis.MorphologicalTag;
 import NamedEntityRecognition.Gazetteer;
 import NamedEntityRecognition.NamedEntityType;
 import NamedEntityRecognition.Slot;
-import PropBank.Argument;
+import PropBank.ArgumentList;
 import SentiNet.PolarityType;
 import Util.RectAngle;
 
@@ -36,7 +36,7 @@ public class AnnotatedWord extends Word implements Serializable{
     private MetamorphicParse metamorphicParse;
     private String semantic;
     private NamedEntityType namedEntityType;
-    private Argument argument;
+    private ArgumentList argumentList;
     private FrameElement frameElement;
     private UniversalDependencyRelation universalDependency;
     private String shallowParse;
@@ -83,7 +83,7 @@ public class AnnotatedWord extends Word implements Serializable{
                                 namedEntityType = NamedEntityType.getNamedEntityType(layerValue);
                             } else {
                                 if (layerType.equalsIgnoreCase("propbank")){
-                                    argument = new Argument(layerValue);
+                                    argumentList = new ArgumentList(layerValue);
                                 } else {
                                     if (layerType.equalsIgnoreCase("shallowParse")){
                                         shallowParse = layerValue;
@@ -157,8 +157,8 @@ public class AnnotatedWord extends Word implements Serializable{
         if (namedEntityType != null){
             result = result + "{namedEntity=" + namedEntityType + "}";
         }
-        if (argument != null){
-            result = result + "{propbank=" + argument + "}";
+        if (argumentList != null){
+            result = result + "{propbank=" + argumentList + "}";
         }
         if (frameElement != null){
             result = result + "{framenet=" + frameElement + "}";
@@ -198,7 +198,7 @@ public class AnnotatedWord extends Word implements Serializable{
         parse = null;
         metamorphicParse = null;
         semantic = null;
-        argument = new Argument("NONE", null);
+        argumentList = null;
         shallowParse = null;
         universalDependency = null;
         frameElement = null;
@@ -218,7 +218,7 @@ public class AnnotatedWord extends Word implements Serializable{
         super(name);
         this.parse = parse;
         this.namedEntityType = NamedEntityType.NONE;
-        argument = new Argument("NONE", null);
+        argumentList = null;
         metamorphicParse = null;
         semantic = null;
         shallowParse = null;
@@ -240,7 +240,7 @@ public class AnnotatedWord extends Word implements Serializable{
         super(name);
         this.parse = parse;
         this.namedEntityType = NamedEntityType.NONE;
-        argument = new Argument("NONE", null);
+        argumentList = null;
         setMetamorphicParse(parse.withList());
         semantic = null;
         shallowParse = null;
@@ -282,8 +282,8 @@ public class AnnotatedWord extends Word implements Serializable{
             case TURKISH_WORD:
                 return name;
             case PROPBANK:
-                if (argument != null){
-                    return argument.toString();
+                if (argumentList != null){
+                    return argumentList.toString();
                 }
                 break;
             case DEPENDENCY:
@@ -411,19 +411,19 @@ public class AnnotatedWord extends Word implements Serializable{
      * Returns the semantic role layer of the word.
      * @return Semantic role tag of the word.
      */
-    public Argument getArgument() {
-        return argument;
+    public ArgumentList getArgumentList() {
+        return argumentList;
     }
 
     /**
      * Sets the semantic role layer of the word.
      * @param argument New semantic role tag of the word.
      */
-    public void setArgument(String argument){
+    public void setArgumentList(String argument){
         if (argument != null){
-            this.argument = new Argument(argument);
+            this.argumentList = new ArgumentList(argument);
         } else {
-            this.argument = null;
+            this.argumentList = null;
         }
     }
 

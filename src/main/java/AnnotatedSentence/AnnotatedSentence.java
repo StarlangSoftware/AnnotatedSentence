@@ -16,6 +16,7 @@ import MorphologicalAnalysis.MorphologicalParse;
 import NamedEntityRecognition.NamedEntityType;
 import NamedEntityRecognition.Slot;
 import PropBank.Argument;
+import PropBank.ArgumentList;
 import PropBank.Frameset;
 import PropBank.FramesetList;
 import SentiNet.PolarityType;
@@ -132,8 +133,10 @@ public class AnnotatedSentence extends Sentence{
     public boolean containsPredicate(){
         for (Word word : words){
             AnnotatedWord annotatedWord = (AnnotatedWord) word;
-            if (annotatedWord.getArgument() != null && annotatedWord.getArgument().getArgumentType().equals("PREDICATE")){
-                return true;
+            if (annotatedWord.getArgumentList() != null){
+                if (annotatedWord.getArgumentList().containsPredicate()){
+                    return true;
+                }
             }
         }
         return false;
@@ -165,9 +168,12 @@ public class AnnotatedSentence extends Sentence{
         boolean modified = false;
         for (Word word : words){
             AnnotatedWord annotatedWord = (AnnotatedWord) word;
-            if (annotatedWord.getArgument() != null && annotatedWord.getArgument().getId() != null && annotatedWord.getArgument().getId().equals(previousId)){
-                annotatedWord.setArgument(annotatedWord.getArgument().getArgumentType() + "$" + currentId);
-                modified = true;
+            ArgumentList argumentList = annotatedWord.getArgumentList();
+            if (argumentList != null){
+                if (argumentList.containsPredicateWithId(previousId)){
+                    argumentList.updateConnectedId(previousId, currentId);
+                    modified = true;
+                }
             }
             if (annotatedWord.getFrameElement() != null && annotatedWord.getFrameElement().getId() != null && annotatedWord.getFrameElement().getId().equals(previousId)){
                 annotatedWord.setFrameElement(annotatedWord.getFrameElement().getFrameElementType() + "$" + annotatedWord.getFrameElement().getFrame() + "$" + currentId);
@@ -268,8 +274,8 @@ public class AnnotatedSentence extends Sentence{
         HashSet<Frameset> synSets = new HashSet<>();
         for (int i = 0; i < wordCount(); i++){
             AnnotatedWord word = (AnnotatedWord) getWord(i);
-            if (word.getArgument() != null && word.getArgument().getArgumentType().equals("PREDICATE") && word.getSemantic() != null) {
-                if (framesetList.frameExists(word.getSemantic())) {
+            if (word.getArgumentList() != null && word.getSemantic() != null) {
+                if (word.getArgumentList().containsPredicate() && framesetList.frameExists(word.getSemantic())){
                     synSets.add(framesetList.getFrameSet(word.getSemantic()));
                 }
             }
@@ -840,7 +846,7 @@ public class AnnotatedSentence extends Sentence{
                     }
                     break;
                 case PROPBANK:
-                    Argument argument = word.getArgument();
+                    ArgumentList argument = word.getArgumentList();
                     if (argument != null){
                         result.append(argument);
                     } else {
