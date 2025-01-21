@@ -5,6 +5,7 @@ import Corpus.WordFormat;
 import DependencyParser.Universal.UniversalDependencyRelation;
 import Dictionary.Word;
 import FrameNet.FrameElement;
+import FrameNet.FrameElementList;
 import MorphologicalAnalysis.FsmParse;
 import MorphologicalAnalysis.MetamorphicParse;
 import MorphologicalAnalysis.MorphologicalParse;
@@ -37,7 +38,7 @@ public class AnnotatedWord extends Word implements Serializable{
     private String semantic;
     private NamedEntityType namedEntityType;
     private ArgumentList argumentList;
-    private FrameElement frameElement;
+    private FrameElementList frameElementList;
     private UniversalDependencyRelation universalDependency;
     private String shallowParse;
     private PolarityType polarity;
@@ -93,7 +94,7 @@ public class AnnotatedWord extends Word implements Serializable{
                                             universalDependency = new UniversalDependencyRelation(Integer.parseInt(values[0]), values[1]);
                                         } else {
                                             if (layerType.equalsIgnoreCase("framenet")){
-                                                frameElement = new FrameElement(layerValue);
+                                                frameElementList = new FrameElementList(layerValue);
                                             } else {
                                                 if (layerType.equalsIgnoreCase("slot")){
                                                     slot = new Slot(layerValue);
@@ -160,8 +161,8 @@ public class AnnotatedWord extends Word implements Serializable{
         if (argumentList != null){
             result = result + "{propbank=" + argumentList + "}";
         }
-        if (frameElement != null){
-            result = result + "{framenet=" + frameElement + "}";
+        if (frameElementList != null){
+            result = result + "{framenet=" + frameElementList + "}";
         }
         if (shallowParse != null){
             result = result + "{shallowParse=" + shallowParse + "}";
@@ -201,7 +202,7 @@ public class AnnotatedWord extends Word implements Serializable{
         argumentList = null;
         shallowParse = null;
         universalDependency = null;
-        frameElement = null;
+        frameElementList = null;
         slot = null;
         polarity = null;
         ccg = null;
@@ -223,7 +224,7 @@ public class AnnotatedWord extends Word implements Serializable{
         semantic = null;
         shallowParse = null;
         universalDependency = null;
-        frameElement = null;
+        frameElementList = null;
         slot = null;
         polarity = null;
         ccg = null;
@@ -245,7 +246,7 @@ public class AnnotatedWord extends Word implements Serializable{
         semantic = null;
         shallowParse = null;
         universalDependency = null;
-        frameElement = null;
+        frameElementList = null;
         slot = null;
         polarity = null;
         ccg = null;
@@ -302,8 +303,8 @@ public class AnnotatedWord extends Word implements Serializable{
                 }
                 break;
             case FRAMENET:
-                if (frameElement != null){
-                    return frameElement.toString();
+                if (frameElementList != null){
+                    return frameElementList.toString();
                 }
                 break;
             case SLOT:
@@ -431,19 +432,19 @@ public class AnnotatedWord extends Word implements Serializable{
      * Returns the frameNet layer of the word.
      * @return FrameNet tag of the word.
      */
-    public FrameElement getFrameElement(){
-        return frameElement;
+    public FrameElementList getFrameElementList(){
+        return frameElementList;
     }
 
     /**
      * Sets the framenet layer of the word.
      * @param frameElement New frame element tag of the word.
      */
-    public void setFrameElement(String frameElement){
+    public void setFrameElementList(String frameElement){
         if (frameElement != null){
-            this.frameElement = new FrameElement(frameElement);
+            this.frameElementList = new FrameElementList(frameElement);
         } else {
-            this.frameElement = null;
+            this.frameElementList = null;
         }
     }
 

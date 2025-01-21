@@ -8,14 +8,13 @@ import DependencyParser.Universal.UniversalDependencyRelation;
 import Dictionary.Word;
 import FrameNet.FrameNet;
 import FrameNet.Frame;
-import FrameNet.FrameElement;
+import FrameNet.FrameElementList;
 import FrameNet.DisplayedFrame;
 import MorphologicalAnalysis.FsmMorphologicalAnalyzer;
 import MorphologicalAnalysis.MetamorphicParse;
 import MorphologicalAnalysis.MorphologicalParse;
 import NamedEntityRecognition.NamedEntityType;
 import NamedEntityRecognition.Slot;
-import PropBank.Argument;
 import PropBank.ArgumentList;
 import PropBank.Frameset;
 import PropBank.FramesetList;
@@ -150,8 +149,10 @@ public class AnnotatedSentence extends Sentence{
     public boolean containsFramePredicate(){
         for (Word word : words){
             AnnotatedWord annotatedWord = (AnnotatedWord) word;
-            if (annotatedWord.getFrameElement() != null && annotatedWord.getFrameElement().getFrameElementType().equals("PREDICATE")){
-                return true;
+            if (annotatedWord.getFrameElementList() != null){
+                if (annotatedWord.getFrameElementList().containsPredicate()){
+                    return true;
+                }
             }
         }
         return false;
@@ -175,9 +176,12 @@ public class AnnotatedSentence extends Sentence{
                     modified = true;
                 }
             }
-            if (annotatedWord.getFrameElement() != null && annotatedWord.getFrameElement().getId() != null && annotatedWord.getFrameElement().getId().equals(previousId)){
-                annotatedWord.setFrameElement(annotatedWord.getFrameElement().getFrameElementType() + "$" + annotatedWord.getFrameElement().getFrame() + "$" + currentId);
-                modified = true;
+            FrameElementList frameElementList = annotatedWord.getFrameElementList();
+            if (frameElementList != null){
+                if (frameElementList.containsPredicateWithId(previousId)){
+                    frameElementList.updateConnectedId(previousId, currentId);
+                    modified = true;
+                }
             }
         }
         return modified;
@@ -292,8 +296,8 @@ public class AnnotatedSentence extends Sentence{
         ArrayList<DisplayedFrame> currentFrames = new ArrayList<>();
         for (int i = 0; i < wordCount(); i++){
             AnnotatedWord word = (AnnotatedWord) getWord(i);
-            if (word.getFrameElement() != null && word.getFrameElement().getFrameElementType().equals("PREDICATE") && word.getSemantic() != null){
-                if (frameNet.lexicalUnitExists(word.getSemantic())){
+            if (word.getFrameElementList() != null && word.getSemantic() != null){
+                if (word.getFrameElementList().containsPredicate() && frameNet.lexicalUnitExists(word.getSemantic())){
                     for (Frame frame : frameNet.getFrames(word.getSemantic())){
                         if (!currentFrames.contains(new DisplayedFrame(frame, word.getSemantic()))){
                             currentFrames.add(new DisplayedFrame(frame, word.getSemantic()));
@@ -838,7 +842,7 @@ public class AnnotatedSentence extends Sentence{
                     }
                     break;
                 case FRAMENET:
-                    FrameElement frameElement = word.getFrameElement();
+                    FrameElementList frameElement = word.getFrameElementList();
                     if (frameElement != null){
                         result.append(frameElement);
                     } else {
