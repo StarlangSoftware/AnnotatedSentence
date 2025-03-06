@@ -939,6 +939,50 @@ public class AnnotatedSentence extends Sentence{
         return possibleLiterals;
     }
 
+    public String constructAmr(){
+        AnnotatedWord previous, word = null;
+        String name = "";
+        String arg = "";
+        String result = getFileName() + "\t" + toWords() + "\n";
+        for (int i = 0; i < wordCount(); i++){
+            word = (AnnotatedWord) getWord(i);
+            if (i != 0){
+                previous = (AnnotatedWord) getWord(i - 1);
+                if (previous.getArgumentList() != null){
+                    arg = previous.getArgumentList().toString();
+                } else {
+                    arg = "";
+                }
+                if (previous.getSemantic() != null && previous.getSemantic().equals(word.getSemantic())){
+                    name = name + " " + (i+1) + "/" + word.getParse().getWord().getName();
+                } else {
+                    if (arg.contains("PREDICATE")){
+                        result = result + name + "\n";
+                    } else {
+                        if (arg.contains("$")){
+                            result = result + "\t" + name + ":" + arg.substring(0, arg.indexOf("$")) + "\n";
+                        } else {
+                            result = result + "\t" + name + "\n";
+                        }
+                    }
+                    name = (i+1) + "/" + word.getParse().getWord().getName();
+                }
+            } else {
+                name = (i+1) + "/" + word.getParse().getWord().getName();
+            }
+        }
+        previous = (AnnotatedWord) getWord(wordCount() - 1);
+        if (previous.getArgumentList() != null){
+            arg = previous.getArgumentList().toString();
+        }
+        if (!arg.contains("PREDICATE") && arg.contains("$")){
+            result = result + "\t" + name + ":" + arg.substring(0, arg.indexOf("$")) + "\n";
+        } else {
+            result = result + "\t" + name + "\n";
+        }
+        return result;
+    }
+
     /**
      * Creates a list of synset candidates for the i'th word in the sentence. It combines the results of
      * 1. All possible synsets containing the i'th word in the sentence

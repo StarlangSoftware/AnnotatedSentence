@@ -40,6 +40,11 @@ public class UDConvertTest {
         corpus.exportUniversalDependencyFormat("tr_penn-ud-dev.conllu", "20-");
     }
 
+    public void testConvertUd(){
+        AnnotatedCorpus corpus = new AnnotatedCorpus(new File("../../Etstur/Turkish-Phrase/"), ".train");
+        corpus.exportAmr();
+    }
+
     public void testConvertUdTourism(){
         AnnotatedCorpus corpus = new AnnotatedCorpus(new File("../../Etstur/Turkish-Phrase/"), ".train", 0, 7749);
         AnnotatedCorpus corpus2 = new AnnotatedCorpus(new File("../../Etstur/Turkish-Phrase/"), ".test", 0, 7749);

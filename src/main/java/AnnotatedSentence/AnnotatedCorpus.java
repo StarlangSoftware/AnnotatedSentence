@@ -448,4 +448,11 @@ public class AnnotatedCorpus extends Corpus{
         return rootPos.topN(rootPos.size());
     }
 
+    public void exportAmr(){
+        for (int i = 0; i < sentenceCount(); i++) {
+            AnnotatedSentence sentence = (AnnotatedSentence) getSentence(i);
+            System.out.println(sentence.constructAmr());
+        }
+    }
+
 }

@@ -4,7 +4,6 @@ import AnnotatedSentence.GrammaticaError.GrammaticalError;
 import Corpus.WordFormat;
 import DependencyParser.Universal.UniversalDependencyRelation;
 import Dictionary.Word;
-import FrameNet.FrameElement;
 import FrameNet.FrameElementList;
 import MorphologicalAnalysis.FsmParse;
 import MorphologicalAnalysis.MetamorphicParse;
@@ -125,6 +124,11 @@ public class AnnotatedWord extends Word implements Serializable{
                 }
             }
         }
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode() * ccg.hashCode();
     }
 
     /**
