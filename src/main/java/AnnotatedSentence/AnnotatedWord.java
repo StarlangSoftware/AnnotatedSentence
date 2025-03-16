@@ -128,7 +128,7 @@ public class AnnotatedWord extends Word implements Serializable{
 
     @Override
     public int hashCode() {
-        return super.hashCode() * ccg.hashCode();
+        return super.hashCode();
     }
 
     /**
