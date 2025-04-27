@@ -1,6 +1,7 @@
 package AnnotatedSentence;
 
 import PropBank.FramesetList;
+import WordNet.WordNet;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -25,6 +26,13 @@ public class AnnotatedSentenceTest {
         sentence7 = new AnnotatedSentence(new File("sentences/0007.dev"));
         sentence8 = new AnnotatedSentence(new File("sentences/0008.dev"));
         sentence9 = new AnnotatedSentence(new File("sentences/0009.dev"));
+    }
+
+    @Test
+    public void test1()  {
+        WordNet wordnet = new WordNet();
+        AnnotatedCorpus corpus = new AnnotatedCorpus(new File("../../Gb/Turkish-Phrase"));
+        corpus.exportAmr(wordnet);
     }
 
     @Test

@@ -5,6 +5,7 @@ import DataStructure.CounterHashMap;
 import DependencyParser.ParserEvaluationScore;
 import Dictionary.*;
 import MorphologicalAnalysis.*;
+import WordNet.WordNet;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -448,10 +449,14 @@ public class AnnotatedCorpus extends Corpus{
         return rootPos.topN(rootPos.size());
     }
 
-    public void exportAmr(){
+    public void exportAmr(WordNet wordNet){
         for (int i = 0; i < sentenceCount(); i++) {
             AnnotatedSentence sentence = (AnnotatedSentence) getSentence(i);
-            System.out.println(sentence.constructAmr());
+            ArrayList<String> amr = sentence.constructAmr(wordNet);
+            for (String s : amr) {
+                System.out.println(s);
+            }
+            System.out.println();
         }
     }
 
