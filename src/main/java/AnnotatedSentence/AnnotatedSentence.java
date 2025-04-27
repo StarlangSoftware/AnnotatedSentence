@@ -1030,6 +1030,30 @@ public class AnnotatedSentence extends Sentence {
                 next.equals("temmuz") || next.equals("ağustos") || next.equals("eylül") || next.equals("ekim") || next.equals("kasım") || next.equals("aralık");
     }
 
+    private int isOrdinal(String next) {
+        switch (next) {
+            case "birinci":
+                return 1;
+            case "ikinci":
+                return 2;
+            case "üçüncü":
+                return 3;
+            case "dördüncü":
+                return 4;
+            case "beşinci":
+                return 5;
+            case "altıncı":
+                return 6;
+            case "yedinci":
+                return 7;
+            case "sekizinci":
+                return 8;
+            case "dokuzuncu":
+                return 9;
+        }
+        return 0;
+    }
+
     private boolean addArgumentList(ArrayList<String> output, AnnotatedWord current, String semantic, String currentText){
         if (current.getArgumentList() != null) {
             ArgumentList argumentList = current.getArgumentList();
@@ -1186,30 +1210,40 @@ public class AnnotatedSentence extends Sentence {
                     if (argumentAdded) {
                         addDetails(tabCount, output, current);
                     } else {
-                        if (relation.equals("AMOD") || relation.equals("NMOD")) {
-                            output.add(withTabs(tabCount, currentWord) + ":mod");
-                        } else {
-                            if (relation.equals("NUMMOD")) {
-                                output.add(withTabs(tabCount, currentWord) + ":quant");
+                        if (current.getParse().containsTag(MorphologicalTag.ORDINAL) || isOrdinal(current.getParse().getWord().getName()) > 0) {
+                            output.add(withTabs(tabCount, "ordinal-entity:ord"));
+                            int value = isOrdinal(current.getParse().getWord().getName());
+                            if (value > 0) {
+                                output.add(withTabs(tabCount + 1, value + ":value"));
                             } else {
-                                if (relation.equals("ADVMOD")) {
-                                    output.add(withTabs(tabCount, currentWord) + ":manner");
+                                output.add(withTabs(tabCount + 1, current.getParse().getWord().getName() + ":value"));
+                            }
+                        } else {
+                            if (relation.equals("AMOD") || relation.equals("NMOD")) {
+                                output.add(withTabs(tabCount, currentWord) + ":mod");
+                            } else {
+                                if (relation.equals("NUMMOD")) {
+                                    output.add(withTabs(tabCount, currentWord) + ":quant");
                                 } else {
-                                    if (current.getParse().containsTag(MorphologicalTag.INSTRUMENTAL)) {
-                                        output.add(withTabs(tabCount, currentWord) + ":instrument");
+                                    if (relation.equals("ADVMOD")) {
+                                        output.add(withTabs(tabCount, currentWord) + ":manner");
                                     } else {
-                                        if (current.getParse().containsTag(MorphologicalTag.LOCATIVE)) {
-                                            output.add(withTabs(tabCount, currentWord) + ":location");
+                                        if (current.getParse().containsTag(MorphologicalTag.INSTRUMENTAL)) {
+                                            output.add(withTabs(tabCount, currentWord) + ":instrument");
                                         } else {
-                                            if (!extraAdded.isEmpty()){
-                                                output.add(withTabs(tabCount, currentWord) + extraAdded);
+                                            if (current.getParse().containsTag(MorphologicalTag.LOCATIVE)) {
+                                                output.add(withTabs(tabCount, currentWord) + ":location");
                                             } else {
-                                                output.add(withTabs(tabCount, currentWord) + added);
-                                                if (addedIndex != -1){
-                                                    done[addedIndex] = true;
+                                                if (!extraAdded.isEmpty()){
+                                                    output.add(withTabs(tabCount, currentWord) + extraAdded);
+                                                } else {
+                                                    output.add(withTabs(tabCount, currentWord) + added);
+                                                    if (addedIndex != -1){
+                                                        done[addedIndex] = true;
+                                                    }
                                                 }
+                                                addDetails(tabCount, output, current);
                                             }
-                                            addDetails(tabCount, output, current);
                                         }
                                     }
                                 }
