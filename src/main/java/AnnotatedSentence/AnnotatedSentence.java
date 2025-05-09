@@ -24,10 +24,7 @@ import WordNet.*;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Scanner;
+import java.util.*;
 
 public class AnnotatedSentence extends Sentence {
     private File file;
@@ -996,23 +993,39 @@ public class AnnotatedSentence extends Sentence {
         if (word.getParse().getRootPos().equals("VERB") && word.getParse().containsTag(MorphologicalTag.A1SG) && !toStems().contains("ben ")) {
             output.add(withTabs(tabCount + 1, "ben:ARG0"));
         }
+        if (word.getParse().getRootPos().equals("VERB") && word.getParse().getPos().equals("NOUN") && word.getParse().containsTag(MorphologicalTag.P1SG)) {
+            output.add(withTabs(tabCount + 1, "ben:ARG0"));
+        }
         if (word.getParse().getRootPos().equals("VERB") && word.getParse().containsTag(MorphologicalTag.A1PL) && !toStems().contains("biz ")) {
+            output.add(withTabs(tabCount + 1, "biz:ARG0"));
+        }
+        if (word.getParse().getRootPos().equals("VERB") && word.getParse().getPos().equals("NOUN") && word.getParse().containsTag(MorphologicalTag.P1PL)) {
             output.add(withTabs(tabCount + 1, "biz:ARG0"));
         }
         if (word.getParse().getRootPos().equals("VERB") && word.getParse().containsTag(MorphologicalTag.A2SG) && !toStems().contains("sen ")) {
             output.add(withTabs(tabCount + 1, "sen:ARG0"));
         }
+        if (word.getParse().getRootPos().equals("VERB") && word.getParse().getPos().equals("NOUN") && word.getParse().containsTag(MorphologicalTag.P2SG)) {
+            output.add(withTabs(tabCount + 1, "sen:ARG0"));
+        }
         if (word.getParse().getRootPos().equals("VERB") && word.getParse().containsTag(MorphologicalTag.A2PL) && !toStems().contains("siz ")) {
+            output.add(withTabs(tabCount + 1, "siz:ARG0"));
+        }
+        if (word.getParse().getRootPos().equals("VERB") && word.getParse().getPos().equals("NOUN") && word.getParse().containsTag(MorphologicalTag.P2PL)) {
             output.add(withTabs(tabCount + 1, "siz:ARG0"));
         }
         if (word.getParse().getRootPos().equals("VERB") && word.getParse().containsTag(MorphologicalTag.A3SG) && !toStems().contains("o ")) {
             if (!containsArg0(word.getSemantic())){
-                output.add(withTabs(tabCount + 1, "o:ARG0"));
+                if (!(word.getParse().getPos().equals("NOUN") && (word.getParse().containsTag(MorphologicalTag.P1SG) || word.getParse().containsTag(MorphologicalTag.P1PL) || word.getParse().containsTag(MorphologicalTag.P2SG) || word.getParse().containsTag(MorphologicalTag.P2PL)))) {
+                    output.add(withTabs(tabCount + 1, "o:ARG0"));
+                }
             }
         }
         if (word.getParse().getRootPos().equals("VERB") && word.getParse().containsTag(MorphologicalTag.A3PL) && !toStems().contains("onlar ")) {
             if (!containsArg0(word.getSemantic())){
-                output.add(withTabs(tabCount + 1, "onlar:ARG0"));
+                if (!(word.getParse().getPos().equals("NOUN") && (word.getParse().containsTag(MorphologicalTag.P1SG) || word.getParse().containsTag(MorphologicalTag.P1PL) || word.getParse().containsTag(MorphologicalTag.P2SG) || word.getParse().containsTag(MorphologicalTag.P2PL)))) {
+                    output.add(withTabs(tabCount + 1, "onlar:ARG0"));
+                }
             }
         }
     }
@@ -1031,16 +1044,24 @@ public class AnnotatedSentence extends Sentence {
 
     private void extraPossessive(ArrayList<String> output, AnnotatedWord word, int wordIndex, int tabCount) {
         if (word.getParse().containsTag(MorphologicalTag.P1SG)) {
-            output.add(withTabs(tabCount + 1, "ben:poss"));
+            if (!word.getParse().getRootPos().equals("VERB") || !word.getParse().getPos().equals("NOUN")){
+                output.add(withTabs(tabCount + 1, "ben:poss"));
+            }
         }
         if (word.getParse().containsTag(MorphologicalTag.P1PL)) {
-            output.add(withTabs(tabCount + 1, "biz:poss"));
+            if (!word.getParse().getRootPos().equals("VERB") || !word.getParse().getPos().equals("NOUN")){
+                output.add(withTabs(tabCount + 1, "biz:poss"));
+            }
         }
         if (word.getParse().containsTag(MorphologicalTag.P2SG)) {
-            output.add(withTabs(tabCount + 1, "sen:poss"));
+            if (!word.getParse().getRootPos().equals("VERB") || !word.getParse().getPos().equals("NOUN")) {
+                output.add(withTabs(tabCount + 1, "sen:poss"));
+            }
         }
         if (word.getParse().containsTag(MorphologicalTag.P2PL)) {
-            output.add(withTabs(tabCount + 1, "siz:poss"));
+            if (!word.getParse().getRootPos().equals("VERB") || !word.getParse().getPos().equals("NOUN")) {
+                output.add(withTabs(tabCount + 1, "siz:poss"));
+            }
         }
         if (word.getParse().containsTag(MorphologicalTag.P3SG)) {
             if (!containsMod(wordIndex)){
@@ -1055,8 +1076,8 @@ public class AnnotatedSentence extends Sentence {
     }
 
     private boolean isMonth(String next) {
-        return next.equals("ocak") || next.equals("şubat") || next.equals("mart") || next.equals("nisan") || next.equals("mayıs") || next.equals("haziran") ||
-                next.equals("temmuz") || next.equals("ağustos") || next.equals("eylül") || next.equals("ekim") || next.equals("kasım") || next.equals("aralık");
+        return new ArrayList<>(Arrays.asList("ocak", "şubat", "mart", "nisan", "mayıs", "haziran", "temmuz", "ağustos",
+                "eylül", "ekim", "kasım", "aralık")).contains(next);
     }
 
     private int isOrdinal(String next) {
@@ -1125,8 +1146,7 @@ public class AnnotatedSentence extends Sentence {
         if (relation.equals("DET") && current.getParse().getWord().getName().equals("bir")){
             return;
         }
-        if (current.getParse().getWord().getName().equals("ve") || current.getParse().getWord().getName().equals("veya")
-                || current.getParse().getWord().getName().equals("hem")){
+        if (new ArrayList<>(Arrays.asList("ve", "veya", "hem", "ama")).contains(current.getParse().getWord().getName())){
             return;
         }
         if (current.getParse().getWord().getName().equals("değil")) {
@@ -1192,10 +1212,10 @@ public class AnnotatedSentence extends Sentence {
                 }
                 boolean argumentAdded = addArgumentList(output, current, semantic, withTabs(tabCount, wikiType));
                 if (!argumentAdded) {
-                    if (current.getParse().containsTag(MorphologicalTag.INSTRUMENTAL)) {
+                    if (!current.getParse().getRootPos().equals("VERB") && current.getParse().containsTag(MorphologicalTag.INSTRUMENTAL)) {
                         output.add(withTabs(tabCount, wikiType) + ":instrument");
                     } else {
-                        if (current.getParse().containsTag(MorphologicalTag.LOCATIVE)) {
+                        if (!current.getParse().getRootPos().equals("VERB") && current.getParse().containsTag(MorphologicalTag.LOCATIVE)) {
                             output.add(withTabs(tabCount, wikiType) + ":location");
                         } else {
                             if (!extraAdded.isEmpty()){
@@ -1242,9 +1262,7 @@ public class AnnotatedSentence extends Sentence {
                     current = (AnnotatedWord) getWord(index + 2);
                     currentWordIndex = index + 2;
                 }
-                if (current.getParse().getWord().getName().equals("çok") || current.getParse().getWord().getName().equals("gayet")
-                        || current.getParse().getWord().getName().equals("tam") || current.getParse().getWord().getName().equals("bayağı")
-                        || current.getParse().getWord().getName().equals("fazla") || current.getParse().getWord().getName().equals("hiç")) {
+                if (new ArrayList<>(Arrays.asList("çok", "gayet", "tam", "bayağı", "fazla", "hiç")).contains(current.getParse().getWord().getName())) {
                     output.add(withTabs(tabCount, currentWord) + ":degree");
                 } else {
                     if (current.getParse().getWord().getName().equals("hep") || current.getParse().getWord().getName().equals("sürekli")){
@@ -1263,7 +1281,7 @@ public class AnnotatedSentence extends Sentence {
                                     output.add(withTabs(tabCount + 1, current.getParse().getWord().getName() + ":value"));
                                 }
                             } else {
-                                if (relation.equals("AMOD") || relation.equals("NMOD")) {
+                                if (new ArrayList<>(Arrays.asList("AMOD", "NMOD")).contains(relation)) {
                                     output.add(withTabs(tabCount, currentWord) + ":mod");
                                 } else {
                                     if (relation.equals("NUMMOD")) {
@@ -1272,10 +1290,10 @@ public class AnnotatedSentence extends Sentence {
                                         if (relation.equals("ADVMOD")) {
                                             output.add(withTabs(tabCount, currentWord) + ":manner");
                                         } else {
-                                            if (current.getParse().containsTag(MorphologicalTag.INSTRUMENTAL)) {
+                                            if (!current.getParse().getRootPos().equals("VERB") && current.getParse().containsTag(MorphologicalTag.INSTRUMENTAL)) {
                                                 output.add(withTabs(tabCount, currentWord) + ":instrument");
                                             } else {
-                                                if (current.getParse().containsTag(MorphologicalTag.LOCATIVE)) {
+                                                if (!current.getParse().getRootPos().equals("VERB") && current.getParse().containsTag(MorphologicalTag.LOCATIVE)) {
                                                     output.add(withTabs(tabCount, currentWord) + ":location");
                                                 } else {
                                                     if (!extraAdded.isEmpty()){
