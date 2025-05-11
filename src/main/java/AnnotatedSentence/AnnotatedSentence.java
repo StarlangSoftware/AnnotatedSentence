@@ -1080,6 +1080,10 @@ public class AnnotatedSentence extends Sentence {
                 "eylül", "ekim", "kasım", "aralık")).contains(next);
     }
 
+    private boolean isWeekDay(String next) {
+        return new ArrayList<>(Arrays.asList("pazartesi", "salı", "çarşamba", "perşembe", "cuma", "cumartesi", "pazar")).contains(next);
+    }
+
     private int isOrdinal(String next) {
         switch (next) {
             case "birinci":
@@ -1245,66 +1249,76 @@ public class AnnotatedSentence extends Sentence {
                     output.add(withTabs(tabCount + 1, current.getParse().getWord().getName() + ":wiki"));
                 }
             } else {
-                String currentWord = onlyWord(current, index);
-                if (index > 0 && !done[index - 1] && index - 1 < wordCount() && ((AnnotatedWord) getWord(index - 1)).getSemantic() != null && ((AnnotatedWord) getWord(index - 1)).getSemantic().equals(current.getSemantic())) {
-                    currentWord = onlyWord((AnnotatedWord) getWord(index - 1), index - 1) + " " + currentWord;
-                    done[index - 1] = true;
-                }
-                if (index + 1 < wordCount() && ((AnnotatedWord) getWord(index + 1)).getSemantic() != null && ((AnnotatedWord) getWord(index + 1)).getSemantic().equals(current.getSemantic())) {
-                    currentWord += " " + onlyWord((AnnotatedWord) getWord(index + 1), index + 1);
-                    done[index + 1] = true;
-                    current = (AnnotatedWord) getWord(index + 1);
-                    currentWordIndex = index + 1;
-                }
-                if (index + 2 < wordCount() && ((AnnotatedWord) getWord(index + 2)).getSemantic() != null && ((AnnotatedWord) getWord(index + 2)).getSemantic().equals(current.getSemantic())) {
-                    currentWord += " " + onlyWord((AnnotatedWord) getWord(index + 2), index + 2);
-                    done[index + 2] = true;
-                    current = (AnnotatedWord) getWord(index + 2);
-                    currentWordIndex = index + 2;
-                }
-                if (new ArrayList<>(Arrays.asList("çok", "gayet", "tam", "bayağı", "fazla", "hiç")).contains(current.getParse().getWord().getName())) {
-                    output.add(withTabs(tabCount, currentWord) + ":degree");
+                if (isMonth(current.getParse().getWord().getName())) {
+                    output.add(withTabs(tabCount, "date-entity:date"));
+                    output.add(withTabs(tabCount + 1, onlyWord(current, index) + ":month"));
                 } else {
-                    if (current.getParse().getWord().getName().equals("hep") || current.getParse().getWord().getName().equals("sürekli")){
-                        output.add(withTabs(tabCount, currentWord) + ":frequency");
+                    if (isWeekDay(current.getParse().getWord().getName())) {
+                        output.add(withTabs(tabCount, "date-entity:date"));
+                        output.add(withTabs(tabCount + 1, onlyWord(current, index) + ":weekday"));
                     } else {
-                        boolean argumentAdded = addArgumentList(output, current, semantic, withTabs(tabCount, currentWord));
-                        if (argumentAdded) {
-                            addDetails(tabCount, output, current, currentWordIndex);
+                        String currentWord = onlyWord(current, index);
+                        if (index > 0 && !done[index - 1] && index - 1 < wordCount() && ((AnnotatedWord) getWord(index - 1)).getSemantic() != null && ((AnnotatedWord) getWord(index - 1)).getSemantic().equals(current.getSemantic())) {
+                            currentWord = onlyWord((AnnotatedWord) getWord(index - 1), index - 1) + " " + currentWord;
+                            done[index - 1] = true;
+                        }
+                        if (index + 1 < wordCount() && ((AnnotatedWord) getWord(index + 1)).getSemantic() != null && ((AnnotatedWord) getWord(index + 1)).getSemantic().equals(current.getSemantic())) {
+                            currentWord += " " + onlyWord((AnnotatedWord) getWord(index + 1), index + 1);
+                            done[index + 1] = true;
+                            current = (AnnotatedWord) getWord(index + 1);
+                            currentWordIndex = index + 1;
+                        }
+                        if (index + 2 < wordCount() && ((AnnotatedWord) getWord(index + 2)).getSemantic() != null && ((AnnotatedWord) getWord(index + 2)).getSemantic().equals(current.getSemantic())) {
+                            currentWord += " " + onlyWord((AnnotatedWord) getWord(index + 2), index + 2);
+                            done[index + 2] = true;
+                            current = (AnnotatedWord) getWord(index + 2);
+                            currentWordIndex = index + 2;
+                        }
+                        if (new ArrayList<>(Arrays.asList("çok", "gayet", "tam", "bayağı", "fazla", "hiç")).contains(current.getParse().getWord().getName())) {
+                            output.add(withTabs(tabCount, currentWord) + ":degree");
                         } else {
-                            if (current.getParse().containsTag(MorphologicalTag.ORDINAL) || isOrdinal(current.getParse().getWord().getName()) > 0) {
-                                output.add(withTabs(tabCount, "ordinal-entity:ord"));
-                                int value = isOrdinal(current.getParse().getWord().getName());
-                                if (value > 0) {
-                                    output.add(withTabs(tabCount + 1, value + ":value"));
-                                } else {
-                                    output.add(withTabs(tabCount + 1, current.getParse().getWord().getName() + ":value"));
-                                }
+                            if (current.getParse().getWord().getName().equals("hep") || current.getParse().getWord().getName().equals("sürekli")){
+                                output.add(withTabs(tabCount, currentWord) + ":frequency");
                             } else {
-                                if (new ArrayList<>(Arrays.asList("AMOD", "NMOD")).contains(relation)) {
-                                    output.add(withTabs(tabCount, currentWord) + ":mod");
+                                boolean argumentAdded = addArgumentList(output, current, semantic, withTabs(tabCount, currentWord));
+                                if (argumentAdded) {
+                                    addDetails(tabCount, output, current, currentWordIndex);
                                 } else {
-                                    if (relation.equals("NUMMOD")) {
-                                        output.add(withTabs(tabCount, currentWord) + ":quant");
-                                    } else {
-                                        if (relation.equals("ADVMOD")) {
-                                            output.add(withTabs(tabCount, currentWord) + ":manner");
+                                    if (current.getParse().containsTag(MorphologicalTag.ORDINAL) || isOrdinal(current.getParse().getWord().getName()) > 0) {
+                                        output.add(withTabs(tabCount, "ordinal-entity:ord"));
+                                        int value = isOrdinal(current.getParse().getWord().getName());
+                                        if (value > 0) {
+                                            output.add(withTabs(tabCount + 1, value + ":value"));
                                         } else {
-                                            if (!current.getParse().getRootPos().equals("VERB") && current.getParse().containsTag(MorphologicalTag.INSTRUMENTAL)) {
-                                                output.add(withTabs(tabCount, currentWord) + ":instrument");
+                                            output.add(withTabs(tabCount + 1, current.getParse().getWord().getName() + ":value"));
+                                        }
+                                    } else {
+                                        if (new ArrayList<>(Arrays.asList("AMOD", "NMOD")).contains(relation)) {
+                                            output.add(withTabs(tabCount, currentWord) + ":mod");
+                                        } else {
+                                            if (relation.equals("NUMMOD")) {
+                                                output.add(withTabs(tabCount, currentWord) + ":quant");
                                             } else {
-                                                if (!current.getParse().getRootPos().equals("VERB") && current.getParse().containsTag(MorphologicalTag.LOCATIVE)) {
-                                                    output.add(withTabs(tabCount, currentWord) + ":location");
+                                                if (relation.equals("ADVMOD")) {
+                                                    output.add(withTabs(tabCount, currentWord) + ":manner");
                                                 } else {
-                                                    if (!extraAdded.isEmpty()){
-                                                        output.add(withTabs(tabCount, currentWord) + extraAdded);
+                                                    if (!current.getParse().getRootPos().equals("VERB") && current.getParse().containsTag(MorphologicalTag.INSTRUMENTAL)) {
+                                                        output.add(withTabs(tabCount, currentWord) + ":instrument");
                                                     } else {
-                                                        output.add(withTabs(tabCount, currentWord) + added);
-                                                        if (addedIndex != -1){
-                                                            done[addedIndex] = true;
+                                                        if (!current.getParse().getRootPos().equals("VERB") && current.getParse().containsTag(MorphologicalTag.LOCATIVE)) {
+                                                            output.add(withTabs(tabCount, currentWord) + ":location");
+                                                        } else {
+                                                            if (!extraAdded.isEmpty()){
+                                                                output.add(withTabs(tabCount, currentWord) + extraAdded);
+                                                            } else {
+                                                                output.add(withTabs(tabCount, currentWord) + added);
+                                                                if (addedIndex != -1){
+                                                                    done[addedIndex] = true;
+                                                                }
+                                                            }
+                                                            addDetails(tabCount, output, current, currentWordIndex);
                                                         }
                                                     }
-                                                    addDetails(tabCount, output, current, currentWordIndex);
                                                 }
                                             }
                                         }
