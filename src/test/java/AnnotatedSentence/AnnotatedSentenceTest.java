@@ -36,7 +36,7 @@ public class AnnotatedSentenceTest {
     public void test1()  {
         WordNet wordnet = new WordNet();
         AnnotatedCorpus corpus = new AnnotatedCorpus(new File("../../Gb/Turkish-Phrase"));
-        corpus.exportAmr(wordnet);
+        corpus.exportAmr("", wordnet);
     }
 
     @Test

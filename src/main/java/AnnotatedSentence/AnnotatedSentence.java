@@ -1235,13 +1235,13 @@ public class AnnotatedSentence extends Sentence {
                 }
                 output.add(withTabs(tabCount + 1, "name:name"));
                 output.add(withTabs(tabCount + 2, onlyWord(current, index) + ":op1"));
-                if (index + 1 < wordCount() && ((AnnotatedWord) getWord(index + 1)).getSemantic() != null && ((AnnotatedWord) getWord(index + 1)).getSemantic().equals(current.getSemantic())) {
-                    output.add(withTabs(tabCount + 2, onlyWord((AnnotatedWord) getWord(index + 1), index + 1) + ":op2"));
-                    done[index + 1] = true;
-                }
-                if (index + 2 < wordCount() && ((AnnotatedWord) getWord(index + 2)).getSemantic() != null && ((AnnotatedWord) getWord(index + 2)).getSemantic().equals(current.getSemantic())) {
-                    output.add(withTabs(tabCount + 2, onlyWord((AnnotatedWord) getWord(index + 2), index + 2) + ":op3"));
-                    done[index + 2] = true;
+                for (int i = 1; i <= 3; i++){
+                    if (index + i < wordCount() && ((AnnotatedWord) getWord(index + i)).getSemantic() != null && ((AnnotatedWord) getWord(index + i)).getSemantic().equals(current.getSemantic())) {
+                        output.add(withTabs(tabCount + 2, onlyWord((AnnotatedWord) getWord(index + i), index + 1) + ":op" + (1 + i)));
+                        done[index + i] = true;
+                    } else {
+                        break;
+                    }
                 }
                 if (wikiType.equals("person")) {
                     output.add(withTabs(tabCount + 1, "-:wiki"));
@@ -1258,21 +1258,23 @@ public class AnnotatedSentence extends Sentence {
                         output.add(withTabs(tabCount + 1, onlyWord(current, index) + ":weekday"));
                     } else {
                         String currentWord = onlyWord(current, index);
-                        if (index > 0 && !done[index - 1] && index - 1 < wordCount() && ((AnnotatedWord) getWord(index - 1)).getSemantic() != null && ((AnnotatedWord) getWord(index - 1)).getSemantic().equals(current.getSemantic())) {
-                            currentWord = onlyWord((AnnotatedWord) getWord(index - 1), index - 1) + " " + currentWord;
-                            done[index - 1] = true;
+                        for (int i = 1; i <= 3; i++) {
+                            if (index > i - 1 && !done[index - i] && index - i < wordCount() && ((AnnotatedWord) getWord(index - i)).getSemantic() != null && ((AnnotatedWord) getWord(index - i)).getSemantic().equals(current.getSemantic())) {
+                                currentWord = onlyWord((AnnotatedWord) getWord(index - i), index - i) + " " + currentWord;
+                                done[index - i] = true;
+                            } else {
+                                break;
+                            }
                         }
-                        if (index + 1 < wordCount() && ((AnnotatedWord) getWord(index + 1)).getSemantic() != null && ((AnnotatedWord) getWord(index + 1)).getSemantic().equals(current.getSemantic())) {
-                            currentWord += " " + onlyWord((AnnotatedWord) getWord(index + 1), index + 1);
-                            done[index + 1] = true;
-                            current = (AnnotatedWord) getWord(index + 1);
-                            currentWordIndex = index + 1;
-                        }
-                        if (index + 2 < wordCount() && ((AnnotatedWord) getWord(index + 2)).getSemantic() != null && ((AnnotatedWord) getWord(index + 2)).getSemantic().equals(current.getSemantic())) {
-                            currentWord += " " + onlyWord((AnnotatedWord) getWord(index + 2), index + 2);
-                            done[index + 2] = true;
-                            current = (AnnotatedWord) getWord(index + 2);
-                            currentWordIndex = index + 2;
+                        for (int i = 1; i <= 3; i++){
+                            if (index + i < wordCount() && ((AnnotatedWord) getWord(index + i)).getSemantic() != null && ((AnnotatedWord) getWord(index + i)).getSemantic().equals(current.getSemantic())) {
+                                currentWord += " " + onlyWord((AnnotatedWord) getWord(index + i), index + i);
+                                done[index + i] = true;
+                                current = (AnnotatedWord) getWord(index + i);
+                                currentWordIndex = index + i;
+                            } else {
+                                break;
+                            }
                         }
                         if (new ArrayList<>(Arrays.asList("çok", "gayet", "tam", "bayağı", "fazla", "hiç")).contains(current.getParse().getWord().getName())) {
                             output.add(withTabs(tabCount, currentWord) + ":degree");
