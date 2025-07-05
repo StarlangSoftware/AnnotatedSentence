@@ -1,8 +1,10 @@
 package AnnotatedSentence;
 
-import Corpus.Corpus;
+import Corpus.*;
 import DataStructure.CounterHashMap;
 import DependencyParser.ParserEvaluationScore;
+import DependencyParser.Universal.UniversalDependencyTreeBankCorpus;
+import DependencyParser.Universal.UniversalDependencyTreeBankSentence;
 import Dictionary.*;
 import MorphologicalAnalysis.*;
 import WordNet.WordNet;
@@ -79,6 +81,15 @@ public class AnnotatedCorpus extends Corpus{
         }
     }
 
+    public AnnotatedCorpus(UniversalDependencyTreeBankCorpus corpus, String extension){
+        sentences = new ArrayList<>();
+        for (int i = 0; i < corpus.sentenceCount(); i++){
+            FileDescription fileDescription = new FileDescription("", extension, i);
+            AnnotatedSentence sentence = new AnnotatedSentence((UniversalDependencyTreeBankSentence)corpus.getSentence(i), new File(fileDescription.getFileName()));
+            sentences.add(sentence);
+        }
+    }
+
     /**
      * An obsolete constructor of the {@link AnnotatedSentence} class. If the contents of all the sentences are inside
      * a single file, this constructor can be called. Each line in this file corresponds to a single AnnotatedSentence.
@@ -102,6 +113,13 @@ public class AnnotatedCorpus extends Corpus{
                 }
             }
         } catch (IOException ignored) {
+        }
+    }
+
+    public void exportToPath(String path){
+        for (Sentence s : sentences) {
+            AnnotatedSentence sentence = (AnnotatedSentence) s;
+            sentence.writeToFile(new File(path + "/" + sentence.getFile().getName()));
         }
     }
 

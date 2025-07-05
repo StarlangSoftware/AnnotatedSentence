@@ -5,6 +5,8 @@ import AnnotatedSentence.DependencyError.DependencyErrorType;
 import Corpus.Sentence;
 import DependencyParser.ParserEvaluationScore;
 import DependencyParser.Universal.UniversalDependencyRelation;
+import DependencyParser.Universal.UniversalDependencyTreeBankSentence;
+import DependencyParser.Universal.UniversalDependencyTreeBankWord;
 import Dictionary.Word;
 import FrameNet.FrameNet;
 import FrameNet.Frame;
@@ -65,6 +67,38 @@ public class AnnotatedSentence extends Sentence {
         for (String word : wordArray) {
             if (!word.isEmpty()) {
                 words.add(new AnnotatedWord(word));
+            }
+        }
+    }
+
+    public AnnotatedSentence(UniversalDependencyTreeBankSentence sentence, File file){
+        this.file = file;
+        HashMap<Integer, Integer> map = new HashMap<>();
+        words = new ArrayList<>();
+        int currentSplit = 0;
+        int decrease = 0;
+        for (int i = 1; i <= sentence.wordCount(); i++){
+            if (decrease > 0){
+                map.put(i, i - decrease);
+            }
+            UniversalDependencyTreeBankWord word = (UniversalDependencyTreeBankWord) sentence.getWord(i - 1);
+            String surfaceForm = word.getName();
+            if (currentSplit < sentence.splitSize() && sentence.getSplit(currentSplit).startsWith(i + "-")){
+                for (int j = i + 1; j <= Integer.parseInt(sentence.getSplit(currentSplit).substring(sentence.getSplit(currentSplit).indexOf('-') + 1)); j++){
+                    i++;
+                    surfaceForm += sentence.getWord(i - 1).getName();
+                    decrease++;
+                }
+                currentSplit++;
+            }
+            AnnotatedWord newWord = new AnnotatedWord(surfaceForm);
+            newWord.setUniversalDependency(word.getRelation().to(), word.getRelation().toString());
+            words.add(newWord);
+        }
+        for (Word word : words){
+            AnnotatedWord annotatedWord = (AnnotatedWord) word;
+            if (annotatedWord.getUniversalDependency() != null && map.containsKey(annotatedWord.getUniversalDependency().to())){
+                annotatedWord.setUniversalDependency(map.get(annotatedWord.getUniversalDependency().to()), annotatedWord.getUniversalDependency().toString());
             }
         }
     }
