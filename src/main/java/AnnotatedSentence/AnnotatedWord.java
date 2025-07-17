@@ -48,6 +48,7 @@ public class AnnotatedWord extends Word implements Serializable{
     private RectAngle area;
     private Language language = Language.TURKISH;
     private boolean selected = false;
+    private boolean forceSelected = false;
 
     /**
      * Constructor for the {@link AnnotatedWord} class. Gets the word with its annotation layers as input and sets the
@@ -1070,11 +1071,27 @@ public class AnnotatedWord extends Word implements Serializable{
     }
 
     /**
+     * Accessor method for the forceSelected attribute.
+     * @return ForceSelected attribute value.
+     */
+    public boolean isForceSelected(){
+        return forceSelected;
+    }
+
+    /**
      * Mutator method for the selected attribute.
      * @param selected New value for the selected attribute.
      */
     public void setSelected(boolean selected){
         this.selected = selected;
+    }
+
+    /**
+     * Mutator method for the forceSelected attribute.
+     * @param forceSelected New value for the forceSelected attribute.
+     */
+    public void setForceSelected(boolean forceSelected){
+        this.forceSelected = forceSelected;
     }
 
     /**

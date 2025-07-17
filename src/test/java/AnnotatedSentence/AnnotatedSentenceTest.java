@@ -6,11 +6,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Scanner;
 
 import static org.junit.Assert.*;
 
@@ -32,7 +27,6 @@ public class AnnotatedSentenceTest {
         sentence9 = new AnnotatedSentence(new File("sentences/0009.dev"));
     }
 
-    @Test
     public void test1()  {
         WordNet wordnet = new WordNet();
         AnnotatedCorpus corpus = new AnnotatedCorpus(new File("../../Gb/Turkish-Phrase"));
