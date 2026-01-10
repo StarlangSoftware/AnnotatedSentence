@@ -467,16 +467,4 @@ public class AnnotatedCorpus extends Corpus{
         return rootPos.topN(rootPos.size());
     }
 
-    public void exportAmr(String folder, WordNet wordNet){
-        for (int i = 0; i < sentenceCount(); i++) {
-            AnnotatedSentence sentence = (AnnotatedSentence) getSentence(i);
-            ArrayList<String> amr = sentence.constructAmr(wordNet);
-            System.out.print(folder);
-            for (String s : amr) {
-                System.out.println(s);
-            }
-            System.out.println();
-        }
-    }
-
 }

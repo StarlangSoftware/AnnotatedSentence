@@ -27,12 +27,6 @@ public class AnnotatedSentenceTest {
         sentence9 = new AnnotatedSentence(new File("sentences/0009.dev"));
     }
 
-    public void test1()  {
-        WordNet wordnet = new WordNet();
-        AnnotatedCorpus corpus = new AnnotatedCorpus(new File("../../Gb/Turkish-Phrase"));
-        corpus.exportAmr("", wordnet);
-    }
-
     @Test
     public void testDependencyGroups() {
         assertEquals(sentence0.getDependencyGroups(11).size(), 3);
