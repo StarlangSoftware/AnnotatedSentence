@@ -199,6 +199,27 @@ public class AnnotatedCorpus extends Corpus{
         }
     }
 
+    public void exportJsonDataSet(String outputFileName, ViewLayerType layerType){
+        try {
+            PrintWriter output = new PrintWriter(new FileWriter(outputFileName, true));
+            output.append("let " + outputFileName.substring(outputFileName.indexOf('-') + 1, outputFileName.lastIndexOf('-')) + " = [");
+            for (int i = 0; i < sentenceCount(); i++){
+                AnnotatedSentence sentence = (AnnotatedSentence) getSentence(i);
+                if (sentence.wordCount() > 0){
+                    output.append(sentence.exportJsonDataSet(layerType));
+                    if (i != sentenceCount() - 1){
+                        output.append(",\n");
+                    } else {
+                        output.append("\n");
+                    }
+                }
+            }
+            output.append("];");
+            output.close();
+        } catch (IOException ignored) {
+        }
+    }
+
     /**
      * Exports the annotated corpus as a UD file in connlu format. Every sentence is converted into connlu format and
      * appended to the output file. Multiple paths are possible in the annotated corpus. This method outputs the

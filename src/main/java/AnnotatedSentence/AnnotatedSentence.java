@@ -946,6 +946,134 @@ public class AnnotatedSentence extends Sentence {
         return result + "</S>\n";
     }
 
+    public String exportJsonDataSet(ViewLayerType layerType) {
+        StringBuilder result = new StringBuilder("{\"sentence\":\"");
+        for (int i = 0; i < wordCount(); i++) {
+            AnnotatedWord word = (AnnotatedWord) getWord(i);
+            if (word.getName() != null && word.getName().equals("\"")){
+                result.append("\\");
+            }
+            result.append(word.getName());
+            if (i != wordCount() - 1){
+                result.append(" ");
+            }
+        }
+        result.append("\", \"" + layerType + "\":\"");
+        if (layerType == ViewLayerType.POLARITY) {
+            boolean positive = false, negative = false;
+            for (int i = 0; i < wordCount(); i++) {
+                AnnotatedWord word = (AnnotatedWord) getWord(i);
+                if (word.getPolarity() != null) {
+                    if (word.getPolarity().equals(PolarityType.POSITIVE)) {
+                        positive = true;
+                    } else {
+                        if (word.getPolarity().equals(PolarityType.NEGATIVE)) {
+                            negative = true;
+                        }
+                    }
+                }
+            }
+            if (positive) {
+                result.append("POSITIVE");
+            } else {
+                if (negative) {
+                    result.append("NEGATIVE");
+                } else {
+                    result.append("NEUTRAL");
+                }
+            }
+        }
+        for (int i = 0; i < wordCount(); i++) {
+            AnnotatedWord word = (AnnotatedWord) getWord(i);
+            switch (layerType) {
+                case INFLECTIONAL_GROUP:
+                case PART_OF_SPEECH:
+                    MorphologicalParse parse = word.getParse();
+                    if (parse != null) {
+                        if (parse.toString().startsWith("\"")){
+                            result.append("\\");
+                        }
+                        result.append(parse);
+                    } else {
+                        result.append("NONE");
+                    }
+                    break;
+                case NER:
+                    NamedEntityType namedEntityType = word.getNamedEntityType();
+                    if (namedEntityType != null) {
+                        result.append(namedEntityType);
+                    } else {
+                        result.append("NONE");
+                    }
+                    break;
+                case SEMANTICS:
+                    String semantic = word.getSemantic();
+                    if (semantic != null) {
+                        result.append(semantic);
+                    } else {
+                        result.append("NONE");
+                    }
+                    break;
+                case SLOT:
+                    Slot slot = word.getSlot();
+                    if (slot != null) {
+                        result.append(slot);
+                    } else {
+                        result.append("O");
+                    }
+                    break;
+                case FRAMENET:
+                    FrameElementList frameElement = word.getFrameElementList();
+                    if (frameElement != null) {
+                        result.append(frameElement);
+                    } else {
+                        result.append("NONE");
+                    }
+                    break;
+                case PROPBANK:
+                    ArgumentList argument = word.getArgumentList();
+                    if (argument != null) {
+                        result.append(argument);
+                    } else {
+                        result.append("NONE");
+                    }
+                    break;
+                case SHALLOW_PARSE:
+                    String shallowParse = word.getShallowParse();
+                    if (shallowParse != null) {
+                        result.append(shallowParse);
+                    } else {
+                        result.append("NONE");
+                    }
+                    break;
+                case META_MORPHEME:
+                    MetamorphicParse metamorphicParse = word.getMetamorphicParse();
+                    if (metamorphicParse != null) {
+                        if (metamorphicParse.toString().startsWith("\"")){
+                            result.append("\\");
+                        }
+                        result.append(metamorphicParse);
+                    } else {
+                        result.append("NONE");
+                    }
+                    break;
+                case POS_TAG:
+                    String posTag = word.getUniversalDependencyPos();
+                    if (posTag != null) {
+                        result.append(posTag);
+                    } else {
+                        result.append("NONE");
+                    }
+                    break;
+            }
+            if (i != wordCount() - 1 && layerType != ViewLayerType.POLARITY){
+                result.append(" ");
+            }
+        }
+        result.append("\"}");
+        return result.toString();
+    }
+
     /**
      * Returns the connlu format of the sentence with appended prefix string based on the path.
      *
