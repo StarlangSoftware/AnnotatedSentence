@@ -120,11 +120,11 @@ public class UdToSvgConvertTest {
                         pointCtrl1 = new Point2D.Double(pointStart.x, controlY);
                         pointCtrl2 = new Point2D.Double(pointEnd.x, controlY);
                         output.println("<path fill=\"none\" style=\"stroke:" + color + ";stroke-width:2\" d=\"M" + pointStart.x + "," + pointStart.y + " C" + pointCtrl1.x + "," + pointCtrl1.y + " " + pointCtrl2.x + "," + pointCtrl2.y + " " + pointEnd.x + "," + pointEnd.y + "\" />");
-                        output.println("<line x1=\"" + (int) pointEnd.x + "\" y1=\"" + (int) pointEnd.y + "\" x2=\"" + ((int) pointEnd.x - 5) + "\" y2=\"" + ((int) pointEnd.y - 5) + "\" style=\"stroke:black;stroke-width:2\"/>");
-                        output.println("<line x1=\"" + (int) pointEnd.x + "\" y1=\"" + (int) pointEnd.y + "\" x2=\"" + ((int) pointEnd.x + 5) + "\" y2=\"" + ((int) pointEnd.y - 5) + "\" style=\"stroke:black;stroke-width:2\"/>");
+                        output.println("<line x1=\"" + (int) pointEnd.x + "\" y1=\"" + (int) pointEnd.y + "\" x2=\"" + ((int) pointEnd.x - 5) + "\" y2=\"" + ((int) pointEnd.y - 5) + "\"/>");
+                        output.println("<line x1=\"" + (int) pointEnd.x + "\" y1=\"" + (int) pointEnd.y + "\" x2=\"" + ((int) pointEnd.x + 5) + "\" y2=\"" + ((int) pointEnd.y - 5) + "\"/>");
                     } else {
                         output.println("<text fill=\"" + "black" + "\" x=\"" + (currentLeft + maxSize / 2 - 10) + "\" y=\"" + (lineSpace - 50) + "\">" + "root" + "</text>");
-                        output.println("<line x1=\"" + (currentLeft + maxSize / 2) + "\" y1=\"" + (lineSpace - 40) + "\" x2=\"" + (currentLeft + maxSize / 2) + "\" y2=\"" + (lineSpace - 10) + "\" style=\"stroke:black;stroke-width:2\"/>");
+                        output.println("<line x1=\"" + (currentLeft + maxSize / 2) + "\" y1=\"" + (lineSpace - 40) + "\" x2=\"" + (currentLeft + maxSize / 2) + "\" y2=\"" + (lineSpace - 10) + "\"/>");
                     }
                 }
                 currentLeft += maxSize + wordSpace;
