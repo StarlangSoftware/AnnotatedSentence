@@ -22,6 +22,7 @@ public class UdToSvgConvertTest {
             int wordSpace = 80;
             int currentLeft = wordSpace;
             int lineSpace = 120;
+            output.println("<h3>" + sentence.getFileName() + "</h3>");
             output.println("<svg width=\"" + (80 + 130 * sentence.wordCount()) + "\" height=\"400\">");
             ArrayList<Integer> wordSize = new ArrayList<>();
             ArrayList<Integer> wordTotal = new ArrayList<>();
@@ -193,4 +194,8 @@ public class UdToSvgConvertTest {
         convertToSvg(corpus);
     }
 
+    public void testConvertAtisEnglish() throws FileNotFoundException {
+        AnnotatedCorpus corpus = new AnnotatedCorpus(new File("../../Atis/English-Phrase/"));
+        convertToSvg(corpus);
+    }
 }
