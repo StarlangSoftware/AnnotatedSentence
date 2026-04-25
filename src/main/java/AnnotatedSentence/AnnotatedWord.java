@@ -15,9 +15,11 @@ import NamedEntityRecognition.Slot;
 import PropBank.ArgumentList;
 import SentiNet.PolarityType;
 import Util.RectAngle;
+import WordNet.WordNet;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Locale;
 
 public class AnnotatedWord extends Word implements Serializable{
@@ -905,13 +907,24 @@ public class AnnotatedWord extends Word implements Serializable{
     }
 
     /**
+     * Returns true if the dependency relation is FIXED, false otherwise.
+     * @return True if the dependency relation is FIXED, false otherwise.
+     */
+    public boolean goesWithFixed(){
+        if (getUniversalDependency() != null){
+            return getUniversalDependency().toString().equals("FIXED");
+        }
+        return false;
+    }
+
+    /**
      * Returns the connlu format string for this word. Adds surface form, root, universal pos tag, features, and
      * universal dependency information.
      * @param sentenceLength Number of words in the sentence.
      * @param goesWithHead If true, the word is a typo and typo feature is added.
      * @return The connlu format string for this word.
      */
-    public String getUniversalDependencyFormat(int sentenceLength, boolean goesWithHead){
+    public String getUniversalDependencyFormat(WordNet wordNet, int sentenceLength, boolean goesWithHead, boolean goesWithFixed){
         String result;
         String uPos;
         if (goesWithCase()){
@@ -940,6 +953,39 @@ public class AnnotatedWord extends Word implements Serializable{
             ArrayList<String> features = getUniversalDependencyFeatures();
             if (goesWithHead){
                 features.add("Typo=Yes");
+                features.sort(Comparator.comparing(String::toLowerCase));
+            }
+            if (goesWithFixed){
+                if (getSemantic() != null && wordNet.getSynSetWithId(getSemantic()) != null){
+                    switch (wordNet.getSynSetWithId(getSemantic()).getPos()){
+                        case ADJECTIVE:
+                            if (!uPos.equals("DET") && !uPos.equals("NUM") && !uPos.equals("ADV") && !uPos.equals("NOUN") && !uPos.equals("PRON")){
+                                features.add("ExtPos=ADJ");
+                            }
+                            break;
+                        case ADVERB:
+                            if (!uPos.equals("ADJ") && !uPos.equals("CCONJ")){
+                                features.add("ExtPos=ADV");
+                            }
+                            break;
+                        case PRONOUN:
+                            if (!uPos.equals("DET") && !uPos.equals("ADV") && !uPos.equals("ADJ")){
+                                features.add("ExtPos=PRON");
+                            }
+                            break;
+                        case CONJUNCTION:
+                            if (!uPos.equals("ADJ") && !uPos.equals("ADV") && !uPos.equals("PRON") && !uPos.equals("NUM")){
+                                features.add("ExtPos=CCONJ");
+                            }
+                            break;
+                        case INTERJECTION:
+                            if (!uPos.equals("ADJ") && !uPos.equals("PRON") && !uPos.equals("DET") && !uPos.equals("CCONJ") && !uPos.equals("NOUN") && !uPos.equals("ADV")){
+                                features.add("ExtPos=INTJ");
+                            }
+                            break;
+                    }
+                    features.sort(Comparator.comparing(String::toLowerCase));
+                }
             }
             if (features.isEmpty() || goesWithCase()){
                 result = result + "_";

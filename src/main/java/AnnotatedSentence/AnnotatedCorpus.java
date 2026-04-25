@@ -229,13 +229,13 @@ public class AnnotatedCorpus extends Corpus{
      * @param outputFileName Output file name in connlu format.
      * @param path Current path for the part of the annotated corpus.
      */
-    public void exportUniversalDependencyFormat(String outputFileName, String path){
+    public void exportUniversalDependencyFormat(WordNet wordNet, String outputFileName, String path){
         try {
             PrintWriter output = new PrintWriter(new FileWriter(outputFileName, true));
             for (int i = 0; i < sentenceCount(); i++){
                 AnnotatedSentence sentence = (AnnotatedSentence) getSentence(i);
                 if (sentence.wordCount() > 0){
-                    output.append(sentence.getUniversalDependencyFormat(path));
+                    output.append(sentence.getUniversalDependencyFormat(wordNet, path));
                 }
             }
             output.close();
@@ -248,13 +248,13 @@ public class AnnotatedCorpus extends Corpus{
      * appended to the output file.
      * @param outputFileName Output file name in connlu format.
      */
-    public void exportUniversalDependencyFormat(String outputFileName){
+    public void exportUniversalDependencyFormat(WordNet wordNet, String outputFileName){
         try {
             PrintWriter output = new PrintWriter(outputFileName);
             for (int i = 0; i < sentenceCount(); i++){
                 AnnotatedSentence sentence = (AnnotatedSentence) getSentence(i);
                 if (sentence.wordCount() > 0){
-                    output.write(sentence.getUniversalDependencyFormat());
+                    output.write(sentence.getUniversalDependencyFormat(wordNet));
                 }
             }
             output.close();

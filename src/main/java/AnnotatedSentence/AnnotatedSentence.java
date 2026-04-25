@@ -583,15 +583,17 @@ public class AnnotatedSentence extends Sentence {
      * @param result String after which new output string will be appended
      * @return Result string appended with Connlu format output of the current sentence.
      */
-    public String getUniversalDependencyFormatForSentence(String result) {
+    public String getUniversalDependencyFormatForSentence(WordNet wordNet, String result) {
         StringBuilder resultBuilder = new StringBuilder(result);
         for (int i = 0; i < wordCount(); i++) {
             AnnotatedWord word = (AnnotatedWord) getWord(i);
             boolean goesWithHead = false;
+            boolean goesWithFixed = false;
             if (i < wordCount() - 1) {
                 goesWithHead = ((AnnotatedWord) getWord(i + 1)).goesWithCase();
+                goesWithFixed = ((AnnotatedWord) getWord(i + 1)).goesWithFixed();
             }
-            resultBuilder.append((i + 1)).append("\t").append(word.getUniversalDependencyFormat(wordCount(), goesWithHead)).append("\n");
+            resultBuilder.append((i + 1)).append("\t").append(word.getUniversalDependencyFormat(wordNet, wordCount(), goesWithHead, goesWithFixed)).append("\n");
         }
         result = resultBuilder.toString();
         result += "\n";
@@ -858,9 +860,9 @@ public class AnnotatedSentence extends Sentence {
      * @param path Path of the sentence.
      * @return The connlu format of the sentence with appended prefix string based on the path.
      */
-    public String getUniversalDependencyFormat(String path) {
+    public String getUniversalDependencyFormat(WordNet wordnet, String path) {
         String result = "# sent_id = " + path + getFileName() + "\n" + "# text = " + toWords() + "\n";
-        return getUniversalDependencyFormatForSentence(result);
+        return getUniversalDependencyFormatForSentence(wordnet, result);
     }
 
     /**
@@ -868,9 +870,9 @@ public class AnnotatedSentence extends Sentence {
      *
      * @return The connlu format of the sentence with appended prefix string.
      */
-    public String getUniversalDependencyFormat() {
+    public String getUniversalDependencyFormat(WordNet wordNet) {
         String result = "# sent_id = " + getFileName() + "\n" + "# text = " + toWords() + "\n";
-        return getUniversalDependencyFormatForSentence(result);
+        return getUniversalDependencyFormatForSentence(wordNet, result);
     }
 
     /**
