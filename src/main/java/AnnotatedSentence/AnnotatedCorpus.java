@@ -212,6 +212,8 @@ public class AnnotatedCorpus extends Corpus{
                     } else {
                         output.append("\n");
                     }
+                } else {
+                    System.out.println(sentence.getFile().getName());
                 }
             }
             output.append("];");
