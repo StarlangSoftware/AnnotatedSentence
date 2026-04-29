@@ -593,6 +593,10 @@ public class AnnotatedSentence extends Sentence {
             if (i < wordCount() - 1) {
                 goesWithHead = ((AnnotatedWord) getWord(i + 1)).goesWithCase();
                 goesWithFixed = ((AnnotatedWord) getWord(i + 1)).goesWithFixed();
+                AnnotatedWord nextWord = (AnnotatedWord) getWord(i + 1);
+                if (nextWord.getName().equals("'ll") || nextWord.getName().equals("'d") || nextWord.getName().equals("'s") || nextWord.getName().equals("'re") || nextWord.getName().equals("'m") || nextWord.getName().equals("'ve")){
+                    resultBuilder.append((i + 1)).append("-").append(i + 2).append("\t").append(word.getName()).append(nextWord.getName()).append("\t").append("_").append("\t").append("_").append("\t").append("_").append("\t").append("_").append("\t").append("_").append("\t").append("_").append("\t").append("_").append("\t").append("_").append("\n");
+                }
             }
             resultBuilder.append((i + 1)).append("\t").append(word.getUniversalDependencyFormat(wordNet, wordCount(), goesWithHead, goesWithFixed)).append("\n");
         }
@@ -883,7 +887,7 @@ public class AnnotatedSentence extends Sentence {
      */
     public String getUniversalDependencyFormatParallel(WordNet wordNet) {
         FileDescription fileDescription = new FileDescription(".", getFileName());
-        String result = "# sent_id = " + getFileName() + "\n" + "# parallel_id = " + fileDescription.getExtension() + "/" + fileDescription.getIndex() + "\n" + "# text = " + toWords() + "\n";
+        String result = "# sent_id = " + getFileName() + "\n" + "# parallel_id = " + fileDescription.getExtension() + "/" + fileDescription.getIndex() + "\n" + "# text = " + toWords().replace(" 'll ", "'ll ").replace(" 'm ", "'m ").replace(" 's ", "'s ").replace(" 're ", "'re ").replace(" 'd ", "'d ").replace(" 've ", "'ve ") + "\n";
         return getUniversalDependencyFormatForSentence(wordNet, result);
     }
 
