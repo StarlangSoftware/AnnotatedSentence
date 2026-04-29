@@ -1,5 +1,6 @@
 package AnnotatedSentence;
 
+import Corpus.FileDescription;
 import Corpus.Sentence;
 import DependencyParser.ParserEvaluationScore;
 import DependencyParser.Universal.UniversalDependencyRelation;
@@ -872,6 +873,17 @@ public class AnnotatedSentence extends Sentence {
      */
     public String getUniversalDependencyFormat(WordNet wordNet) {
         String result = "# sent_id = " + getFileName() + "\n" + "# text = " + toWords() + "\n";
+        return getUniversalDependencyFormatForSentence(wordNet, result);
+    }
+
+    /**
+     * Returns the connlu format of the sentence with appended prefix string.
+     *
+     * @return The connlu format of the sentence with appended prefix string.
+     */
+    public String getUniversalDependencyFormatParallel(WordNet wordNet) {
+        FileDescription fileDescription = new FileDescription(".", getFileName());
+        String result = "# sent_id = " + getFileName() + "\n" + "# parallel_id = " + fileDescription.getExtension() + "/" + fileDescription.getIndex() + "\n" + "# text = " + toWords() + "\n";
         return getUniversalDependencyFormatForSentence(wordNet, result);
     }
 

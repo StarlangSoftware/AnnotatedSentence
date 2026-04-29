@@ -19,21 +19,21 @@ public class UDConvertTest {
     @Test
     public void testConvertAtisEnglish() {
         AnnotatedCorpus corpus = new AnnotatedCorpus(new File("../../Atis/English-Phrase/"), ".train");
-        corpus.exportUniversalDependencyFormat(english, "en_atis-ud-train.conllu");
+        corpus.exportUniversalDependencyFormatParallel(english, "en_atis-ud-train.conllu");
         corpus = new AnnotatedCorpus(new File("../../Atis/English-Phrase/"), ".test");
-        corpus.exportUniversalDependencyFormat(english, "en_atis-ud-test.conllu");
+        corpus.exportUniversalDependencyFormatParallel(english, "en_atis-ud-test.conllu");
         corpus = new AnnotatedCorpus(new File("../../Atis/English-Phrase/"), ".dev");
-        corpus.exportUniversalDependencyFormat(english, "en_atis-ud-dev.conllu");
+        corpus.exportUniversalDependencyFormatParallel(english, "en_atis-ud-dev.conllu");
     }
 
     @Test
     public void testConvertAtisTurkish() {
         AnnotatedCorpus corpus = new AnnotatedCorpus(new File("../../Atis/Turkish-Phrase/"), ".train");
-        corpus.exportUniversalDependencyFormat(turkish, "tr_atis-ud-train.conllu");
+        corpus.exportUniversalDependencyFormatParallel(turkish, "tr_atis-ud-train.conllu");
         corpus = new AnnotatedCorpus(new File("../../Atis/Turkish-Phrase/"), ".test");
-        corpus.exportUniversalDependencyFormat(turkish,"tr_atis-ud-test.conllu");
+        corpus.exportUniversalDependencyFormatParallel(turkish,"tr_atis-ud-test.conllu");
         corpus = new AnnotatedCorpus(new File("../../Atis/Turkish-Phrase/"), ".dev");
-        corpus.exportUniversalDependencyFormat(turkish, "tr_atis-ud-dev.conllu");
+        corpus.exportUniversalDependencyFormatParallel(turkish, "tr_atis-ud-dev.conllu");
     }
 
     @Test

@@ -263,6 +263,25 @@ public class AnnotatedCorpus extends Corpus{
     }
 
     /**
+     * Exports the annotated corpus as a UD file in connlu format. Every sentence is converted into connlu format and
+     * appended to the output file.
+     * @param outputFileName Output file name in connlu format.
+     */
+    public void exportUniversalDependencyFormatParallel(WordNet wordNet, String outputFileName){
+        try {
+            PrintWriter output = new PrintWriter(outputFileName);
+            for (int i = 0; i < sentenceCount(); i++){
+                AnnotatedSentence sentence = (AnnotatedSentence) getSentence(i);
+                if (sentence.wordCount() > 0){
+                    output.write(sentence.getUniversalDependencyFormatParallel(wordNet));
+                }
+            }
+            output.close();
+        } catch (FileNotFoundException ignored) {
+        }
+    }
+
+    /**
      * The method removes all empty words from the sentences.
      */
     public void clearNullWords(){
