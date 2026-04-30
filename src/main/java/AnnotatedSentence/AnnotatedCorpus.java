@@ -269,11 +269,12 @@ public class AnnotatedCorpus extends Corpus{
      */
     public void exportUniversalDependencyFormatParallel(WordNet wordNet, String outputFileName){
         try {
+            String datasetName = outputFileName.substring(outputFileName.indexOf('_') + 1, outputFileName.indexOf('-'));
             PrintWriter output = new PrintWriter(outputFileName);
             for (int i = 0; i < sentenceCount(); i++){
                 AnnotatedSentence sentence = (AnnotatedSentence) getSentence(i);
                 if (sentence.wordCount() > 0){
-                    output.write(sentence.getUniversalDependencyFormatParallel(wordNet));
+                    output.write(sentence.getUniversalDependencyFormatParallel(wordNet, datasetName));
                 }
             }
             output.close();

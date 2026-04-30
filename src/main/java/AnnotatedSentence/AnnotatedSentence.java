@@ -885,9 +885,9 @@ public class AnnotatedSentence extends Sentence {
      *
      * @return The connlu format of the sentence with appended prefix string.
      */
-    public String getUniversalDependencyFormatParallel(WordNet wordNet) {
+    public String getUniversalDependencyFormatParallel(WordNet wordNet, String datasetName) {
         FileDescription fileDescription = new FileDescription(".", getFileName());
-        String result = "# sent_id = " + getFileName() + "\n" + "# parallel_id = " + fileDescription.getExtension() + "/" + fileDescription.getIndex() + "\n" + "# text = " + toWords().replace(" 'll ", "'ll ").replace(" 'm ", "'m ").replace(" 's ", "'s ").replace(" 're ", "'re ").replace(" 'd ", "'d ").replace(" 've ", "'ve ") + "\n";
+        String result = "# sent_id = " + getFileName() + "\n" + "# parallel_id = " + datasetName + "/" + fileDescription.getExtension() + fileDescription.getIndex() + "\n" + "# text = " + toWords().replace(" 'll ", "'ll ").replace(" 'm ", "'m ").replace(" 's ", "'s ").replace(" 're ", "'re ").replace(" 'd ", "'d ").replace(" 've ", "'ve ") + "\n";
         return getUniversalDependencyFormatForSentence(wordNet, result);
     }
 
