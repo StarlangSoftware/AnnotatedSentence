@@ -6,7 +6,7 @@
 
     <groupId>io.github.starlangsoftware</groupId>
     <artifactId>AnnotatedSentence</artifactId>
-    <version>1.0.80</version>
+    <version>1.0.81</version>
     <packaging>jar</packaging>
 
     <name>NlpToolkit.AnnotatedSentence</name>
@@ -60,12 +60,12 @@
         <dependency>
             <groupId>io.github.starlangsoftware</groupId>
             <artifactId>WordNet</artifactId>
-            <version>1.0.66</version>
+            <version>1.0.67</version>
         </dependency>
         <dependency>
             <groupId>io.github.starlangsoftware</groupId>
             <artifactId>NamedEntityRecognition</artifactId>
-            <version>1.0.12</version>
+            <version>1.0.13</version>
         </dependency>
         <dependency>
             <groupId>io.github.starlangsoftware</groupId>
@@ -75,7 +75,7 @@
         <dependency>
             <groupId>io.github.starlangsoftware</groupId>
             <artifactId>DependencyParser</artifactId>
-            <version>1.0.37</version>
+            <version>1.0.38</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
