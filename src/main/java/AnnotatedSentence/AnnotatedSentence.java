@@ -9,6 +9,7 @@ import DependencyParser.Universal.UniversalDependencyTreeBankWord;
 import Dictionary.Word;
 import FrameNet.FrameNet;
 import FrameNet.Frame;
+import FrameNet.FrameElement;
 import FrameNet.FrameElementList;
 import FrameNet.DisplayedFrame;
 import MorphologicalAnalysis.FsmMorphologicalAnalyzer;
@@ -17,6 +18,7 @@ import MorphologicalAnalysis.MorphologicalParse;
 import MorphologicalAnalysis.MorphologicalTag;
 import NamedEntityRecognition.NamedEntityType;
 import NamedEntityRecognition.Slot;
+import PropBank.Argument;
 import PropBank.ArgumentList;
 import PropBank.Frameset;
 import PropBank.FramesetList;
@@ -70,20 +72,20 @@ public class AnnotatedSentence extends Sentence {
         }
     }
 
-    public AnnotatedSentence(UniversalDependencyTreeBankSentence sentence, File file){
+    public AnnotatedSentence(UniversalDependencyTreeBankSentence sentence, File file) {
         this.file = file;
         HashMap<Integer, Integer> map = new HashMap<>();
         words = new ArrayList<>();
         int currentSplit = 0;
         int decrease = 0;
-        for (int i = 1; i <= sentence.wordCount(); i++){
-            if (decrease > 0){
+        for (int i = 1; i <= sentence.wordCount(); i++) {
+            if (decrease > 0) {
                 map.put(i, i - decrease);
             }
             UniversalDependencyTreeBankWord word = (UniversalDependencyTreeBankWord) sentence.getWord(i - 1);
             String surfaceForm = word.getName();
-            if (currentSplit < sentence.splitSize() && sentence.getSplit(currentSplit).startsWith(i + "-")){
-                for (int j = i + 1; j <= Integer.parseInt(sentence.getSplit(currentSplit).substring(sentence.getSplit(currentSplit).indexOf('-') + 1)); j++){
+            if (currentSplit < sentence.splitSize() && sentence.getSplit(currentSplit).startsWith(i + "-")) {
+                for (int j = i + 1; j <= Integer.parseInt(sentence.getSplit(currentSplit).substring(sentence.getSplit(currentSplit).indexOf('-') + 1)); j++) {
                     i++;
                     surfaceForm += sentence.getWord(i - 1).getName();
                     decrease++;
@@ -94,9 +96,9 @@ public class AnnotatedSentence extends Sentence {
             newWord.setUniversalDependency(word.getRelation().to(), word.getRelation().toString());
             words.add(newWord);
         }
-        for (Word word : words){
+        for (Word word : words) {
             AnnotatedWord annotatedWord = (AnnotatedWord) word;
-            if (annotatedWord.getUniversalDependency() != null && map.containsKey(annotatedWord.getUniversalDependency().to())){
+            if (annotatedWord.getUniversalDependency() != null && map.containsKey(annotatedWord.getUniversalDependency().to())) {
                 annotatedWord.setUniversalDependency(map.get(annotatedWord.getUniversalDependency().to()), annotatedWord.getUniversalDependency().toString());
             }
         }
@@ -157,6 +159,94 @@ public class AnnotatedSentence extends Sentence {
         }
         shallowParseGroups.add(current);
         return shallowParseGroups;
+    }
+
+    /**
+     * The method constructs all possible frame element groups of a sentence.
+     *
+     * @return Frame Element groups of a sentence.
+     */
+    public ArrayList<AnnotatedPhrase> getFrameElementGroups(String predicateId) {
+        ArrayList<AnnotatedPhrase> frameNetGroups = new ArrayList<>();
+        AnnotatedPhrase current = null;
+        for (int i = 0; i < wordCount(); i++) {
+            AnnotatedWord annotatedWord = (AnnotatedWord) getWord(i);
+            if (annotatedWord.getFrameElementList() != null) {
+                FrameElement element = annotatedWord.getFrameElementList().getNonPredicateFrameElementWithId(predicateId);
+                if (element != null) {
+                    if (current == null) {
+                        current = new AnnotatedPhrase(i, element.getFrameElementType());
+                        current.addWord(annotatedWord);
+                    } else {
+                        if (element.getFrameElementType().equals(current.getTag())) {
+                            current.addWord(annotatedWord);
+                        } else {
+                            frameNetGroups.add(current);
+                            current = new AnnotatedPhrase(i, element.getFrameElementType());
+                            current.addWord(annotatedWord);
+                        }
+                    }
+                } else {
+                    if (current != null) {
+                        frameNetGroups.add(current);
+                        current = null;
+                    }
+                }
+            } else {
+                if (current != null) {
+                    frameNetGroups.add(current);
+                    current = null;
+                }
+            }
+        }
+        if (current != null) {
+            frameNetGroups.add(current);
+        }
+        return frameNetGroups;
+    }
+
+    /**
+     * The method constructs all possible propbank argument groups of a sentence.
+     *
+     * @return Propbank argument groups of a sentence.
+     */
+    public ArrayList<AnnotatedPhrase> getArgumentGroups(String predicateId) {
+        ArrayList<AnnotatedPhrase> argumentGroups = new ArrayList<>();
+        AnnotatedPhrase current = null;
+        for (int i = 0; i < wordCount(); i++) {
+            AnnotatedWord annotatedWord = (AnnotatedWord) getWord(i);
+            if (annotatedWord.getArgumentList() != null) {
+                Argument argument = annotatedWord.getArgumentList().getNonPredicateArgumentWithId(predicateId);
+                if (argument != null) {
+                    if (current == null) {
+                        current = new AnnotatedPhrase(i, argument.getArgumentType());
+                        current.addWord(annotatedWord);
+                    } else {
+                        if (argument.getArgumentType().equals(current.getTag())) {
+                            current.addWord(annotatedWord);
+                        } else {
+                            argumentGroups.add(current);
+                            current = new AnnotatedPhrase(i, argument.getArgumentType());
+                            current.addWord(annotatedWord);
+                        }
+                    }
+                } else {
+                    if (current != null) {
+                        argumentGroups.add(current);
+                        current = null;
+                    }
+                }
+            } else {
+                if (current != null) {
+                    argumentGroups.add(current);
+                    current = null;
+                }
+            }
+        }
+        if (current != null) {
+            argumentGroups.add(current);
+        }
+        return argumentGroups;
     }
 
     /**
@@ -594,7 +684,7 @@ public class AnnotatedSentence extends Sentence {
                 goesWithHead = ((AnnotatedWord) getWord(i + 1)).goesWithCase();
                 goesWithFixed = ((AnnotatedWord) getWord(i + 1)).goesWithFixed();
                 AnnotatedWord nextWord = (AnnotatedWord) getWord(i + 1);
-                if (nextWord.getName().equals("'ll") || nextWord.getName().equals("'d") || nextWord.getName().equals("'s") || nextWord.getName().equals("'re") || nextWord.getName().equals("'m") || nextWord.getName().equals("'ve")){
+                if (nextWord.getName().equals("'ll") || nextWord.getName().equals("'d") || nextWord.getName().equals("'s") || nextWord.getName().equals("'re") || nextWord.getName().equals("'m") || nextWord.getName().equals("'ve")) {
                     resultBuilder.append((i + 1)).append("-").append(i + 2).append("\t").append(word.getName()).append(nextWord.getName()).append("\t").append("_").append("\t").append("_").append("\t").append("_").append("\t").append("_").append("\t").append("_").append("\t").append("_").append("\t").append("_").append("\t").append("_").append("\n");
                 }
             }
@@ -735,11 +825,11 @@ public class AnnotatedSentence extends Sentence {
         StringBuilder result = new StringBuilder("{\"sentence\":\"");
         for (int i = 0; i < wordCount(); i++) {
             AnnotatedWord word = (AnnotatedWord) getWord(i);
-            if (word.getName() != null && word.getName().equals("\"")){
+            if (word.getName() != null && word.getName().equals("\"")) {
                 result.append("\\");
             }
             result.append(word.getName());
-            if (i != wordCount() - 1){
+            if (i != wordCount() - 1) {
                 result.append(" ");
             }
         }
@@ -775,7 +865,7 @@ public class AnnotatedSentence extends Sentence {
                 case PART_OF_SPEECH:
                     MorphologicalParse parse = word.getParse();
                     if (parse != null) {
-                        if (parse.toString().startsWith("\"")){
+                        if (parse.toString().startsWith("\"")) {
                             result.append("\\");
                         }
                         result.append(parse);
@@ -834,7 +924,7 @@ public class AnnotatedSentence extends Sentence {
                 case META_MORPHEME:
                     MetamorphicParse metamorphicParse = word.getMetamorphicParse();
                     if (metamorphicParse != null) {
-                        if (metamorphicParse.toString().startsWith("\"")){
+                        if (metamorphicParse.toString().startsWith("\"")) {
                             result.append("\\");
                         }
                         result.append(metamorphicParse);
@@ -851,7 +941,7 @@ public class AnnotatedSentence extends Sentence {
                     }
                     break;
             }
-            if (i != wordCount() - 1 && layerType != ViewLayerType.POLARITY){
+            if (i != wordCount() - 1 && layerType != ViewLayerType.POLARITY) {
                 result.append(" ");
             }
         }

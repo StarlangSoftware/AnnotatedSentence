@@ -50,6 +50,7 @@ public class UDConvertTest {
         corpus.exportUniversalDependencyFormat(turkish, "tr_penn-ud-dev.conllu", "20");
     }
 
+    @Test
     public void testConvertUdBoun(){
         AnnotatedCorpus corpus = new AnnotatedCorpus(new File("../../Boun/Turkish-Phrase/"), ".train");
         corpus.exportUniversalDependencyFormat(turkish, "tr_boun-ud-train.conllu");
@@ -59,11 +60,13 @@ public class UDConvertTest {
         corpus.exportUniversalDependencyFormat(turkish, "tr_boun-ud-dev.conllu");
     }
 
+    @Test
     public void testConvertUdGb(){
         AnnotatedCorpus corpus = new AnnotatedCorpus(new File("../../Gb/Turkish-Phrase/"), ".test");
         corpus.exportUniversalDependencyFormat(turkish, "tr_gb-ud-test.conllu");
     }
 
+    @Test
     public void testConvertUdImst(){
         AnnotatedCorpus corpus = new AnnotatedCorpus(new File("../../Imst/Turkish-Phrase/"), ".train");
         corpus.exportUniversalDependencyFormat(turkish, "tr_imst-ud-train.conllu");
@@ -73,6 +76,7 @@ public class UDConvertTest {
         corpus.exportUniversalDependencyFormat(turkish, "tr_imst-ud-dev.conllu");
     }
 
+    @Test
     public void testConvertUdImst2(){
         AnnotatedCorpus corpus = new AnnotatedCorpus(new File("../../Imst2/Turkish-Phrase/"), ".train");
         corpus.exportUniversalDependencyFormat(turkish, "tr_imst2-ud-train.conllu");
@@ -82,6 +86,7 @@ public class UDConvertTest {
         corpus.exportUniversalDependencyFormat(turkish, "tr_imst2-ud-dev.conllu");
     }
 
+    @Test
     public void testConvertUdPud(){
         AnnotatedCorpus corpus = new AnnotatedCorpus(new File("../../Pud/Turkish-Phrase/"), ".test");
         corpus.exportUniversalDependencyFormat(turkish, "tr_pud-ud-test.conllu");
